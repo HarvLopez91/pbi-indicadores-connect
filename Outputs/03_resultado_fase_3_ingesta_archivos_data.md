@@ -108,7 +108,7 @@ No fue necesario modificar `model.tmdl` para referenciar las nuevas expresiones:
 
 - Mensaje: `data(powerquery): conectar archivos base desde carpeta Data` (con cuerpo describiendo el alcance exacto: parámetro + 3 consultas de staging, sin limpieza/tablas/medidas/visuales).
 - Archivos incluidos: `PBI/PBI_Indicadores.SemanticModel/definition/expressions.tmdl` (nuevo), `Outputs/03_resultado_fase_3_ingesta_archivos_data.md` (este documento).
-- Hash del commit: `c250114907271cde45d1ec4d90a0359709b7a4f3`.
+- Hash del commit: `aa13cb202369d691180076ecee50743f85436099`. (Nota: el commit se generó en dos pasos —`git commit` seguido de un `git commit --amend` para incorporar este mismo documento ya finalizado— por lo que el hash cambió una vez respecto al registrado inicialmente; el historial sigue siendo un único commit, no publicado, sin riesgo de romper referencias de terceros.)
 - Autor/committer: `HarvLopez91 <eclavijo29@gmail.com>` (identidad local del proyecto, ya configurada en la Fase 2).
 - No se realizó `push` a ningún remoto. No se usaron banderas de bypass de hooks ni de firma.
 
