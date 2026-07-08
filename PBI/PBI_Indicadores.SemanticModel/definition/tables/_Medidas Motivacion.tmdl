@@ -8,27 +8,21 @@ table '_Medidas Motivacion'
 
 	measure 'Satisfaccion Promedio Actividad' = AVERAGE(Fact_MotivacionActividad[SatisfaccionGeneral])
 		formatString: 0.0
-		description: "Promedio de la calificación de satisfacción general (escala 1-5) de la encuesta de motivación/actividad comercial. Basado en Fact_MotivacionActividad (n=5 actualmente - muestra muy pequeña, interpretar con cautela)."
 
 	measure 'Claridad Utilidad Promedio Actividad' = AVERAGE(Fact_MotivacionActividad[ClaridadUtilidad])
 		formatString: 0.0
-		description: "Promedio de la calificación de claridad/utilidad de la actividad (escala 1-5). Muestra piloto muy pequeña (n=5)."
 
 	measure 'Motivacion Promedio Actividad' = AVERAGE(Fact_MotivacionActividad[MotivacionPostActividad])
 		formatString: 0.0
-		description: "Promedio de la calificación de motivación post-actividad para vender (escala 1-5). Muestra piloto muy pequeña (n=5)."
 
 	measure 'Indice Global Motivacion' = DIVIDE([Satisfaccion Promedio Actividad] + [Claridad Utilidad Promedio Actividad] + [Motivacion Promedio Actividad], 3)
 		formatString: 0.0
-		description: "Promedio simple de las 3 dimensiones evaluadas en la encuesta de motivación (satisfacción, claridad/utilidad, motivación post-actividad). Indicador compuesto de resumen."
 
 	measure '% Ambiente Motivado' = DIVIDE(CALCULATE(COUNTROWS(Fact_MotivacionActividad), Fact_MotivacionActividad[AmbienteEquipo] = "Motivado"), COUNTROWS(Fact_MotivacionActividad))
 		formatString: 0.0%
-		description: "Porcentaje de respuestas donde el ambiente de equipo se describió como 'Motivado' (categoría entre Motivado/Colaborativo/Presionado)."
 
 	measure '% Comentarios Motivacion' = DIVIDE(CALCULATE(COUNTROWS(Fact_MotivacionActividad), Fact_MotivacionActividad[Comentario] <> "Sin comentario"), COUNTROWS(Fact_MotivacionActividad))
 		formatString: 0.0%
-		description: "Porcentaje de respuestas de la encuesta de motivación que dejaron un comentario real (distinto de 'Sin comentario')."
 
 	partition '_Medidas Motivacion' = m
 		mode: import

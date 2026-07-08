@@ -16,7 +16,6 @@ table '_Medidas Calidad'
 			SUM(Fact_CalidadLlamadas[Preg_CierreComercial]) +
 			SUM(Fact_CalidadLlamadas[Preg_ConfirmacionCierre])
 		formatString: 0.0
-		description: "Suma de los puntos obtenidos en las 8 preguntas del checklist de calidad (Preg_*) de Fact_CalidadLlamadas. Los valores 'N/A' (pregunta no aplicable) ya fueron convertidos a null en la Fase 6 y SUM() los ignora automáticamente - no se cuentan como 0 ni generan error. No representa un porcentaje; usar junto con Preguntas Aplicables Calidad para obtener un promedio."
 
 	measure 'Preguntas Aplicables Calidad' =
 			COUNT(Fact_CalidadLlamadas[Preg_TonoSaludo]) +
@@ -28,15 +27,12 @@ table '_Medidas Calidad'
 			COUNT(Fact_CalidadLlamadas[Preg_CierreComercial]) +
 			COUNT(Fact_CalidadLlamadas[Preg_ConfirmacionCierre])
 		formatString: 0
-		description: "Conteo de respuestas no nulas (aplicables) entre las 8 preguntas del checklist de calidad. Excluye las preguntas marcadas 'N/A' en la fuente original."
 
 	measure 'Promedio Puntaje Calidad' = DIVIDE([Puntaje Obtenido Calidad], [Preguntas Aplicables Calidad])
 		formatString: 0.0
-		description: "Puntaje Obtenido Calidad dividido entre Preguntas Aplicables Calidad: puntaje promedio por pregunta aplicable. No es un porcentaje de calidad (para eso ver % Calidad Promedio Provisional, que sigue pendiente de la rúbrica oficial)."
 
 	measure '% Llamadas con Venta' = DIVIDE(CALCULATE(COUNTROWS(Fact_CalidadLlamadas), Fact_CalidadLlamadas[TerminoEnVenta] IN {"Sí", "Si"}), COUNTROWS(Fact_CalidadLlamadas))
 		formatString: 0.0%
-		description: "Porcentaje de llamadas evaluadas que terminaron en venta (TerminoEnVenta = 'Sí'/'Si'), sobre el total de llamadas evaluadas. Con el volumen piloto actual (3 evaluaciones) este porcentaje puede ser 0% o 100% y no debe interpretarse como una tasa de conversión real."
 
 	measure 'Objecion Principal' =
 			VAR ResumenObjeciones =
@@ -53,11 +49,9 @@ table '_Medidas Calidad'
 					BLANK(),
 					MAXX(TOPN(1, ResumenObjeciones, [Conteo], DESC), Fact_CalidadLlamadas[ObjecionPrincipal])
 				)
-		description: "Objeción del cliente más frecuente registrada en ObjecionPrincipal, excluyendo valores en blanco. Con el volumen piloto actual, el resultado puede cambiar drásticamente con cada nueva evaluación."
 
 	measure '% Calidad Promedio Provisional' = BLANK()
 		formatString: 0.0%
-		description: "MEDIDA PROVISIONAL - actualmente siempre en blanco a propósito. No se calcula un % de calidad real porque la rúbrica oficial de puntaje máximo por pregunta del checklist sigue pendiente de confirmación de negocio (dependencia D3, Specs/02 sección 4). Cada pregunta del checklist tiene un puntaje máximo distinto observado en los datos (algunas llegan a 1, otras a 3), por lo que un promedio simple de puntos no equivale a un porcentaje de calidad válido sin esa rúbrica. No presentar como indicador definitivo hasta que se confirme y se reemplace esta fórmula."
 
 	partition '_Medidas Calidad' = m
 		mode: import
