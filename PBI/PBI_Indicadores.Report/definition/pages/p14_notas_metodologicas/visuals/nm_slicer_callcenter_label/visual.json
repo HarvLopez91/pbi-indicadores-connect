@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "nm_slicer_callcenter_label",
   "position": {
-    "x": 322,
-    "y": 130,
-    "z": 44,
-    "width": 250,
-    "height": 18,
+    "x": 904,
+    "y": 38,
+    "z": 72,
+    "width": 158,
+    "height": 16,
     "tabOrder": 44
   },
   "visual": {
@@ -22,7 +22,7 @@
                     "value": "Call Center",
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
-                      "fontSize": "10px",
+                      "fontSize": "9px",
                       "color": "#3A3A3A",
                       "fontWeight": "bold"
                     }

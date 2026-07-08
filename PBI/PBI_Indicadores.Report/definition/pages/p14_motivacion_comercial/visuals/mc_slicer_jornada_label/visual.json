@@ -6,7 +6,7 @@
     "y": 130,
     "z": 48,
     "width": 250,
-    "height": 18,
+    "height": 16,
     "tabOrder": 48
   },
   "visual": {
@@ -22,7 +22,7 @@
                     "value": "Jornada",
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
-                      "fontSize": "10px",
+                      "fontSize": "9px",
                       "color": "#3A3A3A",
                       "fontWeight": "bold"
                     }

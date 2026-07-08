@@ -6,7 +6,7 @@
     "y": 130,
     "z": 40,
     "width": 250,
-    "height": 18,
+    "height": 16,
     "tabOrder": 40
   },
   "visual": {
@@ -22,7 +22,7 @@
                     "value": "Fecha",
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
-                      "fontSize": "10px",
+                      "fontSize": "9px",
                       "color": "#3A3A3A",
                       "fontWeight": "bold"
                     }

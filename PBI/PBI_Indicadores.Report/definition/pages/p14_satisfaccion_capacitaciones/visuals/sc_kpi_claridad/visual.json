@@ -28,7 +28,7 @@
               },
               "queryRef": "_Medidas Capacitacion.Claridad Promedio Capacitacion",
               "nativeQueryRef": "Claridad Promedio Capacitacion",
-              "displayName": "Claridad Promedio Capacitaci?n"
+              "displayName": "Claridad Promedio Capacitación"
             }
           ]
         }
@@ -82,7 +82,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Claridad Promedio Capacitaci?n'"
+                  "Value": "'Claridad Promedio Capacitación'"
                 }
               }
             },
@@ -100,7 +100,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "9D"
+                  "Value": "10D"
                 }
               }
             }
@@ -142,6 +142,50 @@
                       "Value": "'#F15B2B'"
                     }
                   }
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        }
+      ],
+      "layout": [
+        {
+          "properties": {
+            "topOuterMargin": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
+                }
+              }
+            },
+            "bottomOuterMargin": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
+                }
+              }
+            },
+            "leftOuterMargin": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
+                }
+              }
+            },
+            "rightOuterMargin": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
+                }
+              }
+            },
+            "paddingUniform": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
                 }
               }
             }
