@@ -28,7 +28,7 @@
               },
               "queryRef": "_Medidas Generales.Total Respuestas Capacitacion",
               "nativeQueryRef": "Total Respuestas Capacitacion",
-              "displayName": "Total Respuestas Capacitacion"
+              "displayName": "Total Respuestas Capacitación"
             }
           ]
         }
@@ -82,7 +82,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Total Respuestas Capacitacion'"
+                  "Value": "'Total Respuestas Capacitación'"
                 }
               }
             },

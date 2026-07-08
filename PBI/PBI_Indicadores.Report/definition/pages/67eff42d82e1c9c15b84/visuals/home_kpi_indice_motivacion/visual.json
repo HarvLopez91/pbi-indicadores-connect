@@ -28,7 +28,7 @@
               },
               "queryRef": "_Medidas Motivacion.Indice Global Motivacion",
               "nativeQueryRef": "Indice Global Motivacion",
-              "displayName": "Indice Global Motivacion"
+              "displayName": "Índice Global Motivación"
             }
           ]
         }
@@ -82,7 +82,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Indice Global Motivacion'"
+                  "Value": "'Índice Global Motivación'"
                 }
               }
             },

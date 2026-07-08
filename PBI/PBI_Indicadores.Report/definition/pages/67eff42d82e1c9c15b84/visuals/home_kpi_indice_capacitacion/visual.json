@@ -28,7 +28,7 @@
               },
               "queryRef": "_Medidas Capacitacion.Indice Global Capacitacion",
               "nativeQueryRef": "Indice Global Capacitacion",
-              "displayName": "Indice Global Capacitacion"
+              "displayName": "Índice Global Capacitación"
             }
           ]
         }
@@ -82,7 +82,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Indice Global Capacitacion'"
+                  "Value": "'Índice Global Capacitación'"
                 }
               }
             },

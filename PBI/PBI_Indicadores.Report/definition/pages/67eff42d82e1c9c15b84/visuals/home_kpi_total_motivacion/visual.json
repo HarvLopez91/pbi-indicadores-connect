@@ -28,7 +28,7 @@
               },
               "queryRef": "_Medidas Generales.Total Respuestas Motivacion",
               "nativeQueryRef": "Total Respuestas Motivacion",
-              "displayName": "Total Respuestas Motivacion"
+              "displayName": "Total Respuestas Motivación"
             }
           ]
         }
@@ -82,7 +82,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Total Respuestas Motivacion'"
+                  "Value": "'Total Respuestas Motivación'"
                 }
               }
             },
