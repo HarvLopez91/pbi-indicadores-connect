@@ -27,8 +27,7 @@
   "textClasses": {
     "title": {
       "color": "#002733",
-      "fontSize": 14,
-      "bold": true
+      "fontSize": 14
     },
     "header": {
       "color": "#002733",
@@ -36,8 +35,7 @@
     },
     "callout": {
       "color": "#002733",
-      "fontSize": 28,
-      "bold": true
+      "fontSize": 28
     },
     "label": {
       "color": "#3A3A3A",
