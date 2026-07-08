@@ -1,5 +1,6 @@
 expression RutaCarpetaData = "C:\Users\edwin.clavijo\OneDrive\PBI_Indicadores\Data" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 53085232-a62f-43c5-997d-4ad091d4aacd
+
 	annotation PBI_ResultType = Text
 
 expression Base_MatrizCalidad =
@@ -9,6 +10,7 @@ expression Base_MatrizCalidad =
 		in
 			#"Form Responses 1_Sheet"
 	lineageTag: 4ed712eb-a48b-47c4-b38e-40e44df0cdd6
+
 	annotation PBI_ResultType = Table
 
 expression Base_SatisfaccionCapacitacion =
@@ -18,6 +20,7 @@ expression Base_SatisfaccionCapacitacion =
 		in
 			#"Form Responses 1_Sheet"
 	lineageTag: 856b7a25-81ba-46c7-93a6-98f60d0e165c
+
 	annotation PBI_ResultType = Table
 
 expression Base_EncuestaMotivacion =
@@ -27,4 +30,48 @@ expression Base_EncuestaMotivacion =
 		in
 			#"Form Responses 1_Sheet"
 	lineageTag: c8331ea8-4763-4eaf-9433-d54bd1772705
+
 	annotation PBI_ResultType = Table
+
+expression MatrizCalidad_Limpio =
+		let
+			Origen = Base_MatrizCalidad,
+			EncabezadosPromovidos = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+			NombresColumnaSinEspacios = Table.TransformColumnNames(EncabezadosPromovidos, Text.Trim),
+			TextoLimpio = Table.TransformColumns(NombresColumnaSinEspacios, {}, each if _ is text then Text.Trim(Text.Clean(_)) else _),
+			TimestampComoFechaHora = Table.TransformColumnTypes(TextoLimpio, {{"Timestamp", type datetime}}),
+			ColumnaFechaAgregada = Table.AddColumn(TimestampComoFechaHora, "Fecha", each if [Timestamp] = null then null else Date.From([Timestamp]), type date),
+			CallCenterNormalizado = Table.TransformColumns(ColumnaFechaAgregada, {{"CALL CENTER", each if _ = null then _ else Text.Trim(Text.Upper(_)), type text}})
+		in
+			CallCenterNormalizado
+	lineageTag: 2203c06d-4742-4a85-be50-8fdc317fec69
+	annotation PBI_ResultType = Table
+
+expression SatisfaccionCapacitacion_Limpio =
+		let
+			Origen = Base_SatisfaccionCapacitacion,
+			EncabezadosPromovidos = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+			NombresColumnaSinEspacios = Table.TransformColumnNames(EncabezadosPromovidos, Text.Trim),
+			TextoLimpio = Table.TransformColumns(NombresColumnaSinEspacios, {}, each if _ is text then Text.Trim(Text.Clean(_)) else _),
+			TimestampComoFechaHora = Table.TransformColumnTypes(TextoLimpio, {{"Timestamp", type datetime}}),
+			ColumnaFechaAgregada = Table.AddColumn(TimestampComoFechaHora, "Fecha", each if [Timestamp] = null then null else Date.From([Timestamp]), type date),
+			CallCenterNormalizado = Table.TransformColumns(ColumnaFechaAgregada, {{"¿En qué call center trabajas?", each if _ = null then _ else Text.Trim(Text.Upper(_)), type text}})
+		in
+			CallCenterNormalizado
+	lineageTag: fb62451f-5559-43e7-abae-9a5e9e016d2e
+	annotation PBI_ResultType = Table
+
+expression EncuestaMotivacion_Limpio =
+		let
+			Origen = Base_EncuestaMotivacion,
+			EncabezadosPromovidos = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+			NombresColumnaSinEspacios = Table.TransformColumnNames(EncabezadosPromovidos, Text.Trim),
+			TextoLimpio = Table.TransformColumns(NombresColumnaSinEspacios, {}, each if _ is text then Text.Trim(Text.Clean(_)) else _),
+			TimestampComoFechaHora = Table.TransformColumnTypes(TextoLimpio, {{"Timestamp", type datetime}}),
+			ColumnaFechaAgregada = Table.AddColumn(TimestampComoFechaHora, "Fecha", each if [Timestamp] = null then null else Date.From([Timestamp]), type date),
+			CallCenterNormalizado = Table.TransformColumns(ColumnaFechaAgregada, {{"¿En qué call center trabajas?", each if _ = null then _ else Text.Trim(Text.Upper(_)), type text}})
+		in
+			CallCenterNormalizado
+	lineageTag: b1135335-b30f-49fa-af10-5b5c55189763
+	annotation PBI_ResultType = Table
+
