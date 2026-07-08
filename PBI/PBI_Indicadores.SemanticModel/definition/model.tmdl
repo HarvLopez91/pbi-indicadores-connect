@@ -10,5 +10,9 @@ annotation __PBI_TimeIntelligenceEnabled = 1
 
 annotation PBI_ProTooling = ["DevMode"]
 
+ref table Fact_CalidadLlamadas
+ref table Fact_SatisfaccionCapacitacion
+ref table Fact_MotivacionActividad
+
 ref cultureInfo es-ES
 
