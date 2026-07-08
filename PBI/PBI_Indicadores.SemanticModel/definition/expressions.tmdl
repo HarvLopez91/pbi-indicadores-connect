@@ -94,9 +94,11 @@ expression Fact_CalidadLlamadas =
 				{"¿Confirmó condiciones, aceptación y cerró con calidad?", "Preg_ConfirmacionCierre"},
 				{"Objeción principal del cliente", "ObjecionPrincipal"},
 				{"¿La llamada terminó en venta?", "TerminoEnVenta"}
-			})
+			}),
+			NAsComoNulos = Table.ReplaceValue(ColumnasRenombradas, "N/A", null, Replacer.ReplaceValue, {"Preg_TonoSaludo", "Preg_FraseImpacto", "Preg_PreguntasNecesidad", "Preg_ConexionBeneficio", "Preg_ExplicacionProducto", "Preg_ManejoObjeciones", "Preg_CierreComercial", "Preg_ConfirmacionCierre"}),
+			PreguntasComoNumero = Table.TransformColumnTypes(NAsComoNulos, {{"Preg_TonoSaludo", type number}, {"Preg_FraseImpacto", type number}, {"Preg_PreguntasNecesidad", type number}, {"Preg_ConexionBeneficio", type number}, {"Preg_ExplicacionProducto", type number}, {"Preg_ManejoObjeciones", type number}, {"Preg_CierreComercial", type number}, {"Preg_ConfirmacionCierre", type number}})
 		in
-			ColumnasRenombradas
+			PreguntasComoNumero
 	lineageTag: 321ca79d-cca9-4daf-922d-c73c1ec4eb92
 	annotation PBI_ResultType = Table
 
@@ -116,9 +118,20 @@ expression Fact_SatisfaccionCapacitacion =
 				{"La capacitación fue dinámica y mantuvo mi atención.", "Dinamismo"},
 				{"Duración", "Duracion"},
 				{"¿Qué mejorarías o qué información te gustaría para una próxima visita?", "Comentario"}
-			})
+			}),
+			NombresPersonaNormalizados = Table.TransformColumns(ColumnasRenombradas, {
+				{"NombreAsesor", each if _ = null then _ else Text.Proper(Text.Trim(Text.Clean(_))), type text},
+				{"NombreLider", each if _ = null then _ else Text.Proper(Text.Trim(Text.Clean(_))), type text},
+				{"NombreFormador", each if _ = null then _ else Text.Proper(Text.Trim(Text.Clean(_))), type text}
+			}),
+			AliasLiderJuanEsteban = {"Juan Esteban Perez Camargo", "Juan Esteban Pérez Caramargo", "Juan Esteban Camargo", "Juan Esteban Cámargo"},
+			LiderConsolidado = Table.TransformColumns(NombresPersonaNormalizados, {{"NombreLider", each if _ <> null and List.Contains(AliasLiderJuanEsteban, _) then "Juan Esteban Pérez Camargo" else _, type text}}),
+			ColumnasCategoricasSinDato = {"CallCenter", "Jornada", "NombreAsesor", "NombreLider", "NombreFormador", "Duracion"},
+			NulosCategoricosMarcados = Table.ReplaceValue(LiderConsolidado, null, "Sin dato", Replacer.ReplaceValue, ColumnasCategoricasSinDato),
+			ValoresSinComentario = {"N/A", "NA", "NADA", "NINGUNA", "NO", "SIN OBSERVACIONES"},
+			ComentarioUnificado = Table.TransformColumns(NulosCategoricosMarcados, {{"Comentario", each if _ = null then "Sin comentario" else if Text.Trim(_) = "" then "Sin comentario" else if List.Contains(ValoresSinComentario, Text.Upper(Text.Trim(_))) then "Sin comentario" else Text.Trim(Text.Clean(_)), type text}})
 		in
-			ColumnasRenombradas
+			ComentarioUnificado
 	lineageTag: e683a829-4358-4a0c-b482-3af549d2da9e
 	annotation PBI_ResultType = Table
 
@@ -136,9 +149,11 @@ expression Fact_MotivacionActividad =
 				{"¿Qué tipo de actividades crees que funcionan mejor con tu equipo?", "TipoActividadPreferida"},
 				{"¿Qué mejorarías o qué actividad te gustaría para una próxima visita?", "Comentario"}
 			}),
-			ColumnaSinDatosEliminada = Table.RemoveColumns(ColumnasRenombradas, {"Nombre completo (Mayúscula)"})
+			ColumnaSinDatosEliminada = Table.RemoveColumns(ColumnasRenombradas, {"Nombre completo (Mayúscula)"}),
+			ValoresSinComentario = {"N/A", "NA", "NADA", "NINGUNA", "NO", "SIN OBSERVACIONES"},
+			ComentarioUnificado = Table.TransformColumns(ColumnaSinDatosEliminada, {{"Comentario", each if _ = null then "Sin comentario" else if Text.Trim(_) = "" then "Sin comentario" else if List.Contains(ValoresSinComentario, Text.Upper(Text.Trim(_))) then "Sin comentario" else Text.Trim(Text.Clean(_)), type text}})
 		in
-			ColumnaSinDatosEliminada
+			ComentarioUnificado
 	lineageTag: 68f2f08f-b6d3-41f2-8ef9-0a598dda01cc
 	annotation PBI_ResultType = Table
 
