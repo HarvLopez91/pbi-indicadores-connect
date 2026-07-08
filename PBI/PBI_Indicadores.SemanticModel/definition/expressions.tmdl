@@ -9,7 +9,6 @@ expression Base_MatrizCalidad =
 		in
 			#"Form Responses 1_Sheet"
 	lineageTag: 4ed712eb-a48b-47c4-b38e-40e44df0cdd6
-	queryGroup: Staging
 	annotation PBI_ResultType = Table
 
 expression Base_SatisfaccionCapacitacion =
@@ -19,7 +18,6 @@ expression Base_SatisfaccionCapacitacion =
 		in
 			#"Form Responses 1_Sheet"
 	lineageTag: 856b7a25-81ba-46c7-93a6-98f60d0e165c
-	queryGroup: Staging
 	annotation PBI_ResultType = Table
 
 expression Base_EncuestaMotivacion =
@@ -29,5 +27,4 @@ expression Base_EncuestaMotivacion =
 		in
 			#"Form Responses 1_Sheet"
 	lineageTag: c8331ea8-4763-4eaf-9433-d54bd1772705
-	queryGroup: Staging
 	annotation PBI_ResultType = Table
