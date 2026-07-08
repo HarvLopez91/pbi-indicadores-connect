@@ -1,71 +1,100 @@
 table Fact_SatisfaccionCapacitacion
+	lineageTag: bf895d71-bb76-4a61-86f4-b74c7822c2c5
 
 	column FechaHora
 		dataType: dateTime
 		formatString: General Date
+		lineageTag: 20b872e6-d13d-44cb-86df-dab586040431
 		summarizeBy: none
 		sourceColumn: FechaHora
 
 	column CallCenter
 		dataType: string
+		lineageTag: 888bec37-28f7-4afc-a5ff-5331461a80d8
 		summarizeBy: none
 		sourceColumn: CallCenter
 
 	column Jornada
 		dataType: string
+		lineageTag: 5380b28e-dba1-4baa-a617-519143a67f8b
 		summarizeBy: none
 		sourceColumn: Jornada
 
 	column NombreAsesor
 		dataType: string
+		lineageTag: 0abdfd52-edab-4b68-af5d-fce83bc67dc2
 		summarizeBy: none
 		sourceColumn: NombreAsesor
 
 	column NombreLider
 		dataType: string
+		lineageTag: 3f0411e3-c380-47a5-ba40-9f53e3b1e7da
 		summarizeBy: none
 		sourceColumn: NombreLider
 
 	column NombreFormador
 		dataType: string
+		lineageTag: 971f747f-418a-4cc8-bc4c-a2e6599a2012
 		summarizeBy: none
 		sourceColumn: NombreFormador
 
 	column SatisfaccionGeneral
 		dataType: double
-		summarizeBy: none
+		lineageTag: 80c44ce0-2b9f-4951-b9c9-0cc857b46982
+		summarizeBy: sum
 		sourceColumn: SatisfaccionGeneral
+
+		annotation SummarizationSetBy = Automatic
 
 	column Claridad
 		dataType: double
-		summarizeBy: none
+		lineageTag: 1d2b9005-ca5c-4058-bea5-da88dc4a3623
+		summarizeBy: sum
 		sourceColumn: Claridad
+
+		annotation SummarizationSetBy = Automatic
 
 	column Utilidad
 		dataType: double
-		summarizeBy: none
+		lineageTag: e4a02956-ff63-4cd9-b673-a359b22729a0
+		summarizeBy: sum
 		sourceColumn: Utilidad
+
+		annotation SummarizationSetBy = Automatic
 
 	column Dinamismo
 		dataType: double
-		summarizeBy: none
+		lineageTag: d1e62040-43b7-4096-83d7-1a7dc0882f3a
+		summarizeBy: sum
 		sourceColumn: Dinamismo
+
+		annotation SummarizationSetBy = Automatic
 
 	column Duracion
 		dataType: string
+		lineageTag: 38f92292-0c05-4ac8-bee3-395ed46d79d3
 		summarizeBy: none
 		sourceColumn: Duracion
 
 	column Comentario
 		dataType: string
+		lineageTag: 79b99d40-143d-4cf4-a5f8-5346793a85eb
 		summarizeBy: none
 		sourceColumn: Comentario
 
 	column Fecha
 		dataType: dateTime
 		formatString: Short Date
+		lineageTag: 61715542-cb47-4cf7-8c66-87c8a9e1a9dd
 		summarizeBy: none
 		sourceColumn: Fecha
+
+		variation Variación
+			isDefault
+			relationship: 13750e44-d204-4d25-9219-dde265a561bc
+			defaultHierarchy: LocalDateTable_082769f1-b472-466c-aa67-659058d901ad.'Jerarquía de fechas'
+
+		annotation UnderlyingDateTimeDataType = Date
 
 	partition Fact_SatisfaccionCapacitacion = m
 		mode: import
@@ -101,3 +130,4 @@ table Fact_SatisfaccionCapacitacion
 					TiposFinalesAplicados = Table.TransformColumnTypes(LikertComoNumero, {{"FechaHora", type datetime}, {"CallCenter", type text}, {"Jornada", type text}, {"NombreAsesor", type text}, {"NombreLider", type text}, {"NombreFormador", type text}, {"Duracion", type text}, {"Comentario", type text}, {"Fecha", type date}})
 				in
 					TiposFinalesAplicados
+

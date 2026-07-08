@@ -10,9 +10,15 @@ annotation __PBI_TimeIntelligenceEnabled = 1
 
 annotation PBI_ProTooling = ["DevMode"]
 
+annotation PBI_QueryOrder = ["Fact_CalidadLlamadas","Fact_SatisfaccionCapacitacion","Fact_MotivacionActividad","RutaCarpetaData","Base_MatrizCalidad","Base_SatisfaccionCapacitacion","Base_EncuestaMotivacion","MatrizCalidad_Limpio","SatisfaccionCapacitacion_Limpio","EncuestaMotivacion_Limpio"]
+
 ref table Fact_CalidadLlamadas
 ref table Fact_SatisfaccionCapacitacion
 ref table Fact_MotivacionActividad
+ref table DateTableTemplate_2973bde6-872f-4cb8-9c9b-5dae0a9694b2
+ref table LocalDateTable_225f0da6-3e13-4994-aec4-f14191d7c9b9
+ref table LocalDateTable_082769f1-b472-466c-aa67-659058d901ad
+ref table LocalDateTable_c16eb748-6320-4b4d-aa26-794390d09a95
 
 ref cultureInfo es-ES
 

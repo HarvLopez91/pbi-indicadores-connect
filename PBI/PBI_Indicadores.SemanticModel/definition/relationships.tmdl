@@ -1,0 +1,15 @@
+relationship a7d1fa38-1bf1-44e9-b20b-f0cb3691b72b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Fact_CalidadLlamadas.Fecha
+	toColumn: LocalDateTable_225f0da6-3e13-4994-aec4-f14191d7c9b9.Date
+
+relationship 13750e44-d204-4d25-9219-dde265a561bc
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Fact_SatisfaccionCapacitacion.Fecha
+	toColumn: LocalDateTable_082769f1-b472-466c-aa67-659058d901ad.Date
+
+relationship 6bc98f30-e3ed-49a9-886a-1a23ba8ef334
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Fact_MotivacionActividad.Fecha
+	toColumn: LocalDateTable_c16eb748-6320-4b4d-aa26-794390d09a95.Date
+

@@ -1,91 +1,132 @@
 table Fact_CalidadLlamadas
+	lineageTag: cad96801-62f7-4dad-b45d-99e2188c6e18
 
 	column FechaHora
 		dataType: dateTime
 		formatString: General Date
+		lineageTag: ba8d9b93-204c-4e73-9d87-095395c3dd54
 		summarizeBy: none
 		sourceColumn: FechaHora
 
 	column CallCenter
 		dataType: string
+		lineageTag: 190daa08-aa87-4251-aefe-1f391f86d7cf
 		summarizeBy: none
 		sourceColumn: CallCenter
 
 	column NombreAsesor
 		dataType: string
+		lineageTag: a4246630-6d6d-4819-b30a-bdc3d8b0efa1
 		summarizeBy: none
 		sourceColumn: NombreAsesor
 
 	column NombreLider
 		dataType: string
+		lineageTag: 14e17a3e-b888-4a60-8f0f-79b308400cf2
 		summarizeBy: none
 		sourceColumn: NombreLider
 
 	column NombreAuditor
 		dataType: string
+		lineageTag: ed31c0b9-45d1-4edc-8b3e-07c43cc2d93a
 		summarizeBy: none
 		sourceColumn: NombreAuditor
 
 	column Preg_TonoSaludo
 		dataType: double
-		summarizeBy: none
+		lineageTag: 24e51a33-d1e3-4bc0-bd82-212b2cccfb8c
+		summarizeBy: sum
 		sourceColumn: Preg_TonoSaludo
+
+		annotation SummarizationSetBy = Automatic
 
 	column Preg_FraseImpacto
 		dataType: double
-		summarizeBy: none
+		lineageTag: 52d33efd-ddc6-4977-80a2-1814cfb81716
+		summarizeBy: sum
 		sourceColumn: Preg_FraseImpacto
+
+		annotation SummarizationSetBy = Automatic
 
 	column Preg_PreguntasNecesidad
 		dataType: double
-		summarizeBy: none
+		lineageTag: 020d4d88-36ff-4656-a69e-1435d172269e
+		summarizeBy: sum
 		sourceColumn: Preg_PreguntasNecesidad
+
+		annotation SummarizationSetBy = Automatic
 
 	column Preg_ConexionBeneficio
 		dataType: double
-		summarizeBy: none
+		lineageTag: 7ff9b6f0-5b01-440c-bf3c-7947db54a376
+		summarizeBy: sum
 		sourceColumn: Preg_ConexionBeneficio
+
+		annotation SummarizationSetBy = Automatic
 
 	column Preg_ExplicacionProducto
 		dataType: double
-		summarizeBy: none
+		lineageTag: dd2b72bf-a431-43bb-b389-fe8ebff09550
+		summarizeBy: sum
 		sourceColumn: Preg_ExplicacionProducto
+
+		annotation SummarizationSetBy = Automatic
 
 	column Preg_ManejoObjeciones
 		dataType: double
-		summarizeBy: none
+		lineageTag: dd90b2c1-aac0-418a-84af-6c355018ec33
+		summarizeBy: sum
 		sourceColumn: Preg_ManejoObjeciones
+
+		annotation SummarizationSetBy = Automatic
 
 	column Preg_CierreComercial
 		dataType: double
-		summarizeBy: none
+		lineageTag: 75298e0f-fe3c-45a3-b12c-c5729c113a03
+		summarizeBy: sum
 		sourceColumn: Preg_CierreComercial
+
+		annotation SummarizationSetBy = Automatic
 
 	column Preg_ConfirmacionCierre
 		dataType: double
-		summarizeBy: none
+		lineageTag: eb624ee4-75ca-4987-93f5-ff8a3ac2656c
+		summarizeBy: sum
 		sourceColumn: Preg_ConfirmacionCierre
+
+		annotation SummarizationSetBy = Automatic
 
 	column ObjecionPrincipal
 		dataType: string
+		lineageTag: 0342ae5a-8572-45eb-ab39-57bad4ee1100
 		summarizeBy: none
 		sourceColumn: ObjecionPrincipal
 
 	column TerminoEnVenta
 		dataType: string
+		lineageTag: ea6317f3-bcb1-473b-b595-7cd869d5c78e
 		summarizeBy: none
 		sourceColumn: TerminoEnVenta
 
 	column Observaciones
 		dataType: string
+		lineageTag: 52971ad5-e597-46a9-9119-34fccea0f54a
 		summarizeBy: none
 		sourceColumn: Observaciones
 
 	column Fecha
 		dataType: dateTime
 		formatString: Short Date
+		lineageTag: 2c60c9cd-1ff6-4123-a0b4-6e095cd03c62
 		summarizeBy: none
 		sourceColumn: Fecha
+
+		variation Variación
+			isDefault
+			relationship: a7d1fa38-1bf1-44e9-b20b-f0cb3691b72b
+			defaultHierarchy: LocalDateTable_225f0da6-3e13-4994-aec4-f14191d7c9b9.'Jerarquía de fechas'
+
+		annotation UnderlyingDateTimeDataType = Date
 
 	partition Fact_CalidadLlamadas = m
 		mode: import
@@ -114,3 +155,4 @@ table Fact_CalidadLlamadas
 					TiposFinalesAplicados = Table.TransformColumnTypes(PreguntasComoNumero, {{"FechaHora", type datetime}, {"CallCenter", type text}, {"NombreAsesor", type text}, {"NombreLider", type text}, {"NombreAuditor", type text}, {"ObjecionPrincipal", type text}, {"TerminoEnVenta", type text}, {"Observaciones", type text}, {"Fecha", type date}})
 				in
 					TiposFinalesAplicados
+

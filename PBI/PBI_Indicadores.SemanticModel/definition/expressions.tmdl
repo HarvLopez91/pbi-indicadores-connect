@@ -45,6 +45,7 @@ expression MatrizCalidad_Limpio =
 		in
 			CallCenterNormalizado
 	lineageTag: 2203c06d-4742-4a85-be50-8fdc317fec69
+
 	annotation PBI_ResultType = Table
 
 expression SatisfaccionCapacitacion_Limpio =
@@ -59,6 +60,7 @@ expression SatisfaccionCapacitacion_Limpio =
 		in
 			CallCenterNormalizado
 	lineageTag: fb62451f-5559-43e7-abae-9a5e9e016d2e
+
 	annotation PBI_ResultType = Table
 
 expression EncuestaMotivacion_Limpio =
@@ -73,5 +75,6 @@ expression EncuestaMotivacion_Limpio =
 		in
 			CallCenterNormalizado
 	lineageTag: b1135335-b30f-49fa-af10-5b5c55189763
+
 	annotation PBI_ResultType = Table
 

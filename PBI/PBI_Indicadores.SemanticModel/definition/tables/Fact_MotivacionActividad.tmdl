@@ -1,56 +1,80 @@
 table Fact_MotivacionActividad
+	lineageTag: 6794bebd-9c20-4e41-99c3-3b676a0598ba
 
 	column FechaHora
 		dataType: dateTime
 		formatString: General Date
+		lineageTag: 42a07c56-b1ad-4438-adcd-1d67cbe2b5d5
 		summarizeBy: none
 		sourceColumn: FechaHora
 
 	column CallCenter
 		dataType: string
+		lineageTag: 1102f1c6-29ac-4431-ac27-5db10a72fab4
 		summarizeBy: none
 		sourceColumn: CallCenter
 
 	column Jornada
 		dataType: string
+		lineageTag: fad7bb7a-c9da-4d3d-8c0a-554ed0fab866
 		summarizeBy: none
 		sourceColumn: Jornada
 
 	column SatisfaccionGeneral
 		dataType: double
-		summarizeBy: none
+		lineageTag: bf3705e7-6cea-433a-889e-645f26585dc2
+		summarizeBy: sum
 		sourceColumn: SatisfaccionGeneral
+
+		annotation SummarizationSetBy = Automatic
 
 	column ClaridadUtilidad
 		dataType: double
-		summarizeBy: none
+		lineageTag: 5402b726-9162-4433-a0e7-face63741cde
+		summarizeBy: sum
 		sourceColumn: ClaridadUtilidad
+
+		annotation SummarizationSetBy = Automatic
 
 	column MotivacionPostActividad
 		dataType: double
-		summarizeBy: none
+		lineageTag: d62daf92-a7f6-4662-ab8c-c4850d0bb9c8
+		summarizeBy: sum
 		sourceColumn: MotivacionPostActividad
+
+		annotation SummarizationSetBy = Automatic
 
 	column AmbienteEquipo
 		dataType: string
+		lineageTag: ba47b2be-63d7-41bc-aa69-ddc8e2e313b8
 		summarizeBy: none
 		sourceColumn: AmbienteEquipo
 
 	column TipoActividadPreferida
 		dataType: string
+		lineageTag: 29c38a09-a80d-43b6-85b4-e1c8ef44ac96
 		summarizeBy: none
 		sourceColumn: TipoActividadPreferida
 
 	column Comentario
 		dataType: string
+		lineageTag: 31c80af5-6e5f-4064-af40-6df198a7fc28
 		summarizeBy: none
 		sourceColumn: Comentario
 
 	column Fecha
 		dataType: dateTime
 		formatString: Short Date
+		lineageTag: 83d1642f-2bf6-4d7e-8254-f7b8aad230fd
 		summarizeBy: none
 		sourceColumn: Fecha
+
+		variation Variación
+			isDefault
+			relationship: 6bc98f30-e3ed-49a9-886a-1a23ba8ef334
+			defaultHierarchy: LocalDateTable_c16eb748-6320-4b4d-aa26-794390d09a95.'Jerarquía de fechas'
+
+		annotation UnderlyingDateTimeDataType = Date
 
 	partition Fact_MotivacionActividad = m
 		mode: import
@@ -75,3 +99,4 @@ table Fact_MotivacionActividad
 					TiposFinalesAplicados = Table.TransformColumnTypes(LikertComoNumero, {{"FechaHora", type datetime}, {"CallCenter", type text}, {"Jornada", type text}, {"AmbienteEquipo", type text}, {"TipoActividadPreferida", type text}, {"Comentario", type text}, {"Fecha", type date}})
 				in
 					TiposFinalesAplicados
+
