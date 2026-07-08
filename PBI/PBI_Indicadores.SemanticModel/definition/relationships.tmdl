@@ -13,3 +13,38 @@ relationship 6bc98f30-e3ed-49a9-886a-1a23ba8ef334
 	fromColumn: Fact_MotivacionActividad.Fecha
 	toColumn: LocalDateTable_c16eb748-6320-4b4d-aa26-794390d09a95.Date
 
+relationship e881fd71-fa8f-465d-b71a-488e8562e226
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Fact_CalidadLlamadas.Fecha
+	toColumn: Dim_Calendario.Fecha
+
+relationship b4a78f04-656c-49c8-bf2b-01243a34a76c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Fact_SatisfaccionCapacitacion.Fecha
+	toColumn: Dim_Calendario.Fecha
+
+relationship 1919525e-e54d-48b4-89c7-868fd377d746
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Fact_MotivacionActividad.Fecha
+	toColumn: Dim_Calendario.Fecha
+
+relationship 13a79eba-a3dc-4076-b684-900e091d4eee
+	fromColumn: Fact_CalidadLlamadas.CallCenter
+	toColumn: Dim_CallCenter.CallCenter
+
+relationship 02423854-3ae6-4d3c-a2ae-8ba645823bce
+	fromColumn: Fact_SatisfaccionCapacitacion.CallCenter
+	toColumn: Dim_CallCenter.CallCenter
+
+relationship 1eaf9c56-b175-4fc7-9961-1492d2d88941
+	fromColumn: Fact_MotivacionActividad.CallCenter
+	toColumn: Dim_CallCenter.CallCenter
+
+relationship 365050ae-9cfc-49e9-8187-6de81d73a884
+	fromColumn: Fact_SatisfaccionCapacitacion.Jornada
+	toColumn: Dim_Jornada.Jornada
+
+relationship bd031db9-85c9-4af2-93ed-de5f81152089
+	fromColumn: Fact_MotivacionActividad.Jornada
+	toColumn: Dim_Jornada.Jornada
+
