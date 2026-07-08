@@ -1,58 +1,70 @@
 table Dim_Calendario
+	lineageTag: 6805cc1c-501e-4506-822c-e334d09dc801
 
 	column Fecha
 		dataType: dateTime
 		formatString: Short Date
+		lineageTag: 7d428763-ccc6-4c64-a25b-922783bf3584
 		summarizeBy: none
 		sourceColumn: Fecha
 
 	column Anio
 		dataType: int64
+		lineageTag: 4871c017-0e7a-40e2-8ccb-41553c8287a4
 		summarizeBy: none
 		sourceColumn: Anio
 
 	column MesNumero
 		dataType: int64
+		lineageTag: e594b797-a994-4d9a-ab2e-3b6529c78474
 		summarizeBy: none
 		sourceColumn: MesNumero
 
 	column MesNombre
 		dataType: string
+		lineageTag: 9bb63839-8f98-4d03-85b3-7f969853f9b8
 		summarizeBy: none
 		sourceColumn: MesNombre
 
 	column AnioMes
 		dataType: string
+		lineageTag: 3ef94408-567a-4c98-b37a-8eeaed16c550
 		summarizeBy: none
 		sourceColumn: AnioMes
 
 	column Trimestre
 		dataType: int64
+		lineageTag: f9559881-1a0b-40a9-b42e-f5cdab93815d
 		summarizeBy: none
 		sourceColumn: Trimestre
 
 	column SemanaAnio
 		dataType: int64
+		lineageTag: a081a804-2e68-44a3-a058-714646f5a705
 		summarizeBy: none
 		sourceColumn: SemanaAnio
 
 	column DiaMes
 		dataType: int64
+		lineageTag: 02879ade-58c3-484b-8673-e6e0dcd39b1e
 		summarizeBy: none
 		sourceColumn: DiaMes
 
 	column DiaSemanaNumero
 		dataType: int64
+		lineageTag: 22c95e9d-ce0a-4aaa-afa0-7d26c408869c
 		summarizeBy: none
 		sourceColumn: DiaSemanaNumero
 
 	column DiaSemanaNombre
 		dataType: string
+		lineageTag: 1741c797-f313-4cc6-a815-e57de2c7ba56
 		summarizeBy: none
 		sourceColumn: DiaSemanaNombre
 
 	column EsFinDeSemana
 		dataType: boolean
+		lineageTag: 8448f5aa-eb8e-4852-9d25-4e2782da0125
 		summarizeBy: none
 		sourceColumn: EsFinDeSemana
 
@@ -82,3 +94,4 @@ table Dim_Calendario
 					TipoFechaFinal = Table.TransformColumnTypes(ColumnaEsFinDeSemana, {{"Fecha", type datetime}})
 				in
 					TipoFechaFinal
+

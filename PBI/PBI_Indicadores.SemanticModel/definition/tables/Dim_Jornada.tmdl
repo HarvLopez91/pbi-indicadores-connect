@@ -1,7 +1,9 @@
 table Dim_Jornada
+	lineageTag: ebe913b6-171b-481a-968e-3dce0a83cc79
 
 	column Jornada
 		dataType: string
+		lineageTag: 0c452fe5-f47a-43c5-bc0e-2455144f594f
 		summarizeBy: none
 		sourceColumn: Jornada
 
@@ -18,3 +20,4 @@ table Dim_Jornada
 					TipoAplicado = Table.TransformColumnTypes(Ordenado, {{"Jornada", type text}})
 				in
 					TipoAplicado
+

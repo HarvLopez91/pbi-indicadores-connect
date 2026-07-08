@@ -1,7 +1,9 @@
 table Dim_CallCenter
+	lineageTag: 32f0b0f4-b526-4e5a-9357-32a6296e50a0
 
 	column CallCenter
 		dataType: string
+		lineageTag: b15454d0-cfe7-43b8-be44-0c2f6a214cba
 		summarizeBy: none
 		sourceColumn: CallCenter
 
@@ -19,3 +21,4 @@ table Dim_CallCenter
 					TipoAplicado = Table.TransformColumnTypes(Ordenado, {{"CallCenter", type text}})
 				in
 					TipoAplicado
+
