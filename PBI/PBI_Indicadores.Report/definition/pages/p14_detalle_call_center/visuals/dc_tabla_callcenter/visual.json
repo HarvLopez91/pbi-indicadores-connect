@@ -1,0 +1,269 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "name": "dc_tabla_callcenter",
+  "position": {
+    "x": 48,
+    "y": 360,
+    "z": 200,
+    "width": 720,
+    "height": 220,
+    "tabOrder": 200
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dim_CallCenter"
+                    }
+                  },
+                  "Property": "CallCenter"
+                }
+              },
+              "queryRef": "Dim_CallCenter.CallCenter",
+              "nativeQueryRef": "CallCenter",
+              "displayName": "CallCenter"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas Generales"
+                    }
+                  },
+                  "Property": "Total Evaluaciones Calidad"
+                }
+              },
+              "queryRef": "_Medidas Generales.Total Evaluaciones Calidad",
+              "nativeQueryRef": "Total Evaluaciones Calidad",
+              "displayName": "Calidad n"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas Generales"
+                    }
+                  },
+                  "Property": "Total Respuestas Capacitacion"
+                }
+              },
+              "queryRef": "_Medidas Generales.Total Respuestas Capacitacion",
+              "nativeQueryRef": "Total Respuestas Capacitacion",
+              "displayName": "Capacitaci?n n"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas Generales"
+                    }
+                  },
+                  "Property": "Total Respuestas Motivacion"
+                }
+              },
+              "queryRef": "_Medidas Generales.Total Respuestas Motivacion",
+              "nativeQueryRef": "Total Respuestas Motivacion",
+              "displayName": "Motivaci?n n"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas Capacitacion"
+                    }
+                  },
+                  "Property": "Indice Global Capacitacion"
+                }
+              },
+              "queryRef": "_Medidas Capacitacion.Indice Global Capacitacion",
+              "nativeQueryRef": "Indice Global Capacitacion",
+              "displayName": "Índice Global Capacitación"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas Motivacion"
+                    }
+                  },
+                  "Property": "Indice Global Motivacion"
+                }
+              },
+              "queryRef": "_Medidas Motivacion.Indice Global Motivacion",
+              "nativeQueryRef": "Indice Global Motivacion",
+              "displayName": "Índice Global Motivación"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E7E7E7'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "6D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Matriz comparativa por call center'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#002733'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
