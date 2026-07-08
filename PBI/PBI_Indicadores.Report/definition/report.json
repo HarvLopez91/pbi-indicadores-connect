@@ -41,6 +41,17 @@
   },
   "resourcePackages": [
     {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "logo_connect_naranja_20260708.png",
+          "path": "logo_connect_naranja_20260708.png",
+          "type": "Image"
+        }
+      ]
+    },
+    {
       "name": "SharedResources",
       "type": "SharedResources",
       "items": [
