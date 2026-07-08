@@ -1,28 +1,37 @@
 table '_Medidas Generales'
-
-	column Columna1
-		isHidden
-		dataType: int64
-		summarizeBy: none
-		sourceColumn: Columna1
+	lineageTag: e10fcda6-d4e7-4f4c-8f22-fcffd13f8745
 
 	measure 'Total Evaluaciones Calidad' = COUNTROWS(Fact_CalidadLlamadas)
 		formatString: 0
+		lineageTag: 0922cf3d-294c-48d2-b4f4-cfbd7af6fedb
 
 	measure 'Total Respuestas Capacitacion' = COUNTROWS(Fact_SatisfaccionCapacitacion)
 		formatString: 0
+		lineageTag: abef351c-de88-404e-a94a-791f247ef3cb
 
 	measure 'Total Respuestas Motivacion' = COUNTROWS(Fact_MotivacionActividad)
 		formatString: 0
+		lineageTag: 5ad1ee46-ae9c-46a2-afb1-a3c2e9b34cd1
 
 	measure 'Total Registros Piloto' = [Total Evaluaciones Calidad] + [Total Respuestas Capacitacion] + [Total Respuestas Motivacion]
 		formatString: 0
+		lineageTag: de1f2a06-ded9-4afc-9402-e76d63872fc8
 
 	measure 'n Calidad' = "n=" & [Total Evaluaciones Calidad]
+		lineageTag: 3dc608c9-fa6b-4c27-8a2a-49f26bbfc6ba
 
 	measure 'n Capacitacion' = "n=" & [Total Respuestas Capacitacion]
+		lineageTag: 5c42839c-76b6-43df-ba7b-69a8e98b3765
 
 	measure 'n Motivacion' = "n=" & [Total Respuestas Motivacion]
+		lineageTag: c35068a5-4f92-484f-acc1-22e85254b1b4
+
+	column Columna1
+		dataType: int64
+		isHidden
+		lineageTag: 4550d7ae-73ea-4aec-b105-eda33a04e7a4
+		summarizeBy: none
+		sourceColumn: Columna1
 
 	partition '_Medidas Generales' = m
 		mode: import
@@ -31,3 +40,4 @@ table '_Medidas Generales'
 					Origen = #table(type table[Columna1 = Int64.Type], {})
 				in
 					Origen
+

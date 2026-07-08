@@ -10,7 +10,7 @@ annotation __PBI_TimeIntelligenceEnabled = 1
 
 annotation PBI_ProTooling = ["DevMode"]
 
-annotation PBI_QueryOrder = ["Fact_CalidadLlamadas","Fact_SatisfaccionCapacitacion","Fact_MotivacionActividad","RutaCarpetaData","Base_MatrizCalidad","Base_SatisfaccionCapacitacion","Base_EncuestaMotivacion","MatrizCalidad_Limpio","SatisfaccionCapacitacion_Limpio","EncuestaMotivacion_Limpio","Dim_Calendario","Dim_CallCenter","Dim_Jornada"]
+annotation PBI_QueryOrder = ["Fact_CalidadLlamadas","Fact_SatisfaccionCapacitacion","Fact_MotivacionActividad","RutaCarpetaData","Base_MatrizCalidad","Base_SatisfaccionCapacitacion","Base_EncuestaMotivacion","MatrizCalidad_Limpio","SatisfaccionCapacitacion_Limpio","EncuestaMotivacion_Limpio","Dim_Calendario","Dim_CallCenter","Dim_Jornada","_Medidas Generales","_Medidas Calidad","_Medidas Capacitacion","_Medidas Motivacion"]
 
 ref table Fact_CalidadLlamadas
 ref table Fact_SatisfaccionCapacitacion

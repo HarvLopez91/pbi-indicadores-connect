@@ -1,28 +1,36 @@
 table '_Medidas Motivacion'
-
-	column Columna1
-		isHidden
-		dataType: int64
-		summarizeBy: none
-		sourceColumn: Columna1
+	lineageTag: 0e6c5b3a-76d8-4cb1-a52c-1ed068cce3ca
 
 	measure 'Satisfaccion Promedio Actividad' = AVERAGE(Fact_MotivacionActividad[SatisfaccionGeneral])
 		formatString: 0.0
+		lineageTag: 74ade08f-5e86-4b83-8cc9-094282e5921d
 
 	measure 'Claridad Utilidad Promedio Actividad' = AVERAGE(Fact_MotivacionActividad[ClaridadUtilidad])
 		formatString: 0.0
+		lineageTag: 3588d291-85d0-4b79-ad54-0687d1a49a75
 
 	measure 'Motivacion Promedio Actividad' = AVERAGE(Fact_MotivacionActividad[MotivacionPostActividad])
 		formatString: 0.0
+		lineageTag: 1014d794-b2cc-42ea-a06f-25d85807b183
 
 	measure 'Indice Global Motivacion' = DIVIDE([Satisfaccion Promedio Actividad] + [Claridad Utilidad Promedio Actividad] + [Motivacion Promedio Actividad], 3)
 		formatString: 0.0
+		lineageTag: b3e77a75-b306-40c4-a4c2-bfe82578f26c
 
 	measure '% Ambiente Motivado' = DIVIDE(CALCULATE(COUNTROWS(Fact_MotivacionActividad), Fact_MotivacionActividad[AmbienteEquipo] = "Motivado"), COUNTROWS(Fact_MotivacionActividad))
 		formatString: 0.0%
+		lineageTag: 9d923cbc-2073-4e56-8c53-3af0dd8b0907
 
 	measure '% Comentarios Motivacion' = DIVIDE(CALCULATE(COUNTROWS(Fact_MotivacionActividad), Fact_MotivacionActividad[Comentario] <> "Sin comentario"), COUNTROWS(Fact_MotivacionActividad))
 		formatString: 0.0%
+		lineageTag: 7825a8c5-1da9-4b5e-b3b1-cef5367fc6a8
+
+	column Columna1
+		dataType: int64
+		isHidden
+		lineageTag: 94677cd9-e2a5-4823-91f0-cdd443efb088
+		summarizeBy: none
+		sourceColumn: Columna1
 
 	partition '_Medidas Motivacion' = m
 		mode: import
@@ -31,3 +39,4 @@ table '_Medidas Motivacion'
 					Origen = #table(type table[Columna1 = Int64.Type], {})
 				in
 					Origen
+

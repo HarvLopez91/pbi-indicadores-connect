@@ -1,28 +1,36 @@
 table '_Medidas Capacitacion'
-
-	column Columna1
-		isHidden
-		dataType: int64
-		summarizeBy: none
-		sourceColumn: Columna1
+	lineageTag: 37844e70-23b6-415d-8042-e3f845aa89cc
 
 	measure 'Satisfaccion Promedio Capacitacion' = AVERAGE(Fact_SatisfaccionCapacitacion[SatisfaccionGeneral])
 		formatString: 0.0
+		lineageTag: 5e8cc843-ecb4-4ab4-b6a7-a0a94414a7c7
 
 	measure 'Claridad Promedio Capacitacion' = AVERAGE(Fact_SatisfaccionCapacitacion[Claridad])
 		formatString: 0.0
+		lineageTag: f754d0e1-112f-436c-b46f-82166823f1fd
 
 	measure 'Utilidad Promedio Capacitacion' = AVERAGE(Fact_SatisfaccionCapacitacion[Utilidad])
 		formatString: 0.0
+		lineageTag: 7bd5f9d3-7705-4fea-8647-9875715a6b53
 
 	measure 'Dinamismo Promedio Capacitacion' = AVERAGE(Fact_SatisfaccionCapacitacion[Dinamismo])
 		formatString: 0.0
+		lineageTag: 742ac368-d3dd-4830-b7bd-f1db7632e926
 
 	measure 'Indice Global Capacitacion' = DIVIDE([Satisfaccion Promedio Capacitacion] + [Claridad Promedio Capacitacion] + [Utilidad Promedio Capacitacion] + [Dinamismo Promedio Capacitacion], 4)
 		formatString: 0.0
+		lineageTag: 2418a74a-e9ca-47be-8c4c-ab922ffa9a0a
 
 	measure '% Comentarios Capacitacion' = DIVIDE(CALCULATE(COUNTROWS(Fact_SatisfaccionCapacitacion), Fact_SatisfaccionCapacitacion[Comentario] <> "Sin comentario"), COUNTROWS(Fact_SatisfaccionCapacitacion))
 		formatString: 0.0%
+		lineageTag: b6305f66-fcab-42d1-b9ba-c304588f47f9
+
+	column Columna1
+		dataType: int64
+		isHidden
+		lineageTag: 83e907d2-3c42-4aa1-9158-30ed93e6869c
+		summarizeBy: none
+		sourceColumn: Columna1
 
 	partition '_Medidas Capacitacion' = m
 		mode: import
@@ -31,3 +39,4 @@ table '_Medidas Capacitacion'
 					Origen = #table(type table[Columna1 = Int64.Type], {})
 				in
 					Origen
+
