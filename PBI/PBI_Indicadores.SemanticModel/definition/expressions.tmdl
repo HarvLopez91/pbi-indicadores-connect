@@ -75,3 +75,70 @@ expression EncuestaMotivacion_Limpio =
 	lineageTag: b1135335-b30f-49fa-af10-5b5c55189763
 	annotation PBI_ResultType = Table
 
+expression Fact_CalidadLlamadas =
+		let
+			Origen = MatrizCalidad_Limpio,
+			ColumnasRenombradas = Table.RenameColumns(Origen, {
+				{"Timestamp", "FechaHora"},
+				{"CALL CENTER", "CallCenter"},
+				{"Nombre del asesor", "NombreAsesor"},
+				{"Líder / supervisor", "NombreLider"},
+				{"Auditor / PUSHER", "NombreAuditor"},
+				{"¿El asesor inició la llamada con buen tono, saludo, energía y seguridad?", "Preg_TonoSaludo"},
+				{"¿Usó una frase de impacto para introducir la oferta?", "Preg_FraseImpacto"},
+				{"¿Realizó preguntas para descubrir la necesidad del cliente?", "Preg_PreguntasNecesidad"},
+				{"¿Conectó la necesidad del cliente con el beneficio del producto?", "Preg_ConexionBeneficio"},
+				{"¿Explicó claramente qué incluye el producto sin saturar?", "Preg_ExplicacionProducto"},
+				{"¿Manejó adecuadamente las objeciones del cliente?", "Preg_ManejoObjeciones"},
+				{"¿Realizó cierre comercial sin presionar?", "Preg_CierreComercial"},
+				{"¿Confirmó condiciones, aceptación y cerró con calidad?", "Preg_ConfirmacionCierre"},
+				{"Objeción principal del cliente", "ObjecionPrincipal"},
+				{"¿La llamada terminó en venta?", "TerminoEnVenta"}
+			})
+		in
+			ColumnasRenombradas
+	lineageTag: 321ca79d-cca9-4daf-922d-c73c1ec4eb92
+	annotation PBI_ResultType = Table
+
+expression Fact_SatisfaccionCapacitacion =
+		let
+			Origen = SatisfaccionCapacitacion_Limpio,
+			ColumnasRenombradas = Table.RenameColumns(Origen, {
+				{"Timestamp", "FechaHora"},
+				{"¿En qué call center trabajas?", "CallCenter"},
+				{"¿En qué jornada participaste?", "Jornada"},
+				{"Nombre completo (mayúscula)", "NombreAsesor"},
+				{"Nombre del líder (Mayúscula)", "NombreLider"},
+				{"Nombre formador", "NombreFormador"},
+				{"¿Qué tan satisfecho/a quedaste con la capacitación?", "SatisfaccionGeneral"},
+				{"La capacitación fue clara y fácil de entender.", "Claridad"},
+				{"El contenido fue útil para mi gestión comercial.", "Utilidad"},
+				{"La capacitación fue dinámica y mantuvo mi atención.", "Dinamismo"},
+				{"Duración", "Duracion"},
+				{"¿Qué mejorarías o qué información te gustaría para una próxima visita?", "Comentario"}
+			})
+		in
+			ColumnasRenombradas
+	lineageTag: e683a829-4358-4a0c-b482-3af549d2da9e
+	annotation PBI_ResultType = Table
+
+expression Fact_MotivacionActividad =
+		let
+			Origen = EncuestaMotivacion_Limpio,
+			ColumnasRenombradas = Table.RenameColumns(Origen, {
+				{"Timestamp", "FechaHora"},
+				{"¿En qué call center trabajas?", "CallCenter"},
+				{"¿En qué jornada participaste?", "Jornada"},
+				{"En general, ¿Qué tan satisfecho/a quedaste con la actividad?", "SatisfaccionGeneral"},
+				{"La actividad fue clara, dinámica y útil para tu trabajo.", "ClaridadUtilidad"},
+				{"Después de la actividad, ¿te sentiste más motivado/a para vender?", "MotivacionPostActividad"},
+				{"¿Cómo describirías el ambiente de tu equipo?", "AmbienteEquipo"},
+				{"¿Qué tipo de actividades crees que funcionan mejor con tu equipo?", "TipoActividadPreferida"},
+				{"¿Qué mejorarías o qué actividad te gustaría para una próxima visita?", "Comentario"}
+			}),
+			ColumnaSinDatosEliminada = Table.RemoveColumns(ColumnasRenombradas, {"Nombre completo (Mayúscula)"})
+		in
+			ColumnaSinDatosEliminada
+	lineageTag: 68f2f08f-b6d3-41f2-8ef9-0a598dda01cc
+	annotation PBI_ResultType = Table
+
