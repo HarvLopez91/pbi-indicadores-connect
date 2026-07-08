@@ -1,0 +1,84 @@
+table Dim_Calendario
+
+	column Fecha
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: Fecha
+
+	column Anio
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: Anio
+
+	column MesNumero
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: MesNumero
+
+	column MesNombre
+		dataType: string
+		summarizeBy: none
+		sourceColumn: MesNombre
+
+	column AnioMes
+		dataType: string
+		summarizeBy: none
+		sourceColumn: AnioMes
+
+	column Trimestre
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: Trimestre
+
+	column SemanaAnio
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: SemanaAnio
+
+	column DiaMes
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: DiaMes
+
+	column DiaSemanaNumero
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: DiaSemanaNumero
+
+	column DiaSemanaNombre
+		dataType: string
+		summarizeBy: none
+		sourceColumn: DiaSemanaNombre
+
+	column EsFinDeSemana
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: EsFinDeSemana
+
+	partition Dim_Calendario = m
+		mode: import
+		source =
+				let
+					FechaMinCalidad = List.Min(Fact_CalidadLlamadas[Fecha]),
+					FechaMinCapacitacion = List.Min(Fact_SatisfaccionCapacitacion[Fecha]),
+					FechaMinMotivacion = List.Min(Fact_MotivacionActividad[Fecha]),
+					FechaMinima = List.Min({FechaMinCalidad, FechaMinCapacitacion, FechaMinMotivacion}),
+					FechaMaxima = Date.From(DateTime.LocalNow()),
+					CantidadDias = Duration.Days(FechaMaxima - FechaMinima) + 1,
+					ListaFechas = List.Dates(FechaMinima, CantidadDias, #duration(1, 0, 0, 0)),
+					TablaFechas = Table.FromList(ListaFechas, Splitter.SplitByNothing(), {"Fecha"}, null, ExtraValues.Error),
+					TipoFechaAplicado = Table.TransformColumnTypes(TablaFechas, {{"Fecha", type date}}),
+					ColumnaAnio = Table.AddColumn(TipoFechaAplicado, "Anio", each Date.Year([Fecha]), Int64.Type),
+					ColumnaMesNumero = Table.AddColumn(ColumnaAnio, "MesNumero", each Date.Month([Fecha]), Int64.Type),
+					ColumnaMesNombre = Table.AddColumn(ColumnaMesNumero, "MesNombre", each Date.MonthName([Fecha], "es-CO"), type text),
+					ColumnaAnioMes = Table.AddColumn(ColumnaMesNombre, "AnioMes", each Date.ToText([Fecha], "yyyy-MM"), type text),
+					ColumnaTrimestre = Table.AddColumn(ColumnaAnioMes, "Trimestre", each Date.QuarterOfYear([Fecha]), Int64.Type),
+					ColumnaSemanaAnio = Table.AddColumn(ColumnaTrimestre, "SemanaAnio", each Date.WeekOfYear([Fecha]), Int64.Type),
+					ColumnaDiaMes = Table.AddColumn(ColumnaSemanaAnio, "DiaMes", each Date.Day([Fecha]), Int64.Type),
+					ColumnaDiaSemanaNumero = Table.AddColumn(ColumnaDiaMes, "DiaSemanaNumero", each Date.DayOfWeek([Fecha], Day.Monday) + 1, Int64.Type),
+					ColumnaDiaSemanaNombre = Table.AddColumn(ColumnaDiaSemanaNumero, "DiaSemanaNombre", each Date.DayOfWeekName([Fecha], "es-CO"), type text),
+					ColumnaEsFinDeSemana = Table.AddColumn(ColumnaDiaSemanaNombre, "EsFinDeSemana", each Date.DayOfWeek([Fecha], Day.Monday) >= 5, type logical),
+					TipoFechaFinal = Table.TransformColumnTypes(ColumnaEsFinDeSemana, {{"Fecha", type datetime}})
+				in
+					TipoFechaFinal

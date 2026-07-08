@@ -1,0 +1,20 @@
+table Dim_Jornada
+
+	column Jornada
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Jornada
+
+	partition Dim_Jornada = m
+		mode: import
+		source =
+				let
+					ValoresCapacitacion = Table.SelectColumns(Fact_SatisfaccionCapacitacion, {"Jornada"}),
+					ValoresMotivacion = Table.SelectColumns(Fact_MotivacionActividad, {"Jornada"}),
+					ValoresUnidos = Table.Combine({ValoresCapacitacion, ValoresMotivacion}),
+					SinNulos = Table.SelectRows(ValoresUnidos, each [Jornada] <> null),
+					SinDuplicados = Table.Distinct(SinNulos),
+					Ordenado = Table.Sort(SinDuplicados, {{"Jornada", Order.Ascending}}),
+					TipoAplicado = Table.TransformColumnTypes(Ordenado, {{"Jornada", type text}})
+				in
+					TipoAplicado

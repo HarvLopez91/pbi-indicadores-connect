@@ -1,0 +1,21 @@
+table Dim_CallCenter
+
+	column CallCenter
+		dataType: string
+		summarizeBy: none
+		sourceColumn: CallCenter
+
+	partition Dim_CallCenter = m
+		mode: import
+		source =
+				let
+					ValoresCalidad = Table.SelectColumns(Fact_CalidadLlamadas, {"CallCenter"}),
+					ValoresCapacitacion = Table.SelectColumns(Fact_SatisfaccionCapacitacion, {"CallCenter"}),
+					ValoresMotivacion = Table.SelectColumns(Fact_MotivacionActividad, {"CallCenter"}),
+					ValoresUnidos = Table.Combine({ValoresCalidad, ValoresCapacitacion, ValoresMotivacion}),
+					SinNulos = Table.SelectRows(ValoresUnidos, each [CallCenter] <> null),
+					SinDuplicados = Table.Distinct(SinNulos),
+					Ordenado = Table.Sort(SinDuplicados, {{"CallCenter", Order.Ascending}}),
+					TipoAplicado = Table.TransformColumnTypes(Ordenado, {{"CallCenter", type text}})
+				in
+					TipoAplicado

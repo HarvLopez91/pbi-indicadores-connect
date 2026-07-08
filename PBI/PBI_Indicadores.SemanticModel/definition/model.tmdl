@@ -15,6 +15,9 @@ annotation PBI_QueryOrder = ["Fact_CalidadLlamadas","Fact_SatisfaccionCapacitaci
 ref table Fact_CalidadLlamadas
 ref table Fact_SatisfaccionCapacitacion
 ref table Fact_MotivacionActividad
+ref table Dim_Calendario
+ref table Dim_CallCenter
+ref table Dim_Jornada
 ref table DateTableTemplate_2973bde6-872f-4cb8-9c9b-5dae0a9694b2
 ref table LocalDateTable_225f0da6-3e13-4994-aec4-f14191d7c9b9
 ref table LocalDateTable_082769f1-b472-466c-aa67-659058d901ad
