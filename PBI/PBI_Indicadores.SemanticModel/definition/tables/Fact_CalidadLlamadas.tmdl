@@ -1,113 +1,94 @@
 table Fact_CalidadLlamadas
-	lineageTag: 17416bdd-01ab-4cf5-a6d8-7fc757286d88
 
 	column FechaHora
 		dataType: dateTime
 		formatString: General Date
-		lineageTag: 4172edb2-0f3d-49fd-802f-087be8d0da5d
 		summarizeBy: none
 		sourceColumn: FechaHora
 
 	column CallCenter
 		dataType: string
-		lineageTag: 4f07c968-3ca4-4e3a-8328-e01ee2786b70
 		summarizeBy: none
 		sourceColumn: CallCenter
 
 	column NombreAsesor
 		dataType: string
-		lineageTag: 2082cbec-4f12-4d28-8ed4-c6326032de9c
 		summarizeBy: none
 		sourceColumn: NombreAsesor
 
 	column NombreLider
 		dataType: string
-		lineageTag: b1e187ed-1f1c-42ce-a44b-5cc1ff607664
 		summarizeBy: none
 		sourceColumn: NombreLider
 
 	column NombreAuditor
 		dataType: string
-		lineageTag: cbb41d2a-ea87-46d9-a3fe-af80d961e225
 		summarizeBy: none
 		sourceColumn: NombreAuditor
 
 	column Preg_TonoSaludo
 		dataType: double
-		lineageTag: ce331331-19ba-44d8-bb0c-ac04509bc55f
 		summarizeBy: none
 		sourceColumn: Preg_TonoSaludo
 
 	column Preg_FraseImpacto
 		dataType: double
-		lineageTag: 9b421564-f854-4ea4-a2fe-68fa86aabaab
 		summarizeBy: none
 		sourceColumn: Preg_FraseImpacto
 
 	column Preg_PreguntasNecesidad
 		dataType: double
-		lineageTag: 346b1d7d-4d86-48c7-8689-e2c34592ac07
 		summarizeBy: none
 		sourceColumn: Preg_PreguntasNecesidad
 
 	column Preg_ConexionBeneficio
 		dataType: double
-		lineageTag: fa490986-73a7-4674-8990-bb16edcc12fe
 		summarizeBy: none
 		sourceColumn: Preg_ConexionBeneficio
 
 	column Preg_ExplicacionProducto
 		dataType: double
-		lineageTag: 8f6613dd-e023-4dd6-8a8f-f37fb50cbc9b
 		summarizeBy: none
 		sourceColumn: Preg_ExplicacionProducto
 
 	column Preg_ManejoObjeciones
 		dataType: double
-		lineageTag: 77486d5d-bac8-4f0a-aeee-8fc9e0106e7b
 		summarizeBy: none
 		sourceColumn: Preg_ManejoObjeciones
 
 	column Preg_CierreComercial
 		dataType: double
-		lineageTag: 46283feb-8365-43c3-98ea-e74e64960e24
 		summarizeBy: none
 		sourceColumn: Preg_CierreComercial
 
 	column Preg_ConfirmacionCierre
 		dataType: double
-		lineageTag: d699c20a-909c-4103-b5cf-538775df02fb
 		summarizeBy: none
 		sourceColumn: Preg_ConfirmacionCierre
 
 	column ObjecionPrincipal
 		dataType: string
-		lineageTag: 16a0f8a0-77aa-4610-9d33-d0b98b48faf0
 		summarizeBy: none
 		sourceColumn: ObjecionPrincipal
 
 	column TerminoEnVenta
 		dataType: string
-		lineageTag: fc39b3cc-1766-4070-bc11-08fb551ec4db
 		summarizeBy: none
 		sourceColumn: TerminoEnVenta
 
 	column Observaciones
 		dataType: string
-		lineageTag: 55e0203c-f325-4fef-bcf1-15c83346c76f
 		summarizeBy: none
 		sourceColumn: Observaciones
 
 	column Fecha
 		dataType: dateTime
 		formatString: Short Date
-		lineageTag: ad02b7f6-991e-40be-9eba-d352963be346
 		summarizeBy: none
 		sourceColumn: Fecha
 
 	partition Fact_CalidadLlamadas = m
 		mode: import
-		lineageTag: be71d502-6679-4269-a750-bf3d2e4e3485
 		source =
 				let
 					Origen = MatrizCalidad_Limpio,

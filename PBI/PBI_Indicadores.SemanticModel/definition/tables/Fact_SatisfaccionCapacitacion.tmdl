@@ -1,89 +1,74 @@
 table Fact_SatisfaccionCapacitacion
-	lineageTag: a00d7840-a12d-44d4-aa72-aa7a8e1c3361
 
 	column FechaHora
 		dataType: dateTime
 		formatString: General Date
-		lineageTag: abf56745-b114-48cf-8cb2-cd8a59523afc
 		summarizeBy: none
 		sourceColumn: FechaHora
 
 	column CallCenter
 		dataType: string
-		lineageTag: 7952710e-de63-474a-a696-29af0ec8a087
 		summarizeBy: none
 		sourceColumn: CallCenter
 
 	column Jornada
 		dataType: string
-		lineageTag: 22ea5fd9-955a-4f22-a9d5-49972888249d
 		summarizeBy: none
 		sourceColumn: Jornada
 
 	column NombreAsesor
 		dataType: string
-		lineageTag: 5347504f-d827-4724-b601-1318a149c31f
 		summarizeBy: none
 		sourceColumn: NombreAsesor
 
 	column NombreLider
 		dataType: string
-		lineageTag: 85508385-1639-4717-aa87-8fdcc96927be
 		summarizeBy: none
 		sourceColumn: NombreLider
 
 	column NombreFormador
 		dataType: string
-		lineageTag: cd8f73cf-49f4-48ce-abce-7762b6b9465f
 		summarizeBy: none
 		sourceColumn: NombreFormador
 
 	column SatisfaccionGeneral
 		dataType: double
-		lineageTag: 1398478e-4224-446c-9bb4-8f4261de2c6b
 		summarizeBy: none
 		sourceColumn: SatisfaccionGeneral
 
 	column Claridad
 		dataType: double
-		lineageTag: fe675fd5-8ac1-495c-a4f4-d6a0a7379127
 		summarizeBy: none
 		sourceColumn: Claridad
 
 	column Utilidad
 		dataType: double
-		lineageTag: 457894a5-c47e-4482-91f3-ab6e70ad500c
 		summarizeBy: none
 		sourceColumn: Utilidad
 
 	column Dinamismo
 		dataType: double
-		lineageTag: 3a624c0f-9295-4791-9dc5-f1e00ed02dda
 		summarizeBy: none
 		sourceColumn: Dinamismo
 
 	column Duracion
 		dataType: string
-		lineageTag: 0df91c91-75f6-497b-af48-9e049cbce5e9
 		summarizeBy: none
 		sourceColumn: Duracion
 
 	column Comentario
 		dataType: string
-		lineageTag: 264c939c-ac49-4b2b-859b-7400d779db8e
 		summarizeBy: none
 		sourceColumn: Comentario
 
 	column Fecha
 		dataType: dateTime
 		formatString: Short Date
-		lineageTag: 02b5eabe-88ab-4a2a-b97c-a8ad31353cfa
 		summarizeBy: none
 		sourceColumn: Fecha
 
 	partition Fact_SatisfaccionCapacitacion = m
 		mode: import
-		lineageTag: bbbdc457-7097-48d2-aed6-0bb1df05dad3
 		source =
 				let
 					Origen = SatisfaccionCapacitacion_Limpio,
