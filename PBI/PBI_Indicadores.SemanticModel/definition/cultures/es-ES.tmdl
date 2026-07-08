@@ -2,8 +2,136 @@ cultureInfo es-ES
 
 	linguisticMetadata =
 			{
-			  "Version": "1.0.0",
-			  "Language": "en-US"
+			  "Version": "2.0.0",
+			  "Language": "en-US",
+			  "Entities": {
+			    "table_medidas_capacitacion.indice_global_capacitacion": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Capacitacion",
+			          "ConceptualProperty": "Indice Global Capacitacion"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Índice Global Capacitación": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_motivacion.indice_global_motivacion": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Motivacion",
+			          "ConceptualProperty": "Indice Global Motivacion"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Índice Global Motivación": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_generales.total_evaluaciones_calidad": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Generales",
+			          "ConceptualProperty": "Total Evaluaciones Calidad"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Total Evaluaciones Calidad": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_generales.total_respuestas_capacitacion": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Generales",
+			          "ConceptualProperty": "Total Respuestas Capacitacion"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Total Respuestas Capacitación": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_generales.total_respuestas_motivacion": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Generales",
+			          "ConceptualProperty": "Total Respuestas Motivacion"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Total Respuestas Motivación": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_generales.total_registros_piloto": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Generales",
+			          "ConceptualProperty": "Total Registros Piloto"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Total Registros Piloto": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    }
+			  }
 			}
 		contentType: json
 
