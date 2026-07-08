@@ -22,6 +22,10 @@ ref table LocalDateTable_c16eb748-6320-4b4d-aa26-794390d09a95
 ref table Dim_Calendario
 ref table Dim_CallCenter
 ref table Dim_Jornada
+ref table '_Medidas Generales'
+ref table '_Medidas Calidad'
+ref table '_Medidas Capacitacion'
+ref table '_Medidas Motivacion'
 
 ref cultureInfo es-ES
 

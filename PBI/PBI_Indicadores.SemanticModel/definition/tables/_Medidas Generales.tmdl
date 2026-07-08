@@ -1,0 +1,40 @@
+table '_Medidas Generales'
+
+	column Columna1
+		isHidden
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: Columna1
+
+	measure 'Total Evaluaciones Calidad' = COUNTROWS(Fact_CalidadLlamadas)
+		formatString: 0
+		description: "Número total de llamadas evaluadas en la Matriz de calidad (Fact_CalidadLlamadas). Volumen piloto actual: 3 evaluaciones - no representativo aún."
+
+	measure 'Total Respuestas Capacitacion' = COUNTROWS(Fact_SatisfaccionCapacitacion)
+		formatString: 0
+		description: "Número total de respuestas a la encuesta de satisfacción de capacitación (Fact_SatisfaccionCapacitacion). Volumen piloto actual: 32 respuestas."
+
+	measure 'Total Respuestas Motivacion' = COUNTROWS(Fact_MotivacionActividad)
+		formatString: 0
+		description: "Número total de respuestas a la encuesta de motivación de actividades comerciales (Fact_MotivacionActividad). Volumen piloto actual: 5 respuestas - muestra muy pequeña."
+
+	measure 'Total Registros Piloto' = [Total Evaluaciones Calidad] + [Total Respuestas Capacitacion] + [Total Respuestas Motivacion]
+		formatString: 0
+		description: "Suma de evaluaciones/respuestas de las 3 fuentes piloto (calidad + capacitación + motivación). Indicador de volumen total de datos recolectados, no un KPI de negocio en sí mismo."
+
+	measure 'n Calidad' = "n=" & [Total Evaluaciones Calidad]
+		description: "Etiqueta de texto con el tamaño de muestra de calidad (ej. 'n=3'), para acompañar cualquier promedio/porcentaje de esta fuente dado el bajo volumen piloto."
+
+	measure 'n Capacitacion' = "n=" & [Total Respuestas Capacitacion]
+		description: "Etiqueta de texto con el tamaño de muestra de capacitación (ej. 'n=32'), para acompañar cualquier promedio/porcentaje de esta fuente."
+
+	measure 'n Motivacion' = "n=" & [Total Respuestas Motivacion]
+		description: "Etiqueta de texto con el tamaño de muestra de motivación (ej. 'n=5'), para acompañar cualquier promedio/porcentaje de esta fuente - muestra especialmente pequeña."
+
+	partition '_Medidas Generales' = m
+		mode: import
+		source =
+				let
+					Origen = #table(type table[Columna1 = Int64.Type], {})
+				in
+					Origen

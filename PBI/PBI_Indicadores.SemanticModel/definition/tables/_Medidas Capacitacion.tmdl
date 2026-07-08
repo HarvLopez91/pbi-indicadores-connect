@@ -1,0 +1,39 @@
+table '_Medidas Capacitacion'
+
+	column Columna1
+		isHidden
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: Columna1
+
+	measure 'Satisfaccion Promedio Capacitacion' = AVERAGE(Fact_SatisfaccionCapacitacion[SatisfaccionGeneral])
+		formatString: 0.0
+		description: "Promedio de la calificación de satisfacción general (escala 1-5) de la encuesta de capacitación. Basado en Fact_SatisfaccionCapacitacion (n=32 actualmente)."
+
+	measure 'Claridad Promedio Capacitacion' = AVERAGE(Fact_SatisfaccionCapacitacion[Claridad])
+		formatString: 0.0
+		description: "Promedio de la calificación de claridad (escala 1-5) de la encuesta de capacitación."
+
+	measure 'Utilidad Promedio Capacitacion' = AVERAGE(Fact_SatisfaccionCapacitacion[Utilidad])
+		formatString: 0.0
+		description: "Promedio de la calificación de utilidad (escala 1-5) de la encuesta de capacitación."
+
+	measure 'Dinamismo Promedio Capacitacion' = AVERAGE(Fact_SatisfaccionCapacitacion[Dinamismo])
+		formatString: 0.0
+		description: "Promedio de la calificación de dinamismo (escala 1-5) de la encuesta de capacitación."
+
+	measure 'Indice Global Capacitacion' = DIVIDE([Satisfaccion Promedio Capacitacion] + [Claridad Promedio Capacitacion] + [Utilidad Promedio Capacitacion] + [Dinamismo Promedio Capacitacion], 4)
+		formatString: 0.0
+		description: "Promedio simple de las 4 dimensiones evaluadas en la encuesta de capacitación (satisfacción, claridad, utilidad, dinamismo). Indicador compuesto de resumen, no reemplaza el detalle por dimensión."
+
+	measure '% Comentarios Capacitacion' = DIVIDE(CALCULATE(COUNTROWS(Fact_SatisfaccionCapacitacion), Fact_SatisfaccionCapacitacion[Comentario] <> "Sin comentario"), COUNTROWS(Fact_SatisfaccionCapacitacion))
+		formatString: 0.0%
+		description: "Porcentaje de respuestas de la encuesta de capacitación que dejaron un comentario real (distinto de 'Sin comentario', valor estándar aplicado en la Fase 6 a respuestas vacías o equivalentes)."
+
+	partition '_Medidas Capacitacion' = m
+		mode: import
+		source =
+				let
+					Origen = #table(type table[Columna1 = Int64.Type], {})
+				in
+					Origen
