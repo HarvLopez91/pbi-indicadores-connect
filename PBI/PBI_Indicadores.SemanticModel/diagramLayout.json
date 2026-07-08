@@ -1,0 +1,100 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 334.16285448547296,
+            "y": 300.21184291021257
+          },
+          "nodeIndex": "Dim_Calendario",
+          "nodeLineageTag": "6805cc1c-501e-4506-822c-e334d09dc801",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50.014119644912512,
+            "y": 359.51384324798425
+          },
+          "nodeIndex": "Dim_CallCenter",
+          "nodeLineageTag": "32f0b0f4-b526-4e5a-9357-32a6296e50a0",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 185.863038038882,
+            "y": 1000.5672487717002
+          },
+          "nodeIndex": "Dim_Jornada",
+          "nodeLineageTag": "ebe913b6-171b-481a-968e-3dce0a83cc79",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 224.22264872629972,
+            "y": -50
+          },
+          "nodeIndex": "Fact_CalidadLlamadas",
+          "nodeLineageTag": "cad96801-62f7-4dad-b45d-99e2188c6e18",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 49.999999999999986,
+            "y": 590.61587297458709
+          },
+          "nodeIndex": "Fact_MotivacionActividad",
+          "nodeLineageTag": "6794bebd-9c20-4e41-99c3-3b676a0598ba",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 337.4219469017786,
+            "y": 650.38604988434349
+          },
+          "nodeIndex": "Fact_SatisfaccionCapacitacion",
+          "nodeLineageTag": "bf895d71-bb76-4a61-86f4-b74c7822c2c5",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Todas las tablas",
+      "zoomValue": 63.287087723234038,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Todas las tablas",
+  "defaultDiagram": "Todas las tablas"
+}
