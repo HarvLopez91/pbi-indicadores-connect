@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "sc_home_label",
   "position": {
     "x": 1106,
     "y": 56,
     "z": 32,
-    "width": 100,
     "height": 20,
+    "width": 100,
     "tabOrder": 32
   },
   "visual": {
@@ -21,10 +21,10 @@
                   {
                     "value": "Volver a Home",
                     "textStyle": {
+                      "fontWeight": "bold",
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "11px",
-                      "color": "#F15B2B",
-                      "fontWeight": "bold"
+                      "color": "#f15b2b"
                     }
                   }
                 ],
