@@ -31,8 +31,8 @@ El nombre exacto del archivo y de la hoja debe coincidir con lo anterior — Pow
 1. Abrir `PBI/PBI_Indicadores.pbip` con Power BI Desktop (requiere la característica **Power BI Project (.pbip)** habilitada).
 2. Confirmar que los 3 archivos de `Data/` están cerrados (§3).
 3. En la cinta **Inicio**, usar **Actualizar** (actualiza las 3 fuentes y recalcula `Dim_Calendario`, `Dim_CallCenter` y `Dim_Jornada`, que se reconstruyen dinámicamente en cada actualización).
-4. Guardar el archivo (`Ctrl+S`) para que Power BI Desktop reescriba los archivos TMDL/JSON del proyecto con cualquier metadato automático generado (ver §6 de este documento y `AGENTS.md`).
-5. Ejecutar `git status` y `git diff` para revisar qué cambió antes de comitear — Power BI Desktop reescribe archivos incluso cuando el cambio de negocio es solo un refresco de datos (ver `06_publicacion_powerbi.md` para el flujo posterior de republicación).
+4. Guardar el archivo (`Ctrl+S`) para que Power BI Desktop reescriba los archivos TMDL/JSON del proyecto con cualquier metadato automático generado (ver §6 de este documento y [AGENTS.md](../AGENTS.md)).
+5. Ejecutar `git status` y `git diff` para revisar qué cambió antes de comitear — Power BI Desktop reescribe archivos incluso cuando el cambio de negocio es solo un refresco de datos (ver [06_publicacion_powerbi.md](06_publicacion_powerbi.md) para el flujo posterior de republicación).
 
 ## 5. Qué hacer si cambian columnas o nombres de hoja
 
@@ -41,19 +41,19 @@ Si Google Forms agrega, quita o renombra una pregunta (columna) del formulario, 
 1. **No editar el archivo Excel manualmente** para forzar que coincida con el modelo — en su lugar, ajustar la transformación en Power Query.
 2. Abrir el editor de Power Query en Power BI Desktop y ubicar la consulta `Base_<Fuente>` correspondiente (`Base_MatrizCalidad`, `Base_SatisfaccionCapacitacion` o `Base_EncuestaMotivacion`, definidas en `expressions.tmdl`).
 3. Si cambió el **nombre de la hoja**: actualizar el paso `Source{[Item="Form Responses 1",Kind="Sheet"]}` con el nombre nuevo.
-4. Si cambió el **nombre de una columna/pregunta**: actualizar el paso `Table.RenameColumns` correspondiente en la consulta `Fact_<Nombre>` (ver el mapeo completo columna original → columna técnica en `Docs/01_modelo_datos.md`).
+4. Si cambió el **nombre de una columna/pregunta**: actualizar el paso `Table.RenameColumns` correspondiente en la consulta `Fact_<Nombre>` (ver el mapeo completo columna original → columna técnica en [Docs/01_modelo_datos.md](01_modelo_datos.md)).
 5. Si se **agregó una pregunta nueva**: decidir si debe incorporarse al modelo (nueva columna técnica) y, si aplica, documentar la decisión en un nuevo archivo `Outputs/NN_...md`, siguiendo el patrón ya establecido en este proyecto.
 6. No escribir `lineageTag`, `description` ni `queryGroup` a mano en ningún archivo `.tmdl` nuevo o editado — dejar que Power BI Desktop los genere al guardar.
 
 ## 6. Qué validar después de actualizar
 
-Antes de dar por buena una actualización de datos (y antes de republicar, si aplica — ver `06_publicacion_powerbi.md`), revisar:
+Antes de dar por buena una actualización de datos (y antes de republicar, si aplica — ver [06_publicacion_powerbi.md](06_publicacion_powerbi.md)), revisar:
 
 - [ ] **Conteos**: las tarjetas `Total Evaluaciones Calidad`, `Total Respuestas Capacitacion`, `Total Respuestas Motivacion` y `Total Registros Piloto` muestran un número mayor o igual al anterior (nunca deberían bajar salvo que se haya depurado una fila a propósito).
 - [ ] **Segmentadores**: el segmentador de Call Center muestra todos los call centers esperados (incluyendo cualquiera nuevo que haya aparecido); el de Fecha cubre hasta la fecha más reciente cargada.
 - [ ] **KPIs**: ningún KPI muestra `#ERROR` ni una referencia rota; los promedios/porcentajes cambian de forma razonable respecto a la actualización anterior.
 - [ ] **Gráficos**: los gráficos de barras/columnas/líneas de las páginas de detalle muestran las etiquetas de datos y reflejan los nuevos valores.
 - [ ] **Notas metodológicas**: las 3 leyendas dinámicas `n=` (calidad, capacitación, motivación) reflejan el nuevo tamaño de muestra — no se debe escribir el número a mano en ningún texto del informe.
-- [ ] **Publicación**: si el informe está publicado (`Docs/06_publicacion_powerbi.md`), decidir si corresponde republicar para que la versión pública refleje los datos actualizados.
+- [ ] **Publicación**: si el informe está publicado ([Docs/06_publicacion_powerbi.md](06_publicacion_powerbi.md)), decidir si corresponde republicar para que la versión pública refleje los datos actualizados.
 
 No se incluyen en este documento datos personales de asesores/líderes ni ejemplos con nombres reales — solo nombres de columnas y de archivos.

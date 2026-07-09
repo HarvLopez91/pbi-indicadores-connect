@@ -8,7 +8,9 @@
 ```
 https://app.powerbi.com/view?r=eyJrIjoiZGI2ZjNiYmItODQ0Yy00M2Y1LThkNTYtZGQ5NDIxYWExNjk3IiwidCI6Ijc1NDEyNGJlLTM2NGItNDg1MS1hYzA3LTc0ZjljZGJhYzM0ZiIsImMiOjR9&pageName=67eff42d82e1c9c15b84
 ```
-Ver `Docs/06_publicacion_powerbi.md` para detalles, vigencia y consideraciones de acceso.
+Ver [Docs/06_publicacion_powerbi.md](Docs/06_publicacion_powerbi.md) para detalles, vigencia y consideraciones de acceso.
+
+**Repositorio:** [github.com/HarvLopez91/pbi-indicadores-connect](https://github.com/HarvLopez91/pbi-indicadores-connect) (rama `main`).
 
 ## Contenido del proyecto
 
@@ -22,13 +24,13 @@ Ver `Docs/06_publicacion_powerbi.md` para detalles, vigencia y consideraciones d
 | `Assets/` | Logos, imágenes y el tema visual de marca Connect (`Assets/theme/connect_assistance_theme.json`). |
 | `Specs/` | Documentos de planeación y cierre: análisis de impacto, plan de implementación de 18 fases, y documentación final de cierre. |
 | `Outputs/` | Bitácora cronológica de cada fase/corrección ejecutada — el changelog operativo del proyecto. |
-| `Docs/` | Documentación técnica y funcional de referencia (modelo, medidas DAX, mapa de páginas, actualización de datos, decisiones/pendientes, publicación). Empezar por `Docs/00_indice_documentacion.md`. |
+| `Docs/` | Documentación técnica y funcional de referencia (modelo, medidas DAX, mapa de páginas, actualización de datos, decisiones/pendientes, publicación). Empezar por [Docs/00_indice_documentacion.md](Docs/00_indice_documentacion.md). |
 
 ## Cómo abrir el proyecto
 
 1. Abrir `PBI/PBI_Indicadores.pbip` con Power BI Desktop (requiere la característica **Power BI Project (.pbip)** habilitada).
 2. Antes de que Power BI Desktop actualice los datos, confirmar que los 3 archivos Excel de `Data/` están **cerrados** — si alguno está abierto, la actualización falla con un error de archivo bloqueado.
-3. Después de cualquier sesión en Power BI Desktop (edición o solo apertura), ejecutar `git status` y `git diff` — Desktop reescribe archivos automáticamente (metadatos, orden de página activa, etc.) incluso sin cambios de negocio intencionales. Ver la guía completa en `AGENTS.md`.
+3. Después de cualquier sesión en Power BI Desktop (edición o solo apertura), ejecutar `git status` y `git diff` — Desktop reescribe archivos automáticamente (metadatos, orden de página activa, etc.) incluso sin cambios de negocio intencionales. Ver la guía completa en [AGENTS.md](AGENTS.md).
 
 ## Fuentes de datos
 
@@ -38,7 +40,7 @@ El modelo se alimenta de **3 archivos Excel exportados desde Google Forms**, ubi
 - **Satisfacción capacitación** — encuesta de satisfacción posterior a capacitaciones.
 - **Encuesta satisfacción / motivación** — encuesta de motivación de actividades comerciales.
 
-Guía completa de actualización (cómo reexportar, dónde colocar los archivos, cómo refrescar y qué validar) en `Docs/04_fuentes_y_actualizacion_datos.md`. Este README no incluye datos personales ni ejemplos con nombres reales de asesores/líderes.
+Guía completa de actualización (cómo reexportar, dónde colocar los archivos, cómo refrescar y qué validar) en [Docs/04_fuentes_y_actualizacion_datos.md](Docs/04_fuentes_y_actualizacion_datos.md). Este README no incluye datos personales ni ejemplos con nombres reales de asesores/líderes.
 
 ## Páginas del reporte
 
@@ -50,7 +52,7 @@ Guía completa de actualización (cómo reexportar, dónde colocar los archivos,
 6. **Detalle por call center**
 7. **Notas metodológicas**
 
-Detalle de objetivo, indicadores, visuales y navegación de cada página en `Docs/03_mapa_reporte_paginas_visuales.md`.
+Detalle de objetivo, indicadores, visuales y navegación de cada página en [Docs/03_mapa_reporte_paginas_visuales.md](Docs/03_mapa_reporte_paginas_visuales.md).
 
 ## Modelo semántico
 
@@ -61,11 +63,11 @@ Modelo en estrella:
 - **4 tablas de medidas** DAX (`_Medidas Generales`, `_Medidas Calidad`, `_Medidas Capacitacion`, `_Medidas Motivacion`).
 - **Relaciones** por calendario (Fecha), call center y jornada, todas `1:*` de dirección de filtro única, sin ambigüedad.
 
-Detalle completo de columnas, orígenes y relaciones en `Docs/01_modelo_datos.md`; catálogo completo de medidas en `Docs/02_catalogo_medidas_dax.md`.
+Detalle completo de columnas, orígenes y relaciones en [Docs/01_modelo_datos.md](Docs/01_modelo_datos.md); catálogo completo de medidas en [Docs/02_catalogo_medidas_dax.md](Docs/02_catalogo_medidas_dax.md).
 
 ## Publicación
 
-El informe está publicado mediante un enlace de "Publicar en la Web" de Power BI Service (ver el enlace en el encabezado de este documento). Este tipo de enlace **no requiere autenticación** — cualquier persona con el enlace puede verlo. El link puede depender de permisos vigentes en el tenant de Power BI, de que la publicación no haya sido revocada, y de la configuración de "Publicar en la Web" de la organización. Ver `Docs/06_publicacion_powerbi.md` para el detalle y una consideración de gobierno de datos sobre el acceso público.
+El informe está publicado mediante un enlace de "Publicar en la Web" de Power BI Service (ver el enlace en el encabezado de este documento). Este tipo de enlace **no requiere autenticación** — cualquier persona con el enlace puede verlo. El link puede depender de permisos vigentes en el tenant de Power BI, de que la publicación no haya sido revocada, y de la configuración de "Publicar en la Web" de la organización. Ver [Docs/06_publicacion_powerbi.md](Docs/06_publicacion_powerbi.md) para el detalle y una consideración de gobierno de datos sobre el acceso público.
 
 ## Limitaciones conocidas
 
@@ -76,7 +78,7 @@ El informe está publicado mediante un enlace de "Publicar en la Web" de Power B
 - **Catálogo oficial de call centers y alias de líderes**: pendientes de confirmación de negocio; se usa un catálogo dinámico y una tabla de alias parcial mientras tanto.
 - **Los datos se actualizarán constantemente**: cualquier conteo mostrado en el informe (o en esta documentación) es dinámico y puede cambiar con la próxima actualización de `Data/`.
 
-Detalle completo, incluyendo el estado de las dependencias D1–D8 del plan de implementación, en `Docs/05_decisiones_limitaciones_pendientes.md`.
+Detalle completo, incluyendo el estado de las dependencias D1–D8 del plan de implementación, en [Docs/05_decisiones_limitaciones_pendientes.md](Docs/05_decisiones_limitaciones_pendientes.md).
 
 ## Mantenimiento
 

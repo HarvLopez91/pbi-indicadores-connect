@@ -159,7 +159,7 @@ Objecion Principal =
 - **Qué calcula:** nada todavía — es un marcador de posición explícito que siempre retorna en blanco.
 - **Formato:** porcentaje (`0.0%`), preconfigurado para cuando se implemente.
 - **Páginas:** no está enlazada a ningún visual del reporte. Se documenta como pendiente en los paneles de texto `cl_nota_calidad_text` (Calidad de llamadas) y `nm_calidad_text` (Notas metodológicas).
-- **Observaciones:** requiere la rúbrica oficial de puntaje máximo por pregunta (dependencia D3, ver `05_decisiones_limitaciones_pendientes.md`) antes de poder implementarse como `DIVIDE([Puntaje Obtenido Calidad], <puntaje máximo aplicable por rúbrica>)`.
+- **Observaciones:** requiere la rúbrica oficial de puntaje máximo por pregunta (dependencia D3, ver [05_decisiones_limitaciones_pendientes.md](05_decisiones_limitaciones_pendientes.md)) antes de poder implementarse como `DIVIDE([Puntaje Obtenido Calidad], <puntaje máximo aplicable por rúbrica>)`.
 
 ## `_Medidas Capacitacion`
 

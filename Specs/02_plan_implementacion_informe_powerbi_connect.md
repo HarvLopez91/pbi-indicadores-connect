@@ -8,9 +8,9 @@
 | Rol funcional | PUSHER (auditoría de calidad + formación + seguimiento comercial) |
 | Tipo de documento | Plan de implementación (fases + prompts ejecutables) |
 | Fecha | 2026-07-08 |
-| Estado | Planificación — pendiente de ejecución fase por fase |
+| Estado | **Cerrado** — las 18 fases fueron ejecutadas y validadas. Ver el cierre formal en [Specs/03_documentacion_final_informe_powerbi_connect.md](03_documentacion_final_informe_powerbi_connect.md) y la bitácora completa en `Outputs/`. |
 
-> Este documento **no modifica** el PBIP, el modelo semántico, las consultas Power Query, las medidas DAX ni las páginas del reporte. Es la hoja de ruta para ejecutar esos cambios de forma ordenada en pasos posteriores.
+> Este documento **no modifica** el PBIP, el modelo semántico, las consultas Power Query, las medidas DAX ni las páginas del reporte. Es la hoja de ruta que se ejecutó fase por fase; el estado real y final de cada decisión está en [Specs/03_documentacion_final_informe_powerbi_connect.md](03_documentacion_final_informe_powerbi_connect.md), no en este documento — este plan se conserva como referencia histórica de cómo se ejecutó cada fase.
 
 ---
 
@@ -936,7 +936,7 @@ hallazgos a corregir antes de dar por cerrada la implementación.
 **Objetivo:** Dejar registro trazable de todo lo construido, para negocio y para futura mantenibilidad del informe.
 
 **Actividades principales:**
-- Crear `Specs/03_documentacion_final_informe_powerbi_connect.md` con: inventario final de tablas/columnas, catálogo final de medidas DAX (con descripciones), mapa de páginas y navegación, decisiones tomadas durante la implementación (incluyendo las de las Fases 6, 10 y 12 marcadas como "provisional" mientras D3/D4/D5/D6 no se confirmen con negocio), y guía de actualización de datos (cómo y cuándo reexportar los Google Forms).
+- Crear [Specs/03_documentacion_final_informe_powerbi_connect.md](03_documentacion_final_informe_powerbi_connect.md) con: inventario final de tablas/columnas, catálogo final de medidas DAX (con descripciones), mapa de páginas y navegación, decisiones tomadas durante la implementación (incluyendo las de las Fases 6, 10 y 12 marcadas como "provisional" mientras D3/D4/D5/D6 no se confirmen con negocio), y guía de actualización de datos (cómo y cuándo reexportar los Google Forms).
 - Actualizar el estado de las dependencias del §4 de este plan (cuáles se resolvieron durante la ejecución, cuáles siguen pendientes).
 - Commit final en Git (si se adoptó versionamiento en Fase 2) con mensaje de cierre de la implementación inicial.
 
@@ -974,7 +974,7 @@ antes de ejecutarlo.
 **Resultado esperado:** Documentación de cierre completa (`Specs/03_...`), estado de dependencias actualizado, commit de cierre (si aplica).
 
 **Validaciones necesarias:**
-- [ ] `Specs/03_documentacion_final_informe_powerbi_connect.md` creado y completo.
+- [ ] [Specs/03_documentacion_final_informe_powerbi_connect.md](03_documentacion_final_informe_powerbi_connect.md) creado y completo.
 - [ ] Todas las decisiones provisionales quedan identificadas explícitamente.
 - [ ] Guía de actualización de datos es ejecutable por alguien no técnico (el PUSHER u otro usuario de negocio).
 

@@ -36,7 +36,7 @@ Estas decisiones ya están implementadas y no dependen de ninguna confirmación 
 | # | Dependencia | Estado original | Estado actual |
 |---|---|---|---|
 | D1 | Power BI Desktop con soporte PBIP + TMDL habilitado | Por confirmar en Fase 1 | **Resuelta** — confirmado en la Fase 1 y usado sin problemas en todas las fases posteriores |
-| D2 | Archivos de `Data/` cerrados al actualizar | Riesgo conocido | **Gestionada, no eliminable** — es un riesgo operativo permanente mientras la fuente sea Excel local; mitigación documentada en `Docs/04_fuentes_y_actualizacion_datos.md` §3 |
+| D2 | Archivos de `Data/` cerrados al actualizar | Riesgo conocido | **Gestionada, no eliminable** — es un riesgo operativo permanente mientras la fuente sea Excel local; mitigación documentada en [Docs/04_fuentes_y_actualizacion_datos.md](04_fuentes_y_actualizacion_datos.md) §3 |
 | D3 | Rúbrica de puntaje máximo por pregunta de calidad | Pendiente | **Sigue pendiente** — `% Calidad Promedio Provisional` continúa en `BLANK()` |
 | D4 | Catálogo oficial de call centers y jornadas | Pendiente | **Sigue pendiente** — se usa el catálogo dinámico como sustituto funcional |
 | D5 | Nombres estándar de líderes/formadores | Pendiente | **Parcialmente resuelta** — tabla de alias aplicada para las variantes ya detectadas; confirmación oficial de negocio sigue pendiente para casos futuros |
@@ -49,10 +49,10 @@ Estas decisiones ya están implementadas y no dependen de ninguna confirmación 
 - **Rúbrica de puntaje máximo por pregunta** del checklist de calidad (D3) — bloquea `% Calidad Promedio Provisional`.
 - **Catálogo oficial de call centers** vigentes (D4).
 - **Confirmación oficial de alias de líderes/formadores** más allá de las variantes ya detectadas (D5).
-- **Limpieza de las tablas automáticas de fecha (Auto Date/Time)**: técnicamente pendiente, no de negocio — requiere que el usuario deshabilite la detección automática de tabla de fechas desde Power BI Desktop y quite el bloque `variation` de cada `Fact_*`. Ver `Docs/01_modelo_datos.md` §6.
+- **Limpieza de las tablas automáticas de fecha (Auto Date/Time)**: técnicamente pendiente, no de negocio — requiere que el usuario deshabilite la detección automática de tabla de fechas desde Power BI Desktop y quite el bloque `variation` de cada `Fact_*`. Ver [Docs/01_modelo_datos.md](01_modelo_datos.md) §6.
 - **Posible ajuste de `% Llamadas con Venta`**: sigue documentado como observación pendiente si continúa apareciendo en blanco en vez de `0,0%` en ciertos contextos de filtro. Alternativa propuesta (no aplicada): reescribir la medida con `SUMX` sobre una columna booleana en vez de `CALCULATE` + `COUNTROWS` con `IN`.
 - **Posible medida `Fecha Corte Datos`**: propuesta en la Fase 16 (`Outputs/29`) como `MAX(Dim_Calendario[Fecha])`, para mostrar la fecha de corte de los datos en Notas metodológicas sin texto fijo. No implementada — pendiente de autorización explícita, ya que la instrucción del proyecto es no crear medidas DAX nuevas sin aprobación.
-- **Gobierno de publicación**: el informe está publicado mediante un enlace de "Publicar en la Web" (`app.powerbi.com/view?r=...`), que **no requiere autenticación** para ser visto por cualquier persona con el enlace. Dos tablas del informe (`cl_tabla_asesor`, `sc_tabla_formador`) muestran nombres reales de asesores/líderes/formadores. Se recomienda que negocio confirme si ese nivel de exposición pública es aceptable o si el informe debe migrarse a un espacio de trabajo de Power BI Service con control de acceso (ver `Docs/06_publicacion_powerbi.md`).
+- **Gobierno de publicación**: el informe está publicado mediante un enlace de "Publicar en la Web" (`app.powerbi.com/view?r=...`), que **no requiere autenticación** para ser visto por cualquier persona con el enlace. Dos tablas del informe (`cl_tabla_asesor`, `sc_tabla_formador`) muestran nombres reales de asesores/líderes/formadores. Se recomienda que negocio confirme si ese nivel de exposición pública es aceptable o si el informe debe migrarse a un espacio de trabajo de Power BI Service con control de acceso (ver [Docs/06_publicacion_powerbi.md](06_publicacion_powerbi.md)).
 
 ## 5. Riesgos de mantenimiento
 
@@ -60,5 +60,5 @@ Estas decisiones ya están implementadas y no dependen de ninguna confirmación 
 - **Bloqueo de archivo**: si algún Excel de `Data/` queda abierto durante una actualización, la actualización falla (ver `Docs/04`).
 - **Fragmentación por nombre**: con el volumen actual, cualquier variante nueva de escritura de un nombre de líder/formador no cubierta por la tabla de alias fragmentará esa persona en múltiples filas en las tablas `cl_tabla_asesor`/`sc_tabla_formador`.
 - **Cambios automáticos de Power BI Desktop**: cada apertura/guardado puede reescribir archivos TMDL/JSON (metadatos, `lineageTag`, orden de página activa). Si no se revisa `git status` con regularidad, estos cambios pueden mezclarse con cambios intencionales futuros y dificultar la revisión de diffs.
-- **Documentación desactualizada**: si se agregan/quitan medidas, páginas o fuentes sin actualizar la carpeta `Docs/`, la documentación deja de reflejar el estado real del modelo. Ver la recomendación de mantenimiento en el `README.md` raíz.
+- **Documentación desactualizada**: si se agregan/quitan medidas, páginas o fuentes sin actualizar la carpeta `Docs/`, la documentación deja de reflejar el estado real del modelo. Ver la recomendación de mantenimiento en el [README.md](../README.md) raíz.
 - **Exposición pública de nombres reales** vía el enlace de "Publicar en la Web" activo (ver §4) — riesgo de gobierno de datos, no técnico.

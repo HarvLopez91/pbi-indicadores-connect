@@ -31,7 +31,7 @@ Inventario de las **7 páginas** del informe (`PBI/PBI_Indicadores.Report/defini
 - **Indicadores principales:** Total de evaluaciones, puntaje obtenido, preguntas aplicables, promedio de puntaje, % de llamadas con venta, objeción principal.
 - **Medidas usadas:** `Total Evaluaciones Calidad`, `Puntaje Obtenido Calidad`, `Preguntas Aplicables Calidad`, `Promedio Puntaje Calidad`, `% Llamadas con Venta`, `Objecion Principal`.
 - **Visuales principales:** 6 tarjetas KPI (`cl_kpi_*`), gráfico de barras de evaluaciones por call center (`cl_chart_callcenter`), tabla `cl_tabla_asesor` (asesor, total de evaluaciones, promedio de puntaje, % llamadas con venta).
-- **Segmentadores:** Fecha, Call Center. **No incluye Jornada** — la fuente de calidad no captura esa pregunta (ver `Docs/01_modelo_datos.md` §1).
+- **Segmentadores:** Fecha, Call Center. **No incluye Jornada** — la fuente de calidad no captura esa pregunta (ver [Docs/01_modelo_datos.md](01_modelo_datos.md) §1).
 - **Notas visibles:** *"% Calidad Promedio Provisional queda en blanco hasta confirmar rúbrica oficial. % Llamadas con Venta puede mostrarse en blanco en el piloto; no se ajusta la medida en esta fase."*
 - **Navegación:** botón "Volver a Home" hacia Home.
 
@@ -78,7 +78,7 @@ Inventario de las **7 páginas** del informe (`PBI/PBI_Indicadores.Report/defini
 - **Medidas usadas:** `Total Evaluaciones Calidad`, `Total Respuestas Capacitacion`, `Total Respuestas Motivacion`, `Total Registros Piloto`, `n Calidad`, `n Capacitacion`, `n Motivacion`.
 - **Visuales principales:** 4 tarjetas KPI + 3 leyendas `n=` dinámicas, 6 paneles de texto (Fuentes de datos, Estado piloto, Encuesta anónima, Calidad provisional, Llamadas con venta, Pendientes de negocio), nota de cierre.
 - **Segmentadores:** Fecha, Call Center. No incluye Jornada (decisión de diseño desde la Fase 14 — página informativa, no de desglose operativo).
-- **Notas visibles (resumen; texto completo de cada panel en `Docs/05_decisiones_limitaciones_pendientes.md`):** alcance del piloto, fuentes en `Data/` y su actualización dinámica, estado piloto e interpretación por `n`, encuesta de motivación anónima, `% Calidad Promedio Provisional` pendiente de rúbrica, `% Llamadas con Venta` con observación pendiente, pendientes de negocio (rúbrica, catálogo oficial, alias de líderes, colores de marca).
+- **Notas visibles (resumen; texto completo de cada panel en [Docs/05_decisiones_limitaciones_pendientes.md](05_decisiones_limitaciones_pendientes.md)):** alcance del piloto, fuentes en `Data/` y su actualización dinámica, estado piloto e interpretación por `n`, encuesta de motivación anónima, `% Calidad Promedio Provisional` pendiente de rúbrica, `% Llamadas con Venta` con observación pendiente, pendientes de negocio (rúbrica, catálogo oficial, alias de líderes, colores de marca).
 - **Navegación:** botón "Volver a Home" hacia Home.
 
 ## Resumen de navegación global
@@ -88,7 +88,7 @@ Inventario de las **7 páginas** del informe (`PBI/PBI_Indicadores.Report/defini
 | Home → cualquier página interna | 6 destinos | Tarjeta + acento + etiqueta + zona clicable transparente, mismo `visualLink` en los 4 elementos del módulo |
 | Cualquier página interna → Home | 1 destino | Botón "Volver a Home" + etiqueta + zona clicable transparente |
 
-Total de visuales con acción de navegación (`PageNavigation`) en el reporte: **42** (24 en Home — 6 módulos × 4 elementos — y 18 en las 6 páginas internas — 3 elementos × 6 páginas). Detalle técnico de la corrección de áreas clicables en `Outputs/28_correccion_qa_final_navegacion_data_labels.md`.
+Total de visuales con acción de navegación (`PageNavigation`) en el reporte: **42** (24 en Home — 6 módulos × 4 elementos — y 18 en las 6 páginas internas — 3 elementos × 6 páginas). Detalle técnico de la corrección de áreas clicables en [Outputs/28_correccion_qa_final_navegacion_data_labels.md](../Outputs/28_correccion_qa_final_navegacion_data_labels.md).
 
 ## Resumen de segmentadores por página
 

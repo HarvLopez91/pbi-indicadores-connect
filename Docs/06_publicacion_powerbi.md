@@ -17,7 +17,7 @@ Dos visuales del informe muestran **nombres reales de personas**:
 - `cl_tabla_asesor` (página Calidad de llamadas) — columna `NombreAsesor`.
 - `sc_tabla_formador` (página Satisfacción de capacitaciones) — columnas `NombreFormador` y `NombreLider`.
 
-Como el enlace publicado es de acceso público sin autenticación, **cualquier persona con el enlace puede ver esos nombres**, sin importar si pertenece o no a Connect Assistance. Esto ya estaba señalado como riesgo pendiente en `Docs/05_decisiones_limitaciones_pendientes.md` §4. Se recomienda que negocio confirme explícitamente si ese nivel de exposición es aceptable para el piloto, o si conviene:
+Como el enlace publicado es de acceso público sin autenticación, **cualquier persona con el enlace puede ver esos nombres**, sin importar si pertenece o no a Connect Assistance. Esto ya estaba señalado como riesgo pendiente en [Docs/05_decisiones_limitaciones_pendientes.md](05_decisiones_limitaciones_pendientes.md) §4. Se recomienda que negocio confirme explícitamente si ese nivel de exposición es aceptable para el piloto, o si conviene:
 
 - Ocultar las columnas de nombre en esas 2 tablas antes de publicar de nuevo, o
 - Migrar la publicación de "Publicar en la Web" a un **espacio de trabajo de Power BI Service con control de acceso** (compartir solo con usuarios/grupos autorizados de la organización), que sí permite auditoría y revocación de acceso.
@@ -29,7 +29,7 @@ Antes de generar o actualizar un enlace de publicación, validar en Power BI Des
 - [ ] **Filtros**: los segmentadores de Fecha, Call Center y Jornada responden correctamente en las 5 páginas de detalle.
 - [ ] **Navegación**: clic en cualquier punto de las 6 tarjetas de Home y de los 6 botones "Volver a Home" navega correctamente (ver `Outputs/28`).
 - [ ] **Etiquetas de datos**: los 8 gráficos muestran sus etiquetas con el estilo Connect (`#002733`, tamaño moderado) — no deben quedar desactivadas por un cambio accidental.
-- [ ] **Actualización**: los datos reflejan la versión más reciente de `Data/*.xlsx` (ejecutar Actualizar antes de publicar, ver `Docs/04_fuentes_y_actualizacion_datos.md`).
+- [ ] **Actualización**: los datos reflejan la versión más reciente de `Data/*.xlsx` (ejecutar Actualizar antes de publicar, ver [Docs/04_fuentes_y_actualizacion_datos.md](04_fuentes_y_actualizacion_datos.md)).
 - [ ] **Permisos**: revisar quién tiene acceso de edición al informe en Power BI Service y si el enlace de "Publicar en la Web" sigue siendo el mecanismo de distribución deseado (ver §2).
 - [ ] **Vigencia del enlace**: confirmar en Power BI Service (Archivo → Publicar en la Web → Administrar enlaces) que el enlace sigue activo y corresponde a la versión actual del informe.
 

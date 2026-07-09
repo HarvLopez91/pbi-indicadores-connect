@@ -7,13 +7,14 @@
 | Cliente / contexto | Connect Assistance S.A.S. — call centers asociados a Claro |
 | Tipo de documento | Cierre formal de la implementación (Fase 18) |
 | Fecha | 2026-07-09 |
-| Estado | Implementación completa, informe validado (Fase 17) y publicado |
+| Repositorio | [github.com/HarvLopez91/pbi-indicadores-connect](https://github.com/HarvLopez91/pbi-indicadores-connect) (rama `main`) |
+| Estado | **Cerrado** — implementación completa, informe validado (Fase 17), documentación final publicada (Fase 18) y repositorio sincronizado en GitHub |
 
 ---
 
 ## 1. Resumen ejecutivo
 
-El informe `PBI_Indicadores` fue construido desde un PBIP inicialmente vacío hasta un informe funcional de 7 páginas, con modelo en estrella (3 hechos, 3 dimensiones, 25 medidas DAX), identidad visual de marca Connect, navegación completa entre Home y páginas internas, y notas metodológicas dinámicas que documentan las limitaciones del piloto sin depender de conteos escritos a mano. El proyecto siguió las 18 fases descritas en `02_plan_implementacion_informe_powerbi_connect.md`, todas versionadas en Git con commits descriptivos en español. El informe ya fue validado técnica, funcional y visualmente (Fase 17, `Outputs/31`) y está publicado mediante un enlace de "Publicar en la Web" de Power BI Service.
+El informe `PBI_Indicadores` fue construido desde un PBIP inicialmente vacío hasta un informe funcional de 7 páginas, con modelo en estrella (3 hechos, 3 dimensiones, 25 medidas DAX), identidad visual de marca Connect, navegación completa entre Home y páginas internas, y notas metodológicas dinámicas que documentan las limitaciones del piloto sin depender de conteos escritos a mano. El proyecto siguió las 18 fases descritas en [02_plan_implementacion_informe_powerbi_connect.md](02_plan_implementacion_informe_powerbi_connect.md), todas versionadas en Git con commits descriptivos en español. El informe ya fue validado técnica, funcional y visualmente (Fase 17, `Outputs/31`) y está publicado mediante un enlace de "Publicar en la Web" de Power BI Service.
 
 El volumen de datos sigue siendo de fase piloto (3 evaluaciones de calidad, 32 respuestas de capacitación, 5 respuestas de motivación al momento del diagnóstico inicial, con crecimiento esperado en cada actualización) — el informe está diseñado para comunicar esa condición de forma explícita y dinámica, no para ocultarla.
 
@@ -44,7 +45,7 @@ Detalle completo de columnas y orígenes en [`../Docs/01_modelo_datos.md`](../Do
 | `Dim_Jornada` | Dimensión | Valores distintos de `Jornada`, unión dinámica de 2 Fact (no incluye `Fact_CalidadLlamadas`) | Generada en Power Query |
 | `_Medidas Generales` / `_Medidas Calidad` / `_Medidas Capacitacion` / `_Medidas Motivacion` | Medidas | 25 medidas DAX, sin datos reales (tabla placeholder de 0 filas) | N/A |
 
-**Columnas principales por tabla de hechos** (nombre técnico, `PascalCase`, sin tildes ni espacios): ver la tabla completa columna-por-columna con su origen exacto del Excel en `Docs/01_modelo_datos.md` §2.
+**Columnas principales por tabla de hechos** (nombre técnico, `PascalCase`, sin tildes ni espacios): ver la tabla completa columna-por-columna con su origen exacto del Excel en [Docs/01_modelo_datos.md](../Docs/01_modelo_datos.md) §2.
 
 **Relaciones:** 8 relaciones de negocio (`Dim_Calendario`/`Dim_CallCenter` → las 3 Fact; `Dim_Jornada` → 2 Fact) más 3 relaciones auxiliares hacia tablas ocultas de Auto Date/Time (ruido conocido, ver §10). Todas `1:*`, dirección de filtro única, sin ambigüedad — confirmado en la validación de la Fase 17.
 
@@ -100,7 +101,7 @@ Guía operativa completa en [`../Docs/04_fuentes_y_actualizacion_datos.md`](../D
 https://app.powerbi.com/view?r=eyJrIjoiZGI2ZjNiYmItODQ0Yy00M2Y1LThkNTYtZGQ5NDIxYWExNjk3IiwidCI6Ijc1NDEyNGJlLTM2NGItNDg1MS1hYzA3LTc0ZjljZGJhYzM0ZiIsImMiOjR9&pageName=67eff42d82e1c9c15b84
 ```
 
-Publicado vía "Publicar en la Web" de Power BI Service, con página inicial Home (`pageName=67eff42d82e1c9c15b84`). Este mecanismo de publicación **no requiere autenticación** — ver la consideración de gobierno de datos en `Docs/06_publicacion_powerbi.md` §2, dado que 2 tablas del informe (`cl_tabla_asesor`, `sc_tabla_formador`) muestran nombres reales de asesores/líderes/formadores.
+Publicado vía "Publicar en la Web" de Power BI Service, con página inicial Home (`pageName=67eff42d82e1c9c15b84`). Este mecanismo de publicación **no requiere autenticación** — ver la consideración de gobierno de datos en [Docs/06_publicacion_powerbi.md](../Docs/06_publicacion_powerbi.md) §2, dado que 2 tablas del informe (`cl_tabla_asesor`, `sc_tabla_formador`) muestran nombres reales de asesores/líderes/formadores.
 
 ## 9. Decisiones técnicas relevantes
 
@@ -139,7 +140,7 @@ Detalle completo en [`../Docs/05_decisiones_limitaciones_pendientes.md`](../Docs
 | D7 | Versionamiento con Git | **Resuelta** (Fase 2) |
 | D8 | Volumen de datos piloto no representativo | Constatada y gestionada activamente (no es un estado "resoluble") |
 
-Detalle y justificación de cada estado en `Docs/05_decisiones_limitaciones_pendientes.md` §3.
+Detalle y justificación de cada estado en [Docs/05_decisiones_limitaciones_pendientes.md](../Docs/05_decisiones_limitaciones_pendientes.md) §3.
 
 ## 12. Guía de mantenimiento
 
@@ -148,8 +149,8 @@ Detalle y justificación de cada estado en `Docs/05_decisiones_limitaciones_pend
 - Sincronizar los cambios automáticos de Power BI Desktop en un commit `chore(...)` separado antes de iniciar trabajo intencional en cada sesión.
 - Documentar cada cambio relevante como un nuevo `Outputs/NN_...md`, sin sobrescribir el historial.
 - Actualizar `Docs/` cuando cambien medidas, páginas o fuentes de datos.
-- Seguir la guía operativa de actualización de datos en `Docs/04_fuentes_y_actualizacion_datos.md` para cada reexportación de los Google Forms.
-- Revisar `Docs/05_decisiones_limitaciones_pendientes.md` antes de tratar cualquier supuesto provisional (D3, D4, D5) como definitivo.
+- Seguir la guía operativa de actualización de datos en [Docs/04_fuentes_y_actualizacion_datos.md](../Docs/04_fuentes_y_actualizacion_datos.md) para cada reexportación de los Google Forms.
+- Revisar [Docs/05_decisiones_limitaciones_pendientes.md](../Docs/05_decisiones_limitaciones_pendientes.md) antes de tratar cualquier supuesto provisional (D3, D4, D5) como definitivo.
 
 ## 13. Criterios de cierre
 
@@ -162,7 +163,7 @@ Estado frente a los criterios de cierre definidos en `Specs/02` §9:
 - [x] El tema visual Connect está aplicado de forma consistente en todo el informe, con colores reales de marca (no placeholder).
 - [x] La navegación entre Home y páginas internas funciona en ambas direcciones, reforzada con zonas clicables completas.
 - [x] Las advertencias de bajo volumen (`n=`) y de limitación de la encuesta anónima de motivación son visibles y dinámicas.
-- [x] La documentación final (`Specs/03`, este documento, más `Docs/00`–`06` y `README.md`) está completa y refleja el estado real del modelo, incluyendo decisiones provisionales pendientes de confirmación de negocio.
+- [x] La documentación final (`Specs/03`, este documento, más `Docs/00`–`06` y [README.md](../README.md)) está completa y refleja el estado real del modelo, incluyendo decisiones provisionales pendientes de confirmación de negocio.
 - [x] El proyecto está versionado en Git con historial completo de commits de cierre por fase.
 
 **Pendiente de confirmación del usuario, no bloqueante para este cierre documental** (ya señalado en `Outputs/31` §13): apertura sin errores en una sesión limpia de Power BI Desktop, cálculo en vivo de las tarjetas KPI, comportamiento interactivo real de segmentadores y navegación — validaciones que requieren la interfaz gráfica de Power BI Desktop, no ejecutable desde este entorno.
