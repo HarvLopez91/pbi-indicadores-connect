@@ -52,6 +52,23 @@
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_Medidas Generales"
+                  }
+                },
+                "Property": "Total Registros Piloto"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
       }
     },
     "objects": {

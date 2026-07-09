@@ -131,3 +131,5 @@ table Fact_SatisfaccionCapacitacion
 				in
 					TiposFinalesAplicados
 
+	annotation PBI_ResultType = Table
+

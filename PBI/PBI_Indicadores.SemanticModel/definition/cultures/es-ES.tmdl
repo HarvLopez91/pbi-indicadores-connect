@@ -712,6 +712,69 @@ cultureInfo es-ES
 			          }
 			        }
 			      ]
+			    },
+			    "table_medidas_generales.n_calidad": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Generales",
+			          "ConceptualProperty": "n Calidad"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "n Calidad": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_generales.n_capacitacion": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Generales",
+			          "ConceptualProperty": "n Capacitacion"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "n Capacitacion": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_generales.n_motivacion": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Generales",
+			          "ConceptualProperty": "n Motivacion"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "n Motivacion": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    }
 			  }
 			}
