@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "home_nav_01_label",
   "position": {
     "x": 72,
     "y": 411,
     "z": 220,
-    "width": 300,
     "height": 34,
+    "width": 300,
     "tabOrder": 220
   },
   "visual": {
@@ -21,14 +21,13 @@
                   {
                     "value": "Resumen ejecutivo",
                     "textStyle": {
+                      "fontWeight": "bold",
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "16px",
-                      "color": "#002733",
-                      "fontWeight": "bold"
+                      "color": "#002733"
                     }
                   }
-                ],
-                "horizontalTextAlignment": "left"
+                ]
               }
             ]
           }

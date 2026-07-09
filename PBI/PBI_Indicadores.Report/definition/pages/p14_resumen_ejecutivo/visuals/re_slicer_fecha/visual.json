@@ -99,13 +99,6 @@
                   "Value": "4D"
                 }
               }
-            },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "10D"
-                }
-              }
             }
           },
           "selector": {
@@ -142,22 +135,6 @@
                       "Value": "'#F4F4F4'"
                     }
                   }
-                }
-              }
-            }
-          },
-          "selector": {
-            "id": "default"
-          }
-        }
-      ],
-      "slicerHeader": [
-        {
-          "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "10D"
                 }
               }
             }
