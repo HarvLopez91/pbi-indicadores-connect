@@ -9,11 +9,11 @@
 
 ## 1. Estado inicial de `git status`
 
-Al iniciar esta ejecución, `git status` mostraba 20 archivos modificados por una sesión previa de Power BI Desktop en la que el usuario activó manualmente etiquetas de datos y aplicó formato/orden adicional (detalle completo en `Outputs/30_sincronizacion_etiquetas_datos_manual_powerbi.md`, Parte 0 de esta misma ejecución). No había archivos nuevos ni eliminados.
+Al iniciar esta ejecución, `git status` mostraba 20 archivos modificados por una sesión previa de Power BI Desktop en la que el usuario activó manualmente etiquetas de datos y aplicó formato/orden adicional (detalle completo en [Outputs/30_sincronizacion_etiquetas_datos_manual_powerbi.md](30_sincronizacion_etiquetas_datos_manual_powerbi.md), Parte 0 de esta misma ejecución). No había archivos nuevos ni eliminados.
 
 ## 2. Cambios manuales sincronizados (Parte 0)
 
-Ver `Outputs/30_sincronizacion_etiquetas_datos_manual_powerbi.md` para el detalle completo. Resumen:
+Ver [Outputs/30_sincronizacion_etiquetas_datos_manual_powerbi.md](30_sincronizacion_etiquetas_datos_manual_powerbi.md) para el detalle completo. Resumen:
 
 - 8 gráficos: reconfirmación de etiquetas de datos activadas manualmente (aditiva, sin sobrescribir color `#002733`/tamaño `9D` ya configurados) + orden manual por medida en 5 de los 8.
 - 4 tablas (`tableEx`): reformato visual (encabezados `#002733`/blanco, valores `#002733`) sin cambios de `query`/bindings.
@@ -51,7 +51,7 @@ Todo se comiteó en `bf26e25 chore(report): sincronizar etiquetas de datos manua
 | `p14_detalle_call_center` | Detalle por call center |
 | `p14_notas_metodologicas` | Notas metodológicas |
 
-**#6 — Modelo semántico:** confirmadas las 3 tablas `Fact_*` (`Fact_CalidadLlamadas`, `Fact_SatisfaccionCapacitacion`, `Fact_MotivacionActividad`), las 3 dimensiones de negocio `Dim_*` (`Dim_Calendario`, `Dim_CallCenter`, `Dim_Jornada`) y las 4 tablas de medidas `_Medidas *` (`Generales`, `Calidad`, `Capacitacion`, `Motivacion`), todas referenciadas en `model.tmdl`. Se confirmaron **11 relaciones** en `relationships.tmdl`: 8 de diseño (3× `Dim_Calendario`→`Fact_*`, 3× `Dim_CallCenter`→`Fact_*`, 2× `Dim_Jornada`→`Fact_SatisfaccionCapacitacion`/`Fact_MotivacionActividad`, intencionalmente sin `Fact_CalidadLlamadas`) más 3 relaciones auxiliares hacia las tablas ocultas `LocalDateTable_*` de Auto Date/Time (ruido conocido y ya documentado en `CLAUDE.md`, pendiente de limpieza manual desde Desktop). Ninguna relación tiene `isActive: false` inesperado ni conecta dos tablas de hechos entre sí — no hay ambigüedad de filtrado.
+**#6 — Modelo semántico:** confirmadas las 3 tablas `Fact_*` (`Fact_CalidadLlamadas`, `Fact_SatisfaccionCapacitacion`, `Fact_MotivacionActividad`), las 3 dimensiones de negocio `Dim_*` (`Dim_Calendario`, `Dim_CallCenter`, `Dim_Jornada`) y las 4 tablas de medidas `_Medidas *` (`Generales`, `Calidad`, `Capacitacion`, `Motivacion`), todas referenciadas en `model.tmdl`. Se confirmaron **11 relaciones** en `relationships.tmdl`: 8 de diseño (3× `Dim_Calendario`→`Fact_*`, 3× `Dim_CallCenter`→`Fact_*`, 2× `Dim_Jornada`→`Fact_SatisfaccionCapacitacion`/`Fact_MotivacionActividad`, intencionalmente sin `Fact_CalidadLlamadas`) más 3 relaciones auxiliares hacia las tablas ocultas `LocalDateTable_*` de Auto Date/Time (ruido conocido y ya documentado en [CLAUDE.md](../CLAUDE.md), pendiente de limpieza manual desde Desktop). Ninguna relación tiene `isActive: false` inesperado ni conecta dos tablas de hechos entre sí — no hay ambigüedad de filtrado.
 
 **#7 — Cambios no controlados:** tras sincronizar en la Parte 0, `git status` quedó limpio antes de iniciar la validación y se mantuvo limpio durante toda la Fase 17 (todas las validaciones de esta fase fueron de solo lectura). No se modificó `expressions.tmdl`, ninguna medida DAX, `relationships.tmdl`, ninguna tabla del modelo ni `Data/*.xlsx`.
 
@@ -134,7 +134,7 @@ Todo se comiteó en `bf26e25 chore(report): sincronizar etiquetas de datos manua
 
 ## 6. Hallazgos encontrados
 
-**Ninguno de severidad alta o media.** Todos los puntos marcados como "Pendiente" en las tablas anteriores no son hallazgos de error, sino validaciones que por su naturaleza (renderizado real, cálculo en vivo, interacción de clic) requieren que el usuario abra el PBIP en Power BI Desktop — esta limitación ya está señalada como regla operativa en `CLAUDE.md`/`AGENTS.md` para todo el proyecto, no es específica de esta fase.
+**Ninguno de severidad alta o media.** Todos los puntos marcados como "Pendiente" en las tablas anteriores no son hallazgos de error, sino validaciones que por su naturaleza (renderizado real, cálculo en vivo, interacción de clic) requieren que el usuario abra el PBIP en Power BI Desktop — esta limitación ya está señalada como regla operativa en [CLAUDE.md](../CLAUDE.md)/[AGENTS.md](../AGENTS.md) para todo el proyecto, no es específica de esta fase.
 
 ## 7. Recomendaciones de corrección
 
@@ -159,7 +159,7 @@ No se tocó ningún archivo dentro de `Data/`. `git status --porcelain -- Data/`
 
 Ninguno. Esta fase fue exclusivamente de validación (lectura); los únicos archivos escritos son los dos documentos de esta ejecución:
 
-- `Outputs/30_sincronizacion_etiquetas_datos_manual_powerbi.md` (Parte 0, ya comiteado en `bf26e25`)
+- [Outputs/30_sincronizacion_etiquetas_datos_manual_powerbi.md](30_sincronizacion_etiquetas_datos_manual_powerbi.md) (Parte 0, ya comiteado en `bf26e25`)
 - `Outputs/31_resultado_fase_17_validaciones_tecnicas_funcionales_visuales.md` (este documento)
 
 ## 11. Resultado del commit

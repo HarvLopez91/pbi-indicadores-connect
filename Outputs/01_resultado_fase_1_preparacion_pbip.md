@@ -3,10 +3,10 @@
 | Campo | Valor |
 |---|---|
 | Proyecto | `PBI_Indicadores` |
-| Fase ejecutada | Fase 1 — Preparación del proyecto PBIP (ver `Specs/02_plan_implementacion_informe_powerbi_connect.md`) |
+| Fase ejecutada | Fase 1 — Preparación del proyecto PBIP (ver [Specs/02_plan_implementacion_informe_powerbi_connect.md](../Specs/02_plan_implementacion_informe_powerbi_connect.md)) |
 | Modo de ejecución | Solo lectura / diagnóstico — sin modificaciones |
 | Fecha | 2026-07-08 |
-| Documentos de referencia | `Specs/01_analisis_de_impacto_informe_powerbi_connect.md`, `Specs/02_plan_implementacion_informe_powerbi_connect.md` |
+| Documentos de referencia | [Specs/01_analisis_de_impacto_informe_powerbi_connect.md](../Specs/01_analisis_de_impacto_informe_powerbi_connect.md), [Specs/02_plan_implementacion_informe_powerbi_connect.md](../Specs/02_plan_implementacion_informe_powerbi_connect.md) |
 
 ---
 

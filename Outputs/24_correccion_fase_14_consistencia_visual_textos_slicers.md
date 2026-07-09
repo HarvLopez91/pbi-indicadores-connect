@@ -14,9 +14,9 @@ Al iniciar la corrección existían cambios pendientes generados por Power BI De
 - Archivos PBIR de páginas internas con cambios automáticos en `visual.json` relacionados con `$schema`, `active: true` y orden de propiedades.
 - `PBI/PBI_Indicadores.Report/definition/pages/pages.json` con cambio automático de `activePageName`.
 - `PBI/PBI_Indicadores.SemanticModel/definition/cultures/es-ES.tmdl` con metadatos lingüísticos automáticos de `PowerBI.VisualColumnRename`.
-- `AGENTS.md` sin seguimiento.
+- [AGENTS.md](../AGENTS.md) sin seguimiento.
 
-`AGENTS.md`, `pages.json` y `cultures/es-ES.tmdl` no se incluyen en el commit de esta corrección.
+[AGENTS.md](../AGENTS.md), `pages.json` y `cultures/es-ES.tmdl` no se incluyen en el commit de esta corrección.
 
 ## Páginas revisadas
 
@@ -132,7 +132,7 @@ El commit incluye:
 
 No incluye:
 
-- `AGENTS.md`
+- [AGENTS.md](../AGENTS.md)
 - `Data/*.xlsx`
 - `PBI/PBI_Indicadores.SemanticModel/definition/cultures/es-ES.tmdl`
 - `PBI/PBI_Indicadores.Report/definition/pages/pages.json`

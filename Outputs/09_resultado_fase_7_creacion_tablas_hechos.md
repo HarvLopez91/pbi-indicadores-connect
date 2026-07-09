@@ -3,8 +3,8 @@
 | Campo | Valor |
 |---|---|
 | Proyecto | `PBI_Indicadores` |
-| Fase | Fase 7 — Creación de tablas de hechos (ver `Specs/02_plan_implementacion_informe_powerbi_connect.md`) |
-| Documentos de referencia | `Specs/01...`, `Specs/02...`, `Outputs/08_resultado_fase_6_tratamiento_nulos_na_respuestas_abiertas.md` |
+| Fase | Fase 7 — Creación de tablas de hechos (ver [Specs/02_plan_implementacion_informe_powerbi_connect.md](../Specs/02_plan_implementacion_informe_powerbi_connect.md)) |
+| Documentos de referencia | `Specs/01...`, `Specs/02...`, [Outputs/08_resultado_fase_6_tratamiento_nulos_na_respuestas_abiertas.md](08_resultado_fase_6_tratamiento_nulos_na_respuestas_abiertas.md) |
 | Fecha | 2026-07-08 |
 | Archivos modificados/creados | `expressions.tmdl`, `model.tmdl`, `tables/Fact_CalidadLlamadas.tmdl` (nuevo), `tables/Fact_SatisfaccionCapacitacion.tmdl` (nuevo), `tables/Fact_MotivacionActividad.tmdl` (nuevo) |
 

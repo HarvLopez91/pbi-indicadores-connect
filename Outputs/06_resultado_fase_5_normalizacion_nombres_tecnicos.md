@@ -3,8 +3,8 @@
 | Campo | Valor |
 |---|---|
 | Proyecto | `PBI_Indicadores` |
-| Fase | Fase 5 — Normalización de nombres técnicos de tablas y columnas (ver `Specs/02_plan_implementacion_informe_powerbi_connect.md`) |
-| Documentos de referencia | `Specs/01...`, `Specs/02...`, `Outputs/05_resultado_fase_4_limpieza_transformacion_powerquery.md` |
+| Fase | Fase 5 — Normalización de nombres técnicos de tablas y columnas (ver [Specs/02_plan_implementacion_informe_powerbi_connect.md](../Specs/02_plan_implementacion_informe_powerbi_connect.md)) |
+| Documentos de referencia | `Specs/01...`, `Specs/02...`, [Outputs/05_resultado_fase_4_limpieza_transformacion_powerquery.md](05_resultado_fase_4_limpieza_transformacion_powerquery.md) |
 | Fecha | 2026-07-08 |
 | **Estado** | **DETENIDA por regla obligatoria — MCP no disponible para validar el Power BI Desktop abierto** |
 | Archivos modificados en el PBIP | Ninguno |
@@ -50,7 +50,7 @@ Esto confirma que, en principio, **sí sería técnicamente posible** conectar u
 
 ## Mapeo de columnas
 
-No se aplicó ningún renombrado al modelo. Sin embargo, para no perder avance útil mientras se resuelve el bloqueo, se preparó un **mapeo propuesto** (columna original → nombre técnico `PascalCase`) basado en la recomendación ya documentada en `Specs/01_analisis_de_impacto_informe_powerbi_connect.md` (sección 4.3), listo para aplicarse tan pronto se desbloquee esta fase. Ver `Outputs/06_mapeo_columnas_fase_5.md` — está marcado explícitamente como **PROPUESTA, no aplicada**.
+No se aplicó ningún renombrado al modelo. Sin embargo, para no perder avance útil mientras se resuelve el bloqueo, se preparó un **mapeo propuesto** (columna original → nombre técnico `PascalCase`) basado en la recomendación ya documentada en [Specs/01_analisis_de_impacto_informe_powerbi_connect.md](../Specs/01_analisis_de_impacto_informe_powerbi_connect.md) (sección 4.3), listo para aplicarse tan pronto se desbloquee esta fase. Ver [Outputs/06_mapeo_columnas_fase_5.md](06_mapeo_columnas_fase_5.md) — está marcado explícitamente como **PROPUESTA, no aplicada**.
 
 ## Decisión sobre carga al modelo
 
@@ -69,12 +69,12 @@ No aplica — no se creó ninguna tabla `Fact_*`, por lo que no hay nada que car
 
 Ninguno dentro de `PBI/`. Únicamente se crean en esta operación:
 - `Outputs/06_resultado_fase_5_normalizacion_nombres_tecnicos.md` (este documento).
-- `Outputs/06_mapeo_columnas_fase_5.md` (mapeo propuesto, no aplicado).
+- [Outputs/06_mapeo_columnas_fase_5.md](06_mapeo_columnas_fase_5.md) (mapeo propuesto, no aplicado).
 
 ## Resultado del commit
 
 - Mensaje: `docs(outputs): reportar bloqueo de Fase 5 por falta de servidor MCP para Power BI Desktop` (no se usó el mensaje sugerido `refactor(powerquery): normalizar nombres tecnicos de tablas y columnas` porque ningún renombrado se aplicó realmente — usar ese mensaje habría sido inexacto).
-- Archivos incluidos: `Outputs/06_resultado_fase_5_normalizacion_nombres_tecnicos.md` (este documento), `Outputs/06_mapeo_columnas_fase_5.md` (mapeo propuesto).
+- Archivos incluidos: `Outputs/06_resultado_fase_5_normalizacion_nombres_tecnicos.md` (este documento), [Outputs/06_mapeo_columnas_fase_5.md](06_mapeo_columnas_fase_5.md) (mapeo propuesto).
 - Ningún archivo de `PBI/` ni de `Data/` incluido — no hubo cambios de PBIP que comitear.
 - No se realizó `push` a ningún remoto.
 

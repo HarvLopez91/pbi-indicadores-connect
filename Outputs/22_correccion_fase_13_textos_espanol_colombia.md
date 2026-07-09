@@ -11,11 +11,11 @@
 
 Al iniciar la corrección, el repositorio no estaba limpio:
 
-- `AGENTS.md` estaba sin seguimiento.
+- [AGENTS.md](../AGENTS.md) estaba sin seguimiento.
 - Archivos PBIR del Home aparecían modificados, principalmente por cambios mecánicos de fin de archivo generados al abrir/guardar en Power BI Desktop.
 - `PBI/PBI_Indicadores.SemanticModel/definition/cultures/es-ES.tmdl` aparecía modificado con metadatos lingüísticos generados por Power BI Desktop.
 
-`AGENTS.md` y `cultures/es-ES.tmdl` no se incluyen en este commit.
+[AGENTS.md](../AGENTS.md) y `cultures/es-ES.tmdl` no se incluyen en este commit.
 
 ## Archivos revisados
 
@@ -27,10 +27,10 @@ Se revisaron textos visibles y metadatos del reporte en:
 
 También se consultaron:
 
-- `Outputs/21_cierre_fase_13_home_implementado.md`
-- `AGENTS.md`
-- `Specs/01_analisis_de_impacto_informe_powerbi_connect.md`
-- `Specs/02_plan_implementacion_informe_powerbi_connect.md`
+- [Outputs/21_cierre_fase_13_home_implementado.md](21_cierre_fase_13_home_implementado.md)
+- [AGENTS.md](../AGENTS.md)
+- [Specs/01_analisis_de_impacto_informe_powerbi_connect.md](../Specs/01_analisis_de_impacto_informe_powerbi_connect.md)
+- [Specs/02_plan_implementacion_informe_powerbi_connect.md](../Specs/02_plan_implementacion_informe_powerbi_connect.md)
 
 ## Textos corregidos
 
@@ -89,13 +89,13 @@ Mensaje de commit:
 
 `fix(report): corregir textos del home en español`
 
-El commit incluye únicamente la corrección de textos visibles del Home y este documento. No incluye `AGENTS.md`, `Data/*.xlsx` ni cambios del modelo semántico.
+El commit incluye únicamente la corrección de textos visibles del Home y este documento. No incluye [AGENTS.md](../AGENTS.md), `Data/*.xlsx` ni cambios del modelo semántico.
 
 ## Estado final de `git status`
 
 Estado esperado tras el commit:
 
-- `AGENTS.md` sigue sin seguimiento.
+- [AGENTS.md](../AGENTS.md) sigue sin seguimiento.
 - Persisten cambios no incluidos generados previamente por Power BI Desktop en archivos PBIR sin contenido funcional nuevo y en `cultures/es-ES.tmdl`.
 
 ## Recomendación para avanzar a Fase 14

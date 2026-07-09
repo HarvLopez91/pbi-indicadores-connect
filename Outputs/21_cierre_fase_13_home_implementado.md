@@ -15,7 +15,7 @@ Estado observado al iniciar la implementacion:
 ?? AGENTS.md
 ```
 
-`AGENTS.md` seguia sin seguimiento y no corresponde a esta fase. Se mantiene fuera del commit.
+[AGENTS.md](../AGENTS.md) seguia sin seguimiento y no corresponde a esta fase. Se mantiene fuera del commit.
 
 ## Archivos modificados
 
@@ -115,7 +115,7 @@ Mensaje de commit:
 
 `feat(report): implementar home landing page connect`
 
-Archivos incluidos: solo cambios relacionados con el Home y este documento. No se incluye `AGENTS.md`.
+Archivos incluidos: solo cambios relacionados con el Home y este documento. No se incluye [AGENTS.md](../AGENTS.md).
 
 ## Estado final de `git status`
 

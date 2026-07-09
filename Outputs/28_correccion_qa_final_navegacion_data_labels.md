@@ -6,7 +6,7 @@
 
 ## 1. Contexto y objetivo
 
-Tras la Fase 15 (`Outputs/26_resultado_fase_15_navegacion_paginas.md`) y su corrección QA previa (`Outputs/27_correccion_fase_15_qa_visual_navegacion_etiquetas.md`), el usuario reportó que en la práctica seguía percibiendo que debía ubicar el cursor con precisión para que la navegación por clic funcionara, pese a que la auditoría estructural de Outputs/27 no había encontrado tarjetas o botones con solo una parte clicable. Se descartó la hipótesis de "percepción del cursor" y se solicitó una solución técnica concreta: superponer un rectángulo transparente por cada módulo de navegación, con acción `PageNavigation` propia, que cubra el área visual completa del módulo (tarjeta + acento + texto, o botón + etiqueta).
+Tras la Fase 15 ([Outputs/26_resultado_fase_15_navegacion_paginas.md](26_resultado_fase_15_navegacion_paginas.md)) y su corrección QA previa ([Outputs/27_correccion_fase_15_qa_visual_navegacion_etiquetas.md](27_correccion_fase_15_qa_visual_navegacion_etiquetas.md)), el usuario reportó que en la práctica seguía percibiendo que debía ubicar el cursor con precisión para que la navegación por clic funcionara, pese a que la auditoría estructural de Outputs/27 no había encontrado tarjetas o botones con solo una parte clicable. Se descartó la hipótesis de "percepción del cursor" y se solicitó una solución técnica concreta: superponer un rectángulo transparente por cada módulo de navegación, con acción `PageNavigation` propia, que cubra el área visual completa del módulo (tarjeta + acento + texto, o botón + etiqueta).
 
 Se pidió además reconfirmar que las etiquetas de datos de los gráficos están activas y que no queda texto corrupto (`capacitaci?n`, `motivaci?n`, etc.) en el reporte.
 
@@ -111,7 +111,7 @@ Untracked files:
 
 ## 7. Qué debe verificar el usuario en Power BI Desktop
 
-Como se indica en `CLAUDE.md`/`AGENTS.md`, este entorno no puede abrir ni interactuar con la interfaz gráfica de Power BI Desktop, por lo que el cambio debe validarse manualmente:
+Como se indica en [CLAUDE.md](../CLAUDE.md)/[AGENTS.md](../AGENTS.md), este entorno no puede abrir ni interactuar con la interfaz gráfica de Power BI Desktop, por lo que el cambio debe validarse manualmente:
 
 1. Abrir/reabrir `PBI/PBI_Indicadores.pbip` en Power BI Desktop.
 2. En Home, hacer clic en distintas zonas de cada una de las 6 tarjetas (esquinas, borde del acento naranja, sobre el texto, en espacio "vacío" dentro del área blanca) y confirmar que **todas** navegan a su página destino.

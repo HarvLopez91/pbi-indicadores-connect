@@ -3,7 +3,7 @@
 | Campo | Valor |
 |---|---|
 | Proyecto | `PBI_Indicadores` |
-| Fase ejecutada | Fase 3 — Ingesta de archivos desde la carpeta `Data` (ver `Specs/02_plan_implementacion_informe_powerbi_connect.md`) |
+| Fase ejecutada | Fase 3 — Ingesta de archivos desde la carpeta `Data` (ver [Specs/02_plan_implementacion_informe_powerbi_connect.md](../Specs/02_plan_implementacion_informe_powerbi_connect.md)) |
 | Documentos de referencia | `Specs/01...`, `Specs/02...`, `Outputs/01...`, `Outputs/02...` |
 | Fecha | 2026-07-08 |
 | Archivos modificados | `PBI/PBI_Indicadores.SemanticModel/definition/expressions.tmdl` (nuevo) |

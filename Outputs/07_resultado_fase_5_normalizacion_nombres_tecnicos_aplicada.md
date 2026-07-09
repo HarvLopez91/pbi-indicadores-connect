@@ -3,8 +3,8 @@
 | Campo | Valor |
 |---|---|
 | Proyecto | `PBI_Indicadores` |
-| Fase | Fase 5 — Normalización de nombres técnicos de tablas y columnas (ver `Specs/02_plan_implementacion_informe_powerbi_connect.md`) |
-| Documentos de referencia | `Specs/01...`, `Specs/02...`, `Outputs/05...`, `Outputs/06_resultado_fase_5_normalizacion_nombres_tecnicos.md`, `Outputs/06_mapeo_columnas_fase_5.md` |
+| Fase | Fase 5 — Normalización de nombres técnicos de tablas y columnas (ver [Specs/02_plan_implementacion_informe_powerbi_connect.md](../Specs/02_plan_implementacion_informe_powerbi_connect.md)) |
+| Documentos de referencia | `Specs/01...`, `Specs/02...`, `Outputs/05...`, [Outputs/06_resultado_fase_5_normalizacion_nombres_tecnicos.md](06_resultado_fase_5_normalizacion_nombres_tecnicos.md), [Outputs/06_mapeo_columnas_fase_5.md](06_mapeo_columnas_fase_5.md) |
 | Fecha | 2026-07-08 |
 | Estado | **Ejecutada** (desbloqueada sin MCP, con validación manual del usuario) |
 | Archivo modificado | `PBI/PBI_Indicadores.SemanticModel/definition/expressions.tmdl` |
@@ -17,7 +17,7 @@
 
 ## Motivo por el cual se desbloqueó la Fase 5 sin MCP
 
-En la ejecución anterior (`Outputs/06_resultado_fase_5_normalizacion_nombres_tecnicos.md`) la fase quedó detenida porque no existe ningún servidor MCP en este entorno capaz de inspeccionar una sesión activa de Power BI Desktop. En esta ejecución, el usuario **autorizó explícitamente continuar sin MCP**, aportando validación manual propia:
+En la ejecución anterior ([Outputs/06_resultado_fase_5_normalizacion_nombres_tecnicos.md](06_resultado_fase_5_normalizacion_nombres_tecnicos.md)) la fase quedó detenida porque no existe ningún servidor MCP en este entorno capaz de inspeccionar una sesión activa de Power BI Desktop. En esta ejecución, el usuario **autorizó explícitamente continuar sin MCP**, aportando validación manual propia:
 
 - Confirmó que el PBIP abre correctamente en Power BI Desktop.
 - Confirmó que el Editor de Power Query muestra las consultas creadas en la Fase 4.
@@ -28,7 +28,7 @@ Esto reemplaza, para esta ejecución puntual, la validación por MCP exigida ori
 
 ## Consultas `Fact_*` creadas
 
-Las 3 se crearon como **expresiones compartidas de M** (`expression`, no `table`), igual que en las fases anteriores, cada una referenciando su consulta `*_Limpio` correspondiente por nombre y aplicando `Table.RenameColumns` con el mapeo de `Outputs/06_mapeo_columnas_fase_5.md`:
+Las 3 se crearon como **expresiones compartidas de M** (`expression`, no `table`), igual que en las fases anteriores, cada una referenciando su consulta `*_Limpio` correspondiente por nombre y aplicando `Table.RenameColumns` con el mapeo de [Outputs/06_mapeo_columnas_fase_5.md](06_mapeo_columnas_fase_5.md):
 
 | Consulta | Basada en | Carga al modelo |
 |---|---|---|
@@ -97,7 +97,7 @@ Las consultas `Base_*` y `*_Limpio` de las Fases 3 y 4 se conservan intactas y s
 
 ## Columnas omitidas y justificación
 
-**`Nombre completo (Mayúscula)` en `Fact_MotivacionActividad`** — se **eliminó** (`Table.RemoveColumns`), no se renombró. Justificación, ya documentada en `Outputs/06_mapeo_columnas_fase_5.md`:
+**`Nombre completo (Mayúscula)` en `Fact_MotivacionActividad`** — se **eliminó** (`Table.RemoveColumns`), no se renombró. Justificación, ya documentada en [Outputs/06_mapeo_columnas_fase_5.md](06_mapeo_columnas_fase_5.md):
 - La columna está **100% vacía** (5/5 filas, confirmado en `Specs/01` §3.3).
 - No forma parte del grano/columnas recomendadas para `Fact_MotivacionActividad` en `Specs/01` §4.2/4.3 — la encuesta de motivación es anónima por diseño.
 - Mantenerla sin datos y sin nombre técnico habría dejado una columna "huérfana" en la tabla de hechos final; eliminarla es más limpio que renombrarla o dejarla oculta.

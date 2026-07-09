@@ -9,7 +9,7 @@ Tambien se confirmaron dos sincronizaciones previas ya versionadas:
 - `14a613f docs: agregar guia operativa del repositorio`
 - `b09c5cb chore(powerbi): sincronizar metadatos automaticos de desktop`
 
-`AGENTS.md` ya esta versionado como guia operativa del repositorio y no quedo como archivo sin seguimiento.
+[AGENTS.md](../AGENTS.md) ya esta versionado como guia operativa del repositorio y no quedo como archivo sin seguimiento.
 
 ## Cambios revisados de Power BI Desktop
 

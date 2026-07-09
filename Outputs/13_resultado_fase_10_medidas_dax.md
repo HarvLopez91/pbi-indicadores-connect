@@ -3,8 +3,8 @@
 | Campo | Valor |
 |---|---|
 | Proyecto | `PBI_Indicadores` |
-| Fase | Fase 10 — Creación de medidas DAX (ver `Specs/02_plan_implementacion_informe_powerbi_connect.md`) |
-| Documentos de referencia | `Specs/01...`, `Specs/02...`, `Outputs/12_resultado_fase_9_modelo_relaciones.md` |
+| Fase | Fase 10 — Creación de medidas DAX (ver [Specs/02_plan_implementacion_informe_powerbi_connect.md](../Specs/02_plan_implementacion_informe_powerbi_connect.md)) |
+| Documentos de referencia | `Specs/01...`, `Specs/02...`, [Outputs/12_resultado_fase_9_modelo_relaciones.md](12_resultado_fase_9_modelo_relaciones.md) |
 | Fecha | 2026-07-08 |
 | Archivos nuevos | `tables/_Medidas Generales.tmdl`, `tables/_Medidas Calidad.tmdl`, `tables/_Medidas Capacitacion.tmdl`, `tables/_Medidas Motivacion.tmdl` |
 | Archivo modificado | `model.tmdl` |

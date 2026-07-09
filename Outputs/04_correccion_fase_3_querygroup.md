@@ -4,7 +4,7 @@
 |---|---|
 | Proyecto | `PBI_Indicadores` |
 | Origen del error | Reportado por el usuario al abrir `PBI_Indicadores.pbip` en Power BI Desktop, tras la Fase 3 |
-| Documentos de referencia | `Specs/01...`, `Specs/02...`, `Outputs/03_resultado_fase_3_ingesta_archivos_data.md` |
+| Documentos de referencia | `Specs/01...`, `Specs/02...`, [Outputs/03_resultado_fase_3_ingesta_archivos_data.md](03_resultado_fase_3_ingesta_archivos_data.md) |
 | Fecha | 2026-07-08 |
 | Archivo corregido | `PBI/PBI_Indicadores.SemanticModel/definition/expressions.tmdl` |
 

@@ -3,8 +3,8 @@
 | Campo | Valor |
 |---|---|
 | Proyecto | `PBI_Indicadores` |
-| Fase | Cierre complementario de la Fase 11 — Validación de indicadores (ver `Outputs/15_resultado_fase_11_validacion_indicadores.md`) |
-| Documentos de referencia | `Outputs/15_resultado_fase_11_validacion_indicadores.md`, `Outputs/13_resultado_fase_10_medidas_dax.md` |
+| Fase | Cierre complementario de la Fase 11 — Validación de indicadores (ver [Outputs/15_resultado_fase_11_validacion_indicadores.md](15_resultado_fase_11_validacion_indicadores.md)) |
+| Documentos de referencia | [Outputs/15_resultado_fase_11_validacion_indicadores.md](15_resultado_fase_11_validacion_indicadores.md), [Outputs/13_resultado_fase_10_medidas_dax.md](13_resultado_fase_10_medidas_dax.md) |
 | Fecha de validación | 2026-07-08 |
 | Realizada por | Usuario (validación visual directa en Power BI Desktop) |
 

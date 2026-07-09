@@ -3,7 +3,7 @@
 | Campo | Valor |
 |---|---|
 | Proyecto | `PBI_Indicadores` |
-| Fase | Fase 8 — Creación de dimensiones (ver `Specs/02_plan_implementacion_informe_powerbi_connect.md`) |
+| Fase | Fase 8 — Creación de dimensiones (ver [Specs/02_plan_implementacion_informe_powerbi_connect.md](../Specs/02_plan_implementacion_informe_powerbi_connect.md)) |
 | Documentos de referencia | `Specs/01...`, `Specs/02...`, `Outputs/09...`, `Outputs/10...` |
 | Fecha | 2026-07-08 |
 | Archivos nuevos | `tables/Dim_Calendario.tmdl`, `tables/Dim_CallCenter.tmdl`, `tables/Dim_Jornada.tmdl` |

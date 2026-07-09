@@ -4,7 +4,7 @@
 |---|---|
 | Proyecto | `PBI_Indicadores` |
 | Fase | Corrección QA transversal previa a Fase 16 |
-| Documentos de referencia | `AGENTS.md`, `Specs/01...`, `Specs/02...`, `Outputs/23...`, `Outputs/24...`, `Outputs/25...`, `Outputs/26...` |
+| Documentos de referencia | [AGENTS.md](../AGENTS.md), `Specs/01...`, `Specs/02...`, `Outputs/23...`, `Outputs/24...`, `Outputs/25...`, `Outputs/26...` |
 | Fecha | 2026-07-08 |
 
 ---
@@ -16,7 +16,7 @@ Al iniciar existían 177 archivos modificados por una sesión previa de Power BI
 - La mayoría del cambio era ruido de guardado (`$schema` de `visualContainer` bajado de `2.9.0` a `2.4.0`, salto de línea final removido).
 - Un subconjunto real (16 segmentadores + 2 gráficos por página, ~19 visuales) perdió propiedades de formato manual que se habían aplicado en la Fase 14 (`fontSize` de encabezado/ítems de segmentador, `color` de etiqueta de dato en gráficos, `horizontalTextAlignment` de un textbox de Home).
 
-Siguiendo la convención ya establecida en este repositorio (`Outputs/11`, `AGENTS.md`), este estado se comiteó por separado **antes** de iniciar la corrección propia:
+Siguiendo la convención ya establecida en este repositorio (`Outputs/11`, [AGENTS.md](../AGENTS.md)), este estado se comiteó por separado **antes** de iniciar la corrección propia:
 
 `bab5cee chore(report): sincronizar cambios automaticos de Power BI Desktop`
 

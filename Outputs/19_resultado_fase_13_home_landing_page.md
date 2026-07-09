@@ -16,17 +16,17 @@ Estado inicial observado antes de modificar archivos de reporte:
 ?? AGENTS.md
 ```
 
-El unico cambio pendiente era `AGENTS.md` sin seguimiento, no relacionado con la Fase 13. Se mantuvo fuera del commit de esta fase. Por instruccion del usuario, el contenido de `AGENTS.md` quedo en espanol, pero no se incluyo en el commit.
+El unico cambio pendiente era [AGENTS.md](../AGENTS.md) sin seguimiento, no relacionado con la Fase 13. Se mantuvo fuera del commit de esta fase. Por instruccion del usuario, el contenido de [AGENTS.md](../AGENTS.md) quedo en espanol, pero no se incluyo en el commit.
 
 ## Contexto revisado
 
 Documentos fuente revisados:
 
-- `Specs/01_analisis_de_impacto_informe_powerbi_connect.md`
-- `Specs/02_plan_implementacion_informe_powerbi_connect.md`
-- `Outputs/16_cierre_fase_11_validacion_visual_powerbi.md`
-- `Outputs/17_resultado_fase_12_tema_visual_connect.md`
-- `Outputs/18_correccion_fase_12_tema_json_bold.md`
+- [Specs/01_analisis_de_impacto_informe_powerbi_connect.md](../Specs/01_analisis_de_impacto_informe_powerbi_connect.md)
+- [Specs/02_plan_implementacion_informe_powerbi_connect.md](../Specs/02_plan_implementacion_informe_powerbi_connect.md)
+- [Outputs/16_cierre_fase_11_validacion_visual_powerbi.md](16_cierre_fase_11_validacion_visual_powerbi.md)
+- [Outputs/17_resultado_fase_12_tema_visual_connect.md](17_resultado_fase_12_tema_visual_connect.md)
+- [Outputs/18_correccion_fase_12_tema_json_bold.md](18_correccion_fase_12_tema_json_bold.md)
 
 La Fase 11 esta cerrada con medidas validadas visualmente, la Fase 12 fue corregida y el tema Connect fue importado correctamente en Power BI Desktop.
 
@@ -146,7 +146,7 @@ Estilo: texto pequeno, gris medio, sin competir con los KPIs.
 
 ## Validaciones realizadas
 
-- Se ejecuto `git status` antes de modificar: solo existia `AGENTS.md` sin seguimiento.
+- Se ejecuto `git status` antes de modificar: solo existia [AGENTS.md](../AGENTS.md) sin seguimiento.
 - Se inspecciono `pages.json`, `page.json` y `report.json`.
 - Se identifico la pagina vacia actual.
 - Se renombro la pagina a `Home`.
@@ -190,7 +190,7 @@ Commit previsto:
 
 `feat(report): crear home landing page connect`
 
-El commit debe incluir solo `page.json` y este documento. `AGENTS.md` queda fuera por ser un cambio no relacionado con Fase 13.
+El commit debe incluir solo `page.json` y este documento. [AGENTS.md](../AGENTS.md) queda fuera por ser un cambio no relacionado con Fase 13.
 
 ## Estado final de `git status`
 

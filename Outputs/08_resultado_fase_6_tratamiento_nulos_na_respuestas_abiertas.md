@@ -3,8 +3,8 @@
 | Campo | Valor |
 |---|---|
 | Proyecto | `PBI_Indicadores` |
-| Fase | Fase 6 — Tratamiento de valores nulos, `"N/A"` y respuestas abiertas (ver `Specs/02_plan_implementacion_informe_powerbi_connect.md`) |
-| Documentos de referencia | `Specs/01...`, `Specs/02...`, `Outputs/07_resultado_fase_5_normalizacion_nombres_tecnicos_aplicada.md` |
+| Fase | Fase 6 — Tratamiento de valores nulos, `"N/A"` y respuestas abiertas (ver [Specs/02_plan_implementacion_informe_powerbi_connect.md](../Specs/02_plan_implementacion_informe_powerbi_connect.md)) |
+| Documentos de referencia | `Specs/01...`, `Specs/02...`, [Outputs/07_resultado_fase_5_normalizacion_nombres_tecnicos_aplicada.md](07_resultado_fase_5_normalizacion_nombres_tecnicos_aplicada.md) |
 | Fecha | 2026-07-08 |
 | Archivo modificado | `PBI/PBI_Indicadores.SemanticModel/definition/expressions.tmdl` |
 
@@ -119,7 +119,7 @@ Se agregaron 2 pasos: la definición de la lista `ValoresSinComentario` y la uni
 Se confirmó (releyendo `expressions.tmdl` y los datos reales) que:
 - La columna `Nombre completo (Mayúscula)` **no existe** en `Fact_MotivacionActividad` — fue eliminada en la Fase 5 (`Table.RemoveColumns`) y **no se recreó** en esta fase.
 - Se revalidó contra los datos reales: las 5 filas actuales tienen esa columna 100% vacía en la fuente original, confirmando que la decisión de la Fase 5 sigue siendo correcta.
-- **Esta fuente no permite análisis por asesor individual** — la encuesta de motivación es anónima por diseño del formulario. Cualquier página o visual futuro construido sobre `Fact_MotivacionActividad` debe limitarse a desgloses por `CallCenter`/`Jornada`, nunca por asesor (ya documentado como limitación en `Specs/01` §3.3 y §6, y en `Outputs/06_mapeo_columnas_fase_5.md`).
+- **Esta fuente no permite análisis por asesor individual** — la encuesta de motivación es anónima por diseño del formulario. Cualquier página o visual futuro construido sobre `Fact_MotivacionActividad` debe limitarse a desgloses por `CallCenter`/`Jornada`, nunca por asesor (ya documentado como limitación en `Specs/01` §3.3 y §6, y en [Outputs/06_mapeo_columnas_fase_5.md](06_mapeo_columnas_fase_5.md)).
 
 ## Tratamiento aplicado a comentarios abiertos
 

@@ -3,8 +3,8 @@
 | Campo | Valor |
 |---|---|
 | Proyecto | `PBI_Indicadores` |
-| Fase | Fase 11 — Validación de indicadores con los datos actuales (ver `Specs/02_plan_implementacion_informe_powerbi_connect.md`) |
-| Documentos de referencia | `Outputs/13_resultado_fase_10_medidas_dax.md`, `Outputs/14_correccion_fase_10_description_tmdl.md` |
+| Fase | Fase 11 — Validación de indicadores con los datos actuales (ver [Specs/02_plan_implementacion_informe_powerbi_connect.md](../Specs/02_plan_implementacion_informe_powerbi_connect.md)) |
+| Documentos de referencia | [Outputs/13_resultado_fase_10_medidas_dax.md](13_resultado_fase_10_medidas_dax.md), [Outputs/14_correccion_fase_10_description_tmdl.md](14_correccion_fase_10_description_tmdl.md) |
 | Fecha | 2026-07-08 |
 | Archivos modificados en esta ejecución | Ninguno propio de la fase (ver sección de sincronización previa) |
 

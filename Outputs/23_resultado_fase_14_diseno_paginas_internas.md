@@ -13,9 +13,9 @@ Al iniciar la ejecución existían cambios pendientes no relacionados directamen
 
 - Reescrituras automáticas de Power BI Desktop en archivos PBIR del Home, principalmente fin de archivo.
 - Metadatos lingüísticos automáticos en `PBI/PBI_Indicadores.SemanticModel/definition/cultures/es-ES.tmdl`.
-- `AGENTS.md` sin seguimiento.
+- [AGENTS.md](../AGENTS.md) sin seguimiento.
 
-`AGENTS.md` no se incluye en ningún commit de esta fase.
+[AGENTS.md](../AGENTS.md) no se incluye en ningún commit de esta fase.
 
 ## Cambios automáticos sincronizados
 
@@ -174,7 +174,7 @@ Mensaje de commit:
 
 `feat(report): crear paginas internas del informe connect`
 
-El commit incluye solo páginas internas, `pages.json` y este documento. No incluye `AGENTS.md` ni `Data/*.xlsx`.
+El commit incluye solo páginas internas, `pages.json` y este documento. No incluye [AGENTS.md](../AGENTS.md) ni `Data/*.xlsx`.
 
 ## Estado final de `git status`
 

@@ -4,7 +4,7 @@
 |---|---|
 | Proyecto | `PBI_Indicadores` |
 | Origen del error | Reportado por el usuario al abrir `PBI_Indicadores.pbip` en Power BI Desktop, tras la Fase 7 |
-| Documentos de referencia | `Specs/01...`, `Specs/02...`, `Outputs/09_resultado_fase_7_creacion_tablas_hechos.md` |
+| Documentos de referencia | `Specs/01...`, `Specs/02...`, [Outputs/09_resultado_fase_7_creacion_tablas_hechos.md](09_resultado_fase_7_creacion_tablas_hechos.md) |
 | Fecha | 2026-07-08 |
 | Archivos corregidos | `tables/Fact_CalidadLlamadas.tmdl`, `tables/Fact_SatisfaccionCapacitacion.tmdl`, `tables/Fact_MotivacionActividad.tmdl` |
 

@@ -3,8 +3,8 @@
 | Campo | Valor |
 |---|---|
 | Proyecto | `PBI_Indicadores` |
-| Fase | Fase 9 — Diseño del modelo de datos y relaciones (ver `Specs/02_plan_implementacion_informe_powerbi_connect.md`) |
-| Documentos de referencia | `Specs/01...`, `Specs/02...`, `Outputs/11_resultado_fase_8_creacion_dimensiones.md` |
+| Fase | Fase 9 — Diseño del modelo de datos y relaciones (ver [Specs/02_plan_implementacion_informe_powerbi_connect.md](../Specs/02_plan_implementacion_informe_powerbi_connect.md)) |
+| Documentos de referencia | `Specs/01...`, `Specs/02...`, [Outputs/11_resultado_fase_8_creacion_dimensiones.md](11_resultado_fase_8_creacion_dimensiones.md) |
 | Fecha | 2026-07-08 |
 | Archivo modificado | `relationships.tmdl` |
 
@@ -106,7 +106,7 @@ Se confirmó que Power BI Desktop había creado, de forma automática (función 
 
 ## Estado final de `git status`
 
-`On branch master / nothing to commit, working tree clean` (respecto a los archivos de esta fase) — confirmado tras el commit. `CLAUDE.md` se gestiona en un commit separado, ver `Outputs/` u otro registro si aplica.
+`On branch master / nothing to commit, working tree clean` (respecto a los archivos de esta fase) — confirmado tras el commit. [CLAUDE.md](../CLAUDE.md) se gestiona en un commit separado, ver `Outputs/` u otro registro si aplica.
 
 ## Recomendación para avanzar o no a Fase 10
 

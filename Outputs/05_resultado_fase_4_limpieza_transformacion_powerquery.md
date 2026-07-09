@@ -3,7 +3,7 @@
 | Campo | Valor |
 |---|---|
 | Proyecto | `PBI_Indicadores` |
-| Fase ejecutada | Fase 4 — Limpieza y transformación de datos en Power Query (ver `Specs/02_plan_implementacion_informe_powerbi_connect.md`) |
+| Fase ejecutada | Fase 4 — Limpieza y transformación de datos en Power Query (ver [Specs/02_plan_implementacion_informe_powerbi_connect.md](../Specs/02_plan_implementacion_informe_powerbi_connect.md)) |
 | Documentos de referencia | `Specs/01...`, `Specs/02...`, `Outputs/03...`, `Outputs/04...` |
 | Fecha | 2026-07-08 |
 | Archivo modificado | `PBI/PBI_Indicadores.SemanticModel/definition/expressions.tmdl` |

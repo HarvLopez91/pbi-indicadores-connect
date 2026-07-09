@@ -16,7 +16,7 @@ Estado observado al iniciar esta validacion:
 ?? AGENTS.md
 ```
 
-`AGENTS.md` sigue sin seguimiento y no esta relacionado con esta fase. Se mantiene fuera del commit.
+[AGENTS.md](../AGENTS.md) sigue sin seguimiento y no esta relacionado con esta fase. Se mantiene fuera del commit.
 
 ## Archivos modificados por Power BI Desktop
 
@@ -25,7 +25,7 @@ No se detectaron archivos versionables modificados por Power BI Desktop despues 
 Verificaciones realizadas:
 
 - `git diff --name-status`: sin cambios versionables.
-- `git status --short --ignored`: solo muestra `AGENTS.md` sin seguimiento y carpetas/archivos ignorados esperados (`Data/`, `.pbi/`, `cache.abf`, `localSettings.json`, `desktop.ini`).
+- `git status --short --ignored`: solo muestra [AGENTS.md](../AGENTS.md) sin seguimiento y carpetas/archivos ignorados esperados (`Data/`, `.pbi/`, `cache.abf`, `localSettings.json`, `desktop.ini`).
 - `git ls-files --others --exclude-standard PBI/PBI_Indicadores.Report Assets`: sin recursos nuevos versionables.
 - `PBI/PBI_Indicadores.Report/definition/pages/67eff42d82e1c9c15b84/page.json` conserva solo metadatos de pagina.
 
@@ -100,7 +100,7 @@ Archivos incluidos:
 
 - `Outputs/20_cierre_fase_13_home_visual_powerbi.md`
 
-No se incluye `AGENTS.md`, `Data/*.xlsx` ni cambios ajenos al cierre de Fase 13.
+No se incluye [AGENTS.md](../AGENTS.md), `Data/*.xlsx` ni cambios ajenos al cierre de Fase 13.
 
 ## Estado final de `git status`
 

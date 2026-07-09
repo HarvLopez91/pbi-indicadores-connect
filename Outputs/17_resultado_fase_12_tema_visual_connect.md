@@ -3,8 +3,8 @@
 | Campo | Valor |
 |---|---|
 | Proyecto | `PBI_Indicadores` |
-| Fase | Fase 12 — Creación de tema visual Connect Assistance (ver `Specs/02_plan_implementacion_informe_powerbi_connect.md`) |
-| Documentos de referencia | `Specs/01...`, `Specs/02...`, `Outputs/16_cierre_fase_11_validacion_visual_powerbi.md` |
+| Fase | Fase 12 — Creación de tema visual Connect Assistance (ver [Specs/02_plan_implementacion_informe_powerbi_connect.md](../Specs/02_plan_implementacion_informe_powerbi_connect.md)) |
+| Documentos de referencia | `Specs/01...`, `Specs/02...`, [Outputs/16_cierre_fase_11_validacion_visual_powerbi.md](16_cierre_fase_11_validacion_visual_powerbi.md) |
 | Fecha | 2026-07-08 |
 | Archivo nuevo | `Assets/theme/connect_assistance_theme.json` |
 

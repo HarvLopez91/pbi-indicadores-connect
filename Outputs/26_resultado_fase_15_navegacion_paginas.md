@@ -19,7 +19,7 @@ Se sincronizaron y documentaron los ajustes pendientes de Fase 14:
 
 Tambien quedaron versionados previamente:
 
-- `AGENTS.md` como guia operativa del repositorio.
+- [AGENTS.md](../AGENTS.md) como guia operativa del repositorio.
 - Metadatos automaticos seguros de Power BI Desktop.
 
 ## Ajuste realizado en segmentadores

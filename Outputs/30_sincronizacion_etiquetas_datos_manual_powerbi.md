@@ -74,7 +74,7 @@ Además, en 5 de los 8 gráficos el usuario aplicó manualmente un orden (`sortD
 - **`Fact_CalidadLlamadas.tmdl`, `Fact_MotivacionActividad.tmdl`, `Fact_SatisfaccionCapacitacion.tmdl`**: Desktop agregó la anotación `annotation PBI_ResultType = Table` al final de cada tabla (metadato estándar de tipo de resultado de partición, generado automáticamente al abrir/guardar). No se tocó ninguna expresión de Power Query, ninguna columna ni ningún tipo de dato.
 - **`cultures/es-ES.tmdl`**: Desktop agregó 3 bloques de metadatos lingüísticos (`PowerBI.VisualColumnRename`, `State: Suggested`) para las medidas `n Calidad`, `n Capacitacion` y `n Motivacion` — generados automáticamente porque esas 3 medidas se usaron por primera vez en visuales durante la Fase 16 (`Outputs/29`). Es el mismo mecanismo ya documentado en `Outputs/23` (Fase 14) para otras columnas.
 
-**Decisión: se conservan.** Son metadatos generados automáticamente por Power BI Desktop al abrir el modelo, no ediciones de Power Query, DAX, relaciones ni tablas en el sentido de lógica de negocio — coherente con la regla ya establecida en `AGENTS.md` y `CLAUDE.md` de no escribir `lineageTag`/`description`/`queryGroup` a mano, pero sí aceptar y sincronizar lo que Desktop genera.
+**Decisión: se conservan.** Son metadatos generados automáticamente por Power BI Desktop al abrir el modelo, no ediciones de Power Query, DAX, relaciones ni tablas en el sentido de lógica de negocio — coherente con la regla ya establecida en [AGENTS.md](../AGENTS.md) y [CLAUDE.md](../CLAUDE.md) de no escribir `lineageTag`/`description`/`queryGroup` a mano, pero sí aceptar y sincronizar lo que Desktop genera.
 
 ## 3. Cambios NO relacionados con etiquetas/formato
 

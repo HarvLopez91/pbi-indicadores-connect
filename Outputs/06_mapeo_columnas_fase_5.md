@@ -3,8 +3,8 @@
 | Campo | Valor |
 |---|---|
 | Proyecto | `PBI_Indicadores` |
-| Estado | **Propuesta de diseño — no aplicada al PBIP.** La Fase 5 quedó detenida (ver `Outputs/06_resultado_fase_5_normalizacion_nombres_tecnicos.md`) antes de renombrar ninguna columna o consulta. Este documento existe para no perder el trabajo de diseño ya validado en `Specs/01` y agilizar la ejecución una vez se desbloquee la fase. |
-| Base del mapeo | `Specs/01_analisis_de_impacto_informe_powerbi_connect.md`, sección 4.3 (columnas técnicas recomendadas por tabla de hechos) |
+| Estado | **Propuesta de diseño — no aplicada al PBIP.** La Fase 5 quedó detenida (ver [Outputs/06_resultado_fase_5_normalizacion_nombres_tecnicos.md](06_resultado_fase_5_normalizacion_nombres_tecnicos.md)) antes de renombrar ninguna columna o consulta. Este documento existe para no perder el trabajo de diseño ya validado en `Specs/01` y agilizar la ejecución una vez se desbloquee la fase. |
+| Base del mapeo | [Specs/01_analisis_de_impacto_informe_powerbi_connect.md](../Specs/01_analisis_de_impacto_informe_powerbi_connect.md), sección 4.3 (columnas técnicas recomendadas por tabla de hechos) |
 | Columna "original" | Se usa el nombre **ya trimeado en la Fase 4** (`*_Limpio`), no el crudo del Excel (que además tenía espacios al inicio/fin) |
 | Convención técnica | `PascalCase`, sin espacios, sin tildes, sin `¿?` — según `Specs/01` §4.5 |
 

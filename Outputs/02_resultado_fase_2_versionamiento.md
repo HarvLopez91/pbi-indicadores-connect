@@ -3,8 +3,8 @@
 | Campo | Valor |
 |---|---|
 | Proyecto | `PBI_Indicadores` |
-| Fase ejecutada | Fase 2 — Versionamiento recomendado del proyecto (ver `Specs/02_plan_implementacion_informe_powerbi_connect.md`) |
-| Documentos de referencia | `Specs/01_analisis_de_impacto_informe_powerbi_connect.md`, `Specs/02_plan_implementacion_informe_powerbi_connect.md`, `Outputs/01_resultado_fase_1_preparacion_pbip.md` |
+| Fase ejecutada | Fase 2 — Versionamiento recomendado del proyecto (ver [Specs/02_plan_implementacion_informe_powerbi_connect.md](../Specs/02_plan_implementacion_informe_powerbi_connect.md)) |
+| Documentos de referencia | [Specs/01_analisis_de_impacto_informe_powerbi_connect.md](../Specs/01_analisis_de_impacto_informe_powerbi_connect.md), [Specs/02_plan_implementacion_informe_powerbi_connect.md](../Specs/02_plan_implementacion_informe_powerbi_connect.md), [Outputs/01_resultado_fase_1_preparacion_pbip.md](01_resultado_fase_1_preparacion_pbip.md) |
 | Fecha | 2026-07-08 |
 | Acciones ejecutadas | `git init`, creación de `.gitignore` raíz, commit inicial |
 | Push a remoto | No ejecutado (no solicitado, no hay remoto configurado) |
@@ -55,7 +55,7 @@ Se verificó con `git add -A --dry-run` que, tras aplicar ambos `.gitignore`, **
 Justificación:
 - Los 3 archivos contienen **nombres reales de asesores, líderes y formadores** (dato personal), según lo documentado en `Specs/01` §3. Ejemplos ya identificados: nombres completos de asesores, variantes del nombre de un líder, nombre del auditor/PUSHER.
 - El historial de Git es **acumulativo y difícil de purgar**: aunque hoy no hay remoto ni push, versionar estos archivos desde el commit inicial obliga a una limpieza de historial (`filter-repo`/`BFG`) si más adelante se decide compartir o publicar el repositorio — mejor evitar el problema desde el origen.
-- **No se pierde reproducibilidad del diseño**: la estructura, columnas, tipos de dato, valores de muestra y hallazgos de calidad de estos 3 archivos ya están completamente documentados en `Specs/01_analisis_de_impacto_informe_powerbi_connect.md` (secciones 2.2 y 3), que sí está versionado.
+- **No se pierde reproducibilidad del diseño**: la estructura, columnas, tipos de dato, valores de muestra y hallazgos de calidad de estos 3 archivos ya están completamente documentados en [Specs/01_analisis_de_impacto_informe_powerbi_connect.md](../Specs/01_analisis_de_impacto_informe_powerbi_connect.md) (secciones 2.2 y 3), que sí está versionado.
 - El respaldo/versionado de los archivos originales lo sigue cubriendo la sincronización de OneDrive (ya visible en los metadatos `ReparsePoint` de estos archivos), de forma independiente a Git.
 - Si en el futuro se requiere un dataset de referencia versionable (por ejemplo, para pruebas automatizadas), se recomienda generar una copia anonimizada/seudonimizada en una carpeta separada (ej. `Data/samples/`) explícitamente incluida en Git, en vez de versionar los archivos reales.
 
@@ -103,9 +103,9 @@ Verificado con `git add -A --dry-run` tras crear el `.gitignore` raíz:
 - `PBI/PBI_Indicadores.SemanticModel/definition/model.tmdl`
 - `PBI/PBI_Indicadores.SemanticModel/definition/database.tmdl`
 - `PBI/PBI_Indicadores.SemanticModel/definition/cultures/es-ES.tmdl`
-- `Specs/01_analisis_de_impacto_informe_powerbi_connect.md`
-- `Specs/02_plan_implementacion_informe_powerbi_connect.md`
-- `Outputs/01_resultado_fase_1_preparacion_pbip.md`
+- [Specs/01_analisis_de_impacto_informe_powerbi_connect.md](../Specs/01_analisis_de_impacto_informe_powerbi_connect.md)
+- [Specs/02_plan_implementacion_informe_powerbi_connect.md](../Specs/02_plan_implementacion_informe_powerbi_connect.md)
+- [Outputs/01_resultado_fase_1_preparacion_pbip.md](01_resultado_fase_1_preparacion_pbip.md)
 - `Outputs/02_resultado_fase_2_versionamiento.md` (este documento)
 
 **Explícitamente excluidos** (por `.gitignore`): los 3 archivos `Data/*.xlsx`, `desktop.ini`, y cualquier `.pbi/localSettings.json` / `.pbi/cache.abf`.

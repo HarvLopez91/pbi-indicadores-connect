@@ -4,7 +4,7 @@
 |---|---|
 | Proyecto | `PBI_Indicadores` |
 | Origen del error | Reportado por el usuario al abrir `PBI_Indicadores.pbip` en Power BI Desktop, tras la Fase 10 |
-| Documentos de referencia | `Outputs/13_resultado_fase_10_medidas_dax.md` |
+| Documentos de referencia | [Outputs/13_resultado_fase_10_medidas_dax.md](13_resultado_fase_10_medidas_dax.md) |
 | Fecha | 2026-07-08 |
 | Archivos corregidos | `tables/_Medidas Generales.tmdl`, `tables/_Medidas Calidad.tmdl`, `tables/_Medidas Capacitacion.tmdl`, `tables/_Medidas Motivacion.tmdl` |
 
@@ -76,7 +76,7 @@ Confirmado con `git diff --stat`: los 4 archivos muestran exactamente `25 deleti
 
 **No avanzar a la Fase 11.** Antes de continuar:
 1. Confirmar en Power BI Desktop que el error de `description` ya no aparece.
-2. Si el PBIP abre limpio, retomar la validación que ya quedaba pendiente desde la Fase 10: confirmar que las 25 medidas calculan sin error y comparar sus valores contra los esperados documentados en `Outputs/13_resultado_fase_10_medidas_dax.md`.
+2. Si el PBIP abre limpio, retomar la validación que ya quedaba pendiente desde la Fase 10: confirmar que las 25 medidas calculan sin error y comparar sus valores contra los esperados documentados en [Outputs/13_resultado_fase_10_medidas_dax.md](13_resultado_fase_10_medidas_dax.md).
 3. Si aparece un error distinto, repórtalo con el texto exacto para corregirlo de forma dirigida.
 
 **Nota para futuras fases:** dado que ya van dos propiedades de metadatos (`lineageTag`, `description`) documentadas en TOM/TMDL general pero rechazadas por este analizador en vista previa al escribirse a mano, se recomienda evitar por defecto cualquier propiedad de metadatos "descriptiva" adicional (anotaciones, etc.) en archivos `.tmdl` editados externamente, y limitarse a las propiedades estrictamente estructurales ya validadas como seguras en este proyecto (`dataType`, `formatString`, `summarizeBy`, `sourceColumn`, `isHidden`, `mode`, `source`, `fromColumn`/`toColumn`, `joinOnDateBehavior`), salvo que Power BI Desktop las agregue automáticamente por su cuenta.
