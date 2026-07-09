@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Encuesta anónima: no permite análisis por asesor.",
+                    "value": "Encuesta anónima: no permite análisis por asesor individual. Interpretar con base en el n visible del piloto.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "11px",

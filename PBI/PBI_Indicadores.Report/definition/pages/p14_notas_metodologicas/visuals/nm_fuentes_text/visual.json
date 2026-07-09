@@ -6,7 +6,7 @@
     "y": 310,
     "z": 270,
     "width": 510,
-    "height": 38,
+    "height": 44,
     "tabOrder": 270
   },
   "visual": {
@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Tres exportaciones Excel de Google Forms: matriz de calidad de llamadas, satisfacción de capacitación y motivación de actividades comerciales.",
+                    "value": "Tres exportaciones Excel de Google Forms en la carpeta Data del proyecto: calidad de llamadas, satisfacción de capacitación y motivación comercial. Los datos se actualizan con cada refresco de estos archivos.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "10px",

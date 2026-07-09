@@ -6,7 +6,7 @@
     "y": 76,
     "z": 31,
     "width": 630,
-    "height": 22,
+    "height": 34,
     "tabOrder": 31
   },
   "visual": {
@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Alcance, fuentes, supuestos y limitaciones del piloto.",
+                    "value": "Seguimiento piloto de calidad de llamadas, satisfacción de capacitaciones y motivación comercial, por call center, jornada y fecha.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "12px",

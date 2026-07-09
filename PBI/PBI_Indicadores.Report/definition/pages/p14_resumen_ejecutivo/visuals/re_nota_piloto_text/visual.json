@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Muestra piloto: interpretar cada indicador con su base n y evitar conclusiones definitivas hasta aumentar volumen de respuestas.",
+                    "value": "Muestra piloto: interpretar cada indicador con base en el n visible y evitar conclusiones definitivas hasta aumentar el volumen de respuestas.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "11px",
