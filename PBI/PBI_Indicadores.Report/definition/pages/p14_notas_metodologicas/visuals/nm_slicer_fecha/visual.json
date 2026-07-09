@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "nm_slicer_fecha",
   "position": {
-    "x": 730,
+    "x": 710,
     "y": 60,
     "z": 71,
     "height": 38,
-    "width": 158,
+    "width": 170,
     "tabOrder": 41
   },
   "visual": {
@@ -93,17 +93,17 @@
                 }
               }
             },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "10D"
-                }
-              }
-            },
             "padding": {
               "expr": {
                 "Literal": {
                   "Value": "4D"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
                 }
               }
             }
@@ -144,7 +144,16 @@
                   }
                 }
               }
-            },
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        }
+      ],
+      "slicerHeader": [
+        {
+          "properties": {
             "fontSize": {
               "expr": {
                 "Literal": {

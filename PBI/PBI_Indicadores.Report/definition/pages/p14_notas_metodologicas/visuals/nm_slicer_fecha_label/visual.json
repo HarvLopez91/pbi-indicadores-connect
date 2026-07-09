@@ -2,10 +2,10 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "nm_slicer_fecha_label",
   "position": {
-    "x": 730,
+    "x": 710,
     "y": 38,
     "z": 70,
-    "width": 158,
+    "width": 170,
     "height": 16,
     "tabOrder": 40
   },

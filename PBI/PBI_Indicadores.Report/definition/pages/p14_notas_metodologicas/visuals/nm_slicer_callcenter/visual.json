@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "nm_slicer_callcenter",
   "position": {
-    "x": 904,
+    "x": 900,
     "y": 60,
     "z": 73,
     "height": 38,
-    "width": 158,
+    "width": 170,
     "tabOrder": 45
   },
   "visual": {
@@ -66,6 +66,17 @@
           "selector": {
             "id": "default"
           }
+        },
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
         }
       ],
       "items": [
@@ -93,17 +104,17 @@
                 }
               }
             },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "10D"
-                }
-              }
-            },
             "padding": {
               "expr": {
                 "Literal": {
                   "Value": "4D"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
                 }
               }
             }
@@ -144,7 +155,32 @@
                   }
                 }
               }
-            },
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        },
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {}
+        }
+      ],
+      "slicerHeader": [
+        {
+          "properties": {
             "fontSize": {
               "expr": {
                 "Literal": {

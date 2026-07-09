@@ -93,17 +93,17 @@
                 }
               }
             },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "10D"
-                }
-              }
-            },
             "padding": {
               "expr": {
                 "Literal": {
                   "Value": "4D"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
                 }
               }
             }
@@ -144,7 +144,16 @@
                   }
                 }
               }
-            },
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        }
+      ],
+      "slicerHeader": [
+        {
+          "properties": {
             "fontSize": {
               "expr": {
                 "Literal": {

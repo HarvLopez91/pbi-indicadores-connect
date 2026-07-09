@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "home_pilot_note",
   "position": {
     "x": 344,
     "y": 132,
     "z": 42,
-    "width": 220,
     "height": 22,
+    "width": 220,
     "tabOrder": 42
   },
   "visual": {
@@ -21,14 +21,13 @@
                   {
                     "value": "Datos piloto sujetos a validación",
                     "textStyle": {
+                      "fontWeight": "bold",
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "11px",
-                      "color": "#F15B2B",
-                      "fontWeight": "bold"
+                      "color": "#f15b2b"
                     }
                   }
-                ],
-                "horizontalTextAlignment": "left"
+                ]
               }
             ]
           }
