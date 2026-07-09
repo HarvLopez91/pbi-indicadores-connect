@@ -9,6 +9,15 @@
         "page": "2.3.0"
       },
       "type": "SharedResources"
+    },
+    "customTheme": {
+      "name": "Connect_Assistance5317256897086657.json",
+      "reportVersionAtImport": {
+        "visual": "2.4.0",
+        "report": "3.0.0",
+        "page": "2.3.0"
+      },
+      "type": "RegisteredResources"
     }
   },
   "objects": {
@@ -48,6 +57,11 @@
           "name": "logo_connect_naranja_20260708.png",
           "path": "logo_connect_naranja_20260708.png",
           "type": "Image"
+        },
+        {
+          "name": "Connect_Assistance5317256897086657.json",
+          "path": "Connect_Assistance5317256897086657.json",
+          "type": "CustomTheme"
         }
       ]
     },

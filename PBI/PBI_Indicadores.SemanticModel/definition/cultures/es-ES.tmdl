@@ -65,6 +65,46 @@ cultureInfo es-ES
 			            },
 			            "Weight": 0.9
 			          }
+			        },
+			        {
+			          "Total evaluaciones": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Evaluaciones": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Evaluaciones Calidad": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Calidad n": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -79,6 +119,26 @@ cultureInfo es-ES
 			      "Terms": [
 			        {
 			          "Total Respuestas Capacitación": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Respuestas": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Capacitación n": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -107,6 +167,26 @@ cultureInfo es-ES
 			            },
 			            "Weight": 0.9
 			          }
+			        },
+			        {
+			          "Respuestas": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Motivación n": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -121,6 +201,508 @@ cultureInfo es-ES
 			      "Terms": [
 			        {
 			          "Total Registros Piloto": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Total registros": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_capacitacion.claridad_promedio_capacitacion": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Capacitacion",
+			          "ConceptualProperty": "Claridad Promedio Capacitacion"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Claridad Promedio Capacitación": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_capacitacion.comentarios_capacitacion": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Capacitacion",
+			          "ConceptualProperty": "% Comentarios Capacitacion"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "% Comentarios Capacitación": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_capacitacion.dinamismo_promedio_capacitacion": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Capacitacion",
+			          "ConceptualProperty": "Dinamismo Promedio Capacitacion"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Dinamismo Promedio Capacitación": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_capacitacion.satisfaccion_promedio_capacitacion": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Capacitacion",
+			          "ConceptualProperty": "Satisfaccion Promedio Capacitacion"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Satisfacción Promedio Capacitación": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_capacitacion.utilidad_promedio_capacitacion": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Capacitacion",
+			          "ConceptualProperty": "Utilidad Promedio Capacitacion"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Utilidad Promedio Capacitación": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_motivacion.ambiente_motivado": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Motivacion",
+			          "ConceptualProperty": "% Ambiente Motivado"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "% Ambiente Motivado": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "% motivado": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_motivacion.claridad_utilidad_promedio_actividad": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Motivacion",
+			          "ConceptualProperty": "Claridad Utilidad Promedio Actividad"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Claridad/Utilidad Promedio": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_motivacion.comentarios_motivacion": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Motivacion",
+			          "ConceptualProperty": "% Comentarios Motivacion"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "% Comentarios Motivación": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_motivacion.motivacion_promedio_actividad": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Motivacion",
+			          "ConceptualProperty": "Motivacion Promedio Actividad"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Motivación Promedio Actividad": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_motivacion.satisfaccion_promedio_actividad": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Motivacion",
+			          "ConceptualProperty": "Satisfaccion Promedio Actividad"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Satisfacción Promedio Actividad": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dim_callcenter.callcenter": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Dim_CallCenter",
+			          "ConceptualProperty": "CallCenter"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "CallCenter": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Call Center": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dim_calendario.fecha": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Dim_Calendario",
+			          "ConceptualProperty": "Fecha"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Fecha": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dim_jornada.jornada": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Dim_Jornada",
+			          "ConceptualProperty": "Jornada"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Jornada": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_calidad.preguntas_aplicables_calidad": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Calidad",
+			          "ConceptualProperty": "Preguntas Aplicables Calidad"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Preguntas Aplicables Calidad": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_calidad.objecion_principal": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Calidad",
+			          "ConceptualProperty": "Objecion Principal"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Objeción Principal": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_calidad.promedio_puntaje_calidad": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Calidad",
+			          "ConceptualProperty": "Promedio Puntaje Calidad"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Promedio Puntaje Calidad": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Promedio puntaje": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_calidad.puntaje_obtenido_calidad": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Calidad",
+			          "ConceptualProperty": "Puntaje Obtenido Calidad"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Puntaje Obtenido Calidad": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_calidad.llamadas_con_venta": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Calidad",
+			          "ConceptualProperty": "% Llamadas con Venta"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "% Llamadas con Venta": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "fact_calidadllamadas.nombreasesor": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Fact_CalidadLlamadas",
+			          "ConceptualProperty": "NombreAsesor"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Asesor": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "fact_satisfaccioncapacitacion.nombreformador": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Fact_SatisfaccionCapacitacion",
+			          "ConceptualProperty": "NombreFormador"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Formador": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "fact_satisfaccioncapacitacion.nombrelider": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Fact_SatisfaccionCapacitacion",
+			          "ConceptualProperty": "NombreLider"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Líder": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "fact_motivacionactividad.ambienteequipo": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Fact_MotivacionActividad",
+			          "ConceptualProperty": "AmbienteEquipo"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Ambiente": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
