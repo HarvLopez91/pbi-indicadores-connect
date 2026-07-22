@@ -5,11 +5,30 @@
 | Proyecto | `PBI_Indicadores` |
 | Documento base | [`Specs/05_analisis_impacto_mockup_satisfaccion_capacitaciones.md`](05_analisis_impacto_mockup_satisfaccion_capacitaciones.md) |
 | Mockup de referencia | [`Assets/mockups/dashboard_satisfaccion_capacitaciones_mockup.png`](../Assets/mockups/dashboard_satisfaccion_capacitaciones_mockup.png) |
-| Tipo de documento | Plan de implementación por fases (fases + prompts ejecutables), aún **no ejecutado** |
-| Fecha | 2026-07-21 |
-| Estado | **Planeación** — ninguna fase de este plan se ha ejecutado todavía |
+| Tipo de documento | Plan de implementación por fases — ejecutado |
+| Fecha de creación | 2026-07-21 |
+| Fecha de cierre | 2026-07-22 |
+| Estado | **Cerrado** — `SC-1` a `SC-9` ejecutadas y aprobadas |
 
-> Convención de numeración: para no confundir estas fases con las 18 fases históricas de [`Specs/02`](02_plan_implementacion_informe_powerbi_connect.md) (ya cerradas, ver [`Specs/03`](03_documentacion_final_informe_powerbi_connect.md)), las fases de este plan se identifican con el prefijo **`SC`** (Satisfacción de Capacitaciones): `SC-1` a `SC-9`. Ninguna fase `SC-*` se ejecuta como parte de la creación de este documento — este plan es solo la hoja de ruta.
+> Convención de numeración: para no confundir estas fases con las 18 fases históricas de [`Specs/02`](02_plan_implementacion_informe_powerbi_connect.md) (ya cerradas, ver [`Specs/03`](03_documentacion_final_informe_powerbi_connect.md)), las fases de este plan se identifican con el prefijo **`SC`** (Satisfacción de Capacitaciones): `SC-1` a `SC-9`. Este documento se creó originalmente como hoja de ruta y posteriormente fue ejecutado en su totalidad; los prompts e instrucciones originales se conservan como historial técnico de la implementación.
+
+---
+
+## Estado final de ejecución
+
+| Fase | Estado | Resultado principal | Evidencia |
+|---|---|---|---|
+| `SC-1` | Cerrada | `DEC-1` a `DEC-4` confirmadas | [`Docs/05`](../Docs/05_decisiones_limitaciones_pendientes.md) |
+| `SC-2` | Cerrada | Entorno y protección validados | Bitácoras de ejecución |
+| `SC-3` | Cerrada | Medidas creadas y validadas | [`Outputs/39`](../Outputs/39_resultado_sc3_medidas_satisfaccion_capacitaciones.md) |
+| `SC-4` | Cerrada | Copia de página creada | [`Outputs/40`](../Outputs/40_resultado_sc4_copia_pagina_satisfaccion_capacitaciones.md) |
+| `SC-5` | Cerrada | Rediseño aprobado | [`Outputs/43`](../Outputs/43_resultado_sc5_rediseno_visual_satisfaccion_capacitaciones.md) |
+| `SC-6` | Cerrada | Interacciones configuradas | [`Outputs/44`](../Outputs/44_resultado_sc6_interacciones_satisfaccion_capacitaciones.md) |
+| `SC-7` | Cerrada | Validación aprobada | [`Outputs/45`](../Outputs/45_resultado_sc7_validacion_tecnica_funcional_visual.md) |
+| `SC-8` | Cerrada | Documentación actualizada | [`Outputs/46`](../Outputs/46_resultado_sc8_documentacion_satisfaccion_capacitaciones.md) |
+| `SC-9` | Cerrada | Reemplazo definitivo aprobado | [`Outputs/47`](../Outputs/47_resultado_sc9_reemplazo_satisfaccion_capacitaciones.md) |
+
+Resultado final: la página `p14_satisfaccion_capacitaciones_v2` quedó como página oficial `Satisfacción de capacitaciones`, la página original fue retirada del PBIR activo, el informe conserva 7 páginas y Home permanece como página inicial. La republicación en Power BI Service no se ejecutó durante esta iniciativa y queda como actividad operativa posterior.
 
 ---
 
@@ -753,10 +772,12 @@ SC-1 (decisiones) → SC-2 (preparación) → SC-3 (medidas) → SC-4 (copia de 
 
 Esta iniciativa (adaptación de "Satisfacción de capacitaciones" al mockup) se considera cerrada cuando:
 
-- [ ] Las 4 decisiones de negocio (§4) están resueltas o explícitamente diferidas con su impacto documentado.
-- [ ] Las medidas DAX no bloqueadas están creadas, validadas y documentadas en `Docs/02`.
-- [ ] `p14_satisfaccion_capacitaciones_v2` (o su nombre final) está validada técnica, funcional y visualmente (`SC-7`), sin errores pendientes.
-- [ ] `Docs/02`, `Docs/03` y `Docs/05` reflejan el estado real del modelo y del reporte tras el cambio.
-- [ ] La decisión de reemplazo/coexistencia/descarte (`SC-9`) está tomada, ejecutada y documentada.
-- [ ] Si se publicó, el checklist de `Docs/06` se ejecutó antes y después, y el enlace/documentación quedaron actualizados.
-- [ ] Existe un `Outputs/NN_...md` de cierre que resume las 9 fases ejecutadas y su resultado, siguiendo el patrón ya establecido en el proyecto.
+- [x] Las 4 decisiones de negocio (§4) están resueltas o explícitamente diferidas con su impacto documentado.
+- [x] Las medidas DAX no bloqueadas están creadas, validadas y documentadas en `Docs/02`.
+- [x] `p14_satisfaccion_capacitaciones_v2` (nombre visible final: `Satisfacción de capacitaciones`) está validada técnica, funcional y visualmente (`SC-7`/`SC-9`), sin errores pendientes.
+- [x] `Docs/02`, `Docs/03` y `Docs/05` reflejan el estado real del modelo y del reporte tras el cambio.
+- [x] La decisión de reemplazo/coexistencia/descarte (`SC-9`) está tomada, ejecutada y documentada.
+- [x] Existe un `Outputs/NN_...md` de cierre que resume las 9 fases ejecutadas y su resultado, siguiendo el patrón ya establecido en el proyecto.
+- [ ] Republicación en Power BI Service: no aplica todavía. No se republicó durante esta iniciativa. El PBIP quedó listo y la republicación manual en Power BI Service permanece como actividad operativa posterior.
+
+La iniciativa de adaptación de Satisfacción de capacitaciones al mockup se considera cerrada en el repositorio local y lista para sincronización remota.
