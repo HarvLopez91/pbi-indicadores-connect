@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "sc_slicer_jornada_label",
   "position": {
-    "x": 836,
-    "y": 120,
+    "x": 836.04888504066651,
+    "y": 111.62822387191096,
     "z": 48,
-    "height": 13,
-    "width": 370,
+    "height": 20.930291975983305,
+    "width": 369.76849157570507,
     "tabOrder": 48
   },
   "visual": {

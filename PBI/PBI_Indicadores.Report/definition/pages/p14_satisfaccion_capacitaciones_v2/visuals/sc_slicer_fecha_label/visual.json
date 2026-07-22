@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "sc_slicer_fecha_label",
   "position": {
-    "x": 32,
-    "y": 120,
+    "x": 32.5582319626407,
+    "y": 111.62822387191096,
     "z": 40,
-    "width": 370,
-    "height": 13,
+    "height": 20.930291975983305,
+    "width": 369.76849157570507,
     "tabOrder": 40
   },
   "visual": {
@@ -21,14 +21,13 @@
                   {
                     "value": "Fecha",
                     "textStyle": {
+                      "fontWeight": "bold",
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "9px",
-                      "color": "#3A3A3A",
-                      "fontWeight": "bold"
+                      "color": "#3a3a3a"
                     }
                   }
-                ],
-                "horizontalTextAlignment": "left"
+                ]
               }
             ]
           }

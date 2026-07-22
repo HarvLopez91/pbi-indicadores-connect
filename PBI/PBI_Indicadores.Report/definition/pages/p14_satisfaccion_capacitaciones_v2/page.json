@@ -4,5 +4,842 @@
   "displayName": "Satisfacción de capacitaciones (v2 - borrador)",
   "displayOption": "FitToPage",
   "height": 720,
-  "width": 1280
+  "width": 1280,
+  "visualInteractions": [
+    {
+      "source": "sc_slicer_fecha",
+      "target": "sc_kpi_capacitaciones",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_fecha",
+      "target": "sc_kpi_respuestas",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_fecha",
+      "target": "sc_kpi_callcenters",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_fecha",
+      "target": "sc_kpi_satisfaccion",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_fecha",
+      "target": "sc_kpi_ultima",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_fecha",
+      "target": "sc_kpi_comentarios",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_fecha",
+      "target": "sc_chart_callcenter",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_fecha",
+      "target": "sc_chart_capxfecha",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_fecha",
+      "target": "sc_panel_satisf_chart",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_fecha",
+      "target": "sc_kpi_respuestas_panel",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_fecha",
+      "target": "sc_tabla_callcenter",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_fecha",
+      "target": "sc_tabla_comentarios",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_callcenter",
+      "target": "sc_kpi_capacitaciones",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_callcenter",
+      "target": "sc_kpi_respuestas",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_callcenter",
+      "target": "sc_kpi_callcenters",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_callcenter",
+      "target": "sc_kpi_satisfaccion",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_callcenter",
+      "target": "sc_kpi_ultima",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_callcenter",
+      "target": "sc_kpi_comentarios",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_callcenter",
+      "target": "sc_chart_callcenter",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_callcenter",
+      "target": "sc_chart_capxfecha",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_callcenter",
+      "target": "sc_panel_satisf_chart",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_callcenter",
+      "target": "sc_kpi_respuestas_panel",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_callcenter",
+      "target": "sc_tabla_callcenter",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_callcenter",
+      "target": "sc_tabla_comentarios",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_jornada",
+      "target": "sc_kpi_capacitaciones",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_jornada",
+      "target": "sc_kpi_respuestas",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_jornada",
+      "target": "sc_kpi_callcenters",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_jornada",
+      "target": "sc_kpi_satisfaccion",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_jornada",
+      "target": "sc_kpi_ultima",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_jornada",
+      "target": "sc_kpi_comentarios",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_jornada",
+      "target": "sc_chart_callcenter",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_jornada",
+      "target": "sc_chart_capxfecha",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_jornada",
+      "target": "sc_panel_satisf_chart",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_jornada",
+      "target": "sc_kpi_respuestas_panel",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_jornada",
+      "target": "sc_tabla_callcenter",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_slicer_jornada",
+      "target": "sc_tabla_comentarios",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_callcenter",
+      "target": "sc_kpi_capacitaciones",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_callcenter",
+      "target": "sc_kpi_respuestas",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_callcenter",
+      "target": "sc_kpi_callcenters",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_callcenter",
+      "target": "sc_kpi_satisfaccion",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_callcenter",
+      "target": "sc_kpi_ultima",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_callcenter",
+      "target": "sc_kpi_comentarios",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_callcenter",
+      "target": "sc_chart_capxfecha",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_callcenter",
+      "target": "sc_panel_satisf_chart",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_callcenter",
+      "target": "sc_kpi_respuestas_panel",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_callcenter",
+      "target": "sc_tabla_callcenter",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_callcenter",
+      "target": "sc_tabla_comentarios",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_capxfecha",
+      "target": "sc_kpi_capacitaciones",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_capxfecha",
+      "target": "sc_kpi_respuestas",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_capxfecha",
+      "target": "sc_kpi_callcenters",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_capxfecha",
+      "target": "sc_kpi_satisfaccion",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_capxfecha",
+      "target": "sc_kpi_ultima",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_capxfecha",
+      "target": "sc_kpi_comentarios",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_capxfecha",
+      "target": "sc_chart_callcenter",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_capxfecha",
+      "target": "sc_panel_satisf_chart",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_capxfecha",
+      "target": "sc_kpi_respuestas_panel",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_capxfecha",
+      "target": "sc_tabla_callcenter",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_chart_capxfecha",
+      "target": "sc_tabla_comentarios",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_tabla_callcenter",
+      "target": "sc_kpi_capacitaciones",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_tabla_callcenter",
+      "target": "sc_kpi_respuestas",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_tabla_callcenter",
+      "target": "sc_kpi_callcenters",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_tabla_callcenter",
+      "target": "sc_kpi_satisfaccion",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_tabla_callcenter",
+      "target": "sc_kpi_ultima",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_tabla_callcenter",
+      "target": "sc_kpi_comentarios",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_tabla_callcenter",
+      "target": "sc_chart_capxfecha",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_tabla_callcenter",
+      "target": "sc_panel_satisf_chart",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_tabla_callcenter",
+      "target": "sc_kpi_respuestas_panel",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_tabla_callcenter",
+      "target": "sc_tabla_comentarios",
+      "type": "DataFilter"
+    },
+    {
+      "source": "sc_tabla_comentarios",
+      "target": "sc_kpi_capacitaciones",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_tabla_comentarios",
+      "target": "sc_kpi_respuestas",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_tabla_comentarios",
+      "target": "sc_kpi_callcenters",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_tabla_comentarios",
+      "target": "sc_kpi_satisfaccion",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_tabla_comentarios",
+      "target": "sc_kpi_ultima",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_tabla_comentarios",
+      "target": "sc_kpi_comentarios",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_tabla_comentarios",
+      "target": "sc_chart_callcenter",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_tabla_comentarios",
+      "target": "sc_chart_capxfecha",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_tabla_comentarios",
+      "target": "sc_panel_satisf_chart",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_tabla_comentarios",
+      "target": "sc_kpi_respuestas_panel",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_tabla_comentarios",
+      "target": "sc_tabla_callcenter",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_panel_satisf_chart",
+      "target": "sc_kpi_capacitaciones",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_panel_satisf_chart",
+      "target": "sc_kpi_respuestas",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_panel_satisf_chart",
+      "target": "sc_kpi_callcenters",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_panel_satisf_chart",
+      "target": "sc_kpi_satisfaccion",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_panel_satisf_chart",
+      "target": "sc_kpi_ultima",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_panel_satisf_chart",
+      "target": "sc_kpi_comentarios",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_panel_satisf_chart",
+      "target": "sc_chart_callcenter",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_panel_satisf_chart",
+      "target": "sc_chart_capxfecha",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_panel_satisf_chart",
+      "target": "sc_kpi_respuestas_panel",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_panel_satisf_chart",
+      "target": "sc_tabla_callcenter",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_panel_satisf_chart",
+      "target": "sc_tabla_comentarios",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas_panel",
+      "target": "sc_kpi_capacitaciones",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas_panel",
+      "target": "sc_kpi_respuestas",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas_panel",
+      "target": "sc_kpi_callcenters",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas_panel",
+      "target": "sc_kpi_satisfaccion",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas_panel",
+      "target": "sc_kpi_ultima",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas_panel",
+      "target": "sc_kpi_comentarios",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas_panel",
+      "target": "sc_chart_callcenter",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas_panel",
+      "target": "sc_chart_capxfecha",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas_panel",
+      "target": "sc_panel_satisf_chart",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas_panel",
+      "target": "sc_tabla_callcenter",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas_panel",
+      "target": "sc_tabla_comentarios",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_capacitaciones",
+      "target": "sc_kpi_respuestas",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_capacitaciones",
+      "target": "sc_kpi_callcenters",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_capacitaciones",
+      "target": "sc_kpi_satisfaccion",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_capacitaciones",
+      "target": "sc_kpi_ultima",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_capacitaciones",
+      "target": "sc_kpi_comentarios",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_capacitaciones",
+      "target": "sc_chart_callcenter",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_capacitaciones",
+      "target": "sc_chart_capxfecha",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_capacitaciones",
+      "target": "sc_panel_satisf_chart",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_capacitaciones",
+      "target": "sc_kpi_respuestas_panel",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_capacitaciones",
+      "target": "sc_tabla_callcenter",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_capacitaciones",
+      "target": "sc_tabla_comentarios",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas",
+      "target": "sc_kpi_capacitaciones",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas",
+      "target": "sc_kpi_callcenters",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas",
+      "target": "sc_kpi_satisfaccion",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas",
+      "target": "sc_kpi_ultima",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas",
+      "target": "sc_kpi_comentarios",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas",
+      "target": "sc_chart_callcenter",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas",
+      "target": "sc_chart_capxfecha",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas",
+      "target": "sc_panel_satisf_chart",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas",
+      "target": "sc_kpi_respuestas_panel",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas",
+      "target": "sc_tabla_callcenter",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_respuestas",
+      "target": "sc_tabla_comentarios",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_callcenters",
+      "target": "sc_kpi_capacitaciones",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_callcenters",
+      "target": "sc_kpi_respuestas",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_callcenters",
+      "target": "sc_kpi_satisfaccion",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_callcenters",
+      "target": "sc_kpi_ultima",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_callcenters",
+      "target": "sc_kpi_comentarios",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_callcenters",
+      "target": "sc_chart_callcenter",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_callcenters",
+      "target": "sc_chart_capxfecha",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_callcenters",
+      "target": "sc_panel_satisf_chart",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_callcenters",
+      "target": "sc_kpi_respuestas_panel",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_callcenters",
+      "target": "sc_tabla_callcenter",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_callcenters",
+      "target": "sc_tabla_comentarios",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_satisfaccion",
+      "target": "sc_kpi_capacitaciones",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_satisfaccion",
+      "target": "sc_kpi_respuestas",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_satisfaccion",
+      "target": "sc_kpi_callcenters",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_satisfaccion",
+      "target": "sc_kpi_ultima",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_satisfaccion",
+      "target": "sc_kpi_comentarios",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_satisfaccion",
+      "target": "sc_chart_callcenter",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_satisfaccion",
+      "target": "sc_chart_capxfecha",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_satisfaccion",
+      "target": "sc_panel_satisf_chart",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_satisfaccion",
+      "target": "sc_kpi_respuestas_panel",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_satisfaccion",
+      "target": "sc_tabla_callcenter",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_satisfaccion",
+      "target": "sc_tabla_comentarios",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_ultima",
+      "target": "sc_kpi_capacitaciones",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_ultima",
+      "target": "sc_kpi_respuestas",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_ultima",
+      "target": "sc_kpi_callcenters",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_ultima",
+      "target": "sc_kpi_satisfaccion",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_ultima",
+      "target": "sc_kpi_comentarios",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_ultima",
+      "target": "sc_chart_callcenter",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_ultima",
+      "target": "sc_chart_capxfecha",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_ultima",
+      "target": "sc_panel_satisf_chart",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_ultima",
+      "target": "sc_kpi_respuestas_panel",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_ultima",
+      "target": "sc_tabla_callcenter",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_ultima",
+      "target": "sc_tabla_comentarios",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_comentarios",
+      "target": "sc_kpi_capacitaciones",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_comentarios",
+      "target": "sc_kpi_respuestas",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_comentarios",
+      "target": "sc_kpi_callcenters",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_comentarios",
+      "target": "sc_kpi_satisfaccion",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_comentarios",
+      "target": "sc_kpi_ultima",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_comentarios",
+      "target": "sc_chart_callcenter",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_comentarios",
+      "target": "sc_chart_capxfecha",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_comentarios",
+      "target": "sc_panel_satisf_chart",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_comentarios",
+      "target": "sc_kpi_respuestas_panel",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_comentarios",
+      "target": "sc_tabla_callcenter",
+      "type": "NoFilter"
+    },
+    {
+      "source": "sc_kpi_comentarios",
+      "target": "sc_tabla_comentarios",
+      "type": "NoFilter"
+    }
+  ]
 }
