@@ -11,14 +11,18 @@ table Dim_Calendario
 	column Anio
 		dataType: int64
 		lineageTag: 4871c017-0e7a-40e2-8ccb-41553c8287a4
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: Anio
+
+		annotation SummarizationSetBy = Automatic
 
 	column MesNumero
 		dataType: int64
 		lineageTag: e594b797-a994-4d9a-ab2e-3b6529c78474
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: MesNumero
+
+		annotation SummarizationSetBy = Automatic
 
 	column MesNombre
 		dataType: string
@@ -35,26 +39,34 @@ table Dim_Calendario
 	column Trimestre
 		dataType: int64
 		lineageTag: f9559881-1a0b-40a9-b42e-f5cdab93815d
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: Trimestre
+
+		annotation SummarizationSetBy = Automatic
 
 	column SemanaAnio
 		dataType: int64
 		lineageTag: a081a804-2e68-44a3-a058-714646f5a705
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: SemanaAnio
+
+		annotation SummarizationSetBy = Automatic
 
 	column DiaMes
 		dataType: int64
 		lineageTag: 02879ade-58c3-484b-8673-e6e0dcd39b1e
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: DiaMes
+
+		annotation SummarizationSetBy = Automatic
 
 	column DiaSemanaNumero
 		dataType: int64
 		lineageTag: 22c95e9d-ce0a-4aaa-afa0-7d26c408869c
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: DiaSemanaNumero
+
+		annotation SummarizationSetBy = Automatic
 
 	column DiaSemanaNombre
 		dataType: string
@@ -67,6 +79,12 @@ table Dim_Calendario
 		lineageTag: 8448f5aa-eb8e-4852-9d25-4e2782da0125
 		summarizeBy: none
 		sourceColumn: EsFinDeSemana
+
+	column 'Fecha Eje' = FORMAT(DAY(Dim_Calendario[Fecha]), "00") & "/" & FORMAT(MONTH(Dim_Calendario[Fecha]), "00")
+		dataType: string
+		lineageTag: 617bae76-9ae8-4b37-9af8-f1782759e834
+		summarizeBy: none
+		sortByColumn: Fecha
 
 	partition Dim_Calendario = m
 		mode: import

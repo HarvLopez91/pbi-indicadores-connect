@@ -55,7 +55,27 @@ expression SatisfaccionCapacitacion_Limpio =
 			NombresColumnaSinEspacios = Table.TransformColumnNames(EncabezadosPromovidos, Text.Trim),
 			TextoLimpio = Table.TransformColumns(NombresColumnaSinEspacios, {}, each if _ is text then Text.Trim(Text.Clean(_)) else _),
 			TimestampComoFechaHora = Table.TransformColumnTypes(TextoLimpio, {{"Timestamp", type datetime}}),
-			ColumnaFechaAgregada = Table.AddColumn(TimestampComoFechaHora, "Fecha", each if [Timestamp] = null then null else Date.From([Timestamp]), type date),
+			TimestampNormalizado = Table.TransformColumns(TimestampComoFechaHora, {{"Timestamp", each
+				let
+					FechaBase = if _ = null then null else Date.From(_),
+					HoraBase = if _ = null then null else Time.From(_),
+					FechaCorregida =
+						if FechaBase <> null
+							and Date.Year(FechaBase) = 2026
+							and Date.Day(FechaBase) = 7
+							and List.Contains({8, 9, 10}, Date.Month(FechaBase))
+						then #date(Date.Year(FechaBase), Date.Day(FechaBase), Date.Month(FechaBase))
+						else FechaBase
+				in
+					if FechaCorregida = null then null else #datetime(
+						Date.Year(FechaCorregida),
+						Date.Month(FechaCorregida),
+						Date.Day(FechaCorregida),
+						Time.Hour(HoraBase),
+						Time.Minute(HoraBase),
+						Time.Second(HoraBase)
+					), type datetime}}),
+			ColumnaFechaAgregada = Table.AddColumn(TimestampNormalizado, "Fecha", each if [Timestamp] = null then null else Date.From([Timestamp]), type date),
 			CallCenterNormalizado = Table.TransformColumns(ColumnaFechaAgregada, {{"¿En qué call center trabajas?", each if _ = null then _ else Text.Trim(Text.Upper(_)), type text}})
 		in
 			CallCenterNormalizado

@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "sc_slicer_jornada",
   "position": {
-    "x": 596,
-    "y": 150,
+    "x": 836,
+    "y": 134,
     "z": 49,
-    "height": 38,
-    "width": 250,
+    "height": 34,
+    "width": 370,
     "tabOrder": 49
   },
   "visual": {

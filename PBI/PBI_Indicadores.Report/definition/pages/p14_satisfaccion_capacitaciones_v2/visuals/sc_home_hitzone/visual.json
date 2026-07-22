@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "sc_home_hitzone",
   "position": {
-    "x": 1086,
-    "y": 48,
+    "x": 1084,
+    "y": 30,
     "z": 40,
-    "width": 130,
-    "height": 34,
+    "width": 150,
+    "height": 36,
     "tabOrder": 40
   },
   "visual": {

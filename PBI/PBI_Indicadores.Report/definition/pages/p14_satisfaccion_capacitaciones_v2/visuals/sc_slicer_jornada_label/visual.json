@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "sc_slicer_jornada_label",
   "position": {
-    "x": 596,
-    "y": 130,
+    "x": 836,
+    "y": 120,
     "z": 48,
-    "width": 250,
-    "height": 16,
+    "height": 13,
+    "width": 370,
     "tabOrder": 48
   },
   "visual": {
@@ -21,14 +21,13 @@
                   {
                     "value": "Jornada",
                     "textStyle": {
+                      "fontWeight": "bold",
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "9px",
-                      "color": "#3A3A3A",
-                      "fontWeight": "bold"
+                      "color": "#3a3a3a"
                     }
                   }
-                ],
-                "horizontalTextAlignment": "left"
+                ]
               }
             ]
           }

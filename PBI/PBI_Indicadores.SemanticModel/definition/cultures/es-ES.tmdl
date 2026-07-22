@@ -239,6 +239,16 @@ cultureInfo es-ES
 			            },
 			            "Weight": 0.9
 			          }
+			        },
+			        {
+			          "Claridad": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -281,6 +291,16 @@ cultureInfo es-ES
 			            },
 			            "Weight": 0.9
 			          }
+			        },
+			        {
+			          "Dinamismo": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -302,6 +322,16 @@ cultureInfo es-ES
 			            },
 			            "Weight": 0.9
 			          }
+			        },
+			        {
+			          "Satisfacción": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -316,6 +346,16 @@ cultureInfo es-ES
 			      "Terms": [
 			        {
 			          "Utilidad Promedio Capacitación": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Utilidad": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -766,6 +806,243 @@ cultureInfo es-ES
 			      "Terms": [
 			        {
 			          "n Motivacion": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_capacitacion.capacitaciones_realizadas": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Capacitacion",
+			          "ConceptualProperty": "Capacitaciones Realizadas"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Capacitaciones Realizadas": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Capacitaciones": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_capacitacion.call_centers_capacitados": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Capacitacion",
+			          "ConceptualProperty": "Call Centers Capacitados"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Call Centers Capacitados": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_capacitacion.ultima_capacitacion": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Capacitacion",
+			          "ConceptualProperty": "Ultima Capacitacion"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "fact_satisfaccioncapacitacion.comentario": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Fact_SatisfaccionCapacitacion",
+			          "ConceptualProperty": "Comentario"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Comentario": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "fact_satisfaccioncapacitacion.callcenter": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Fact_SatisfaccionCapacitacion",
+			          "ConceptualProperty": "CallCenter"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "CallCenter": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Call Center": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "fact_satisfaccioncapacitacion.fecha": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Fact_SatisfaccionCapacitacion",
+			          "ConceptualProperty": "Fecha"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "table_medidas_capacitacion.ultima_capacitacion_texto": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Capacitacion",
+			          "ConceptualProperty": "Ultima Capacitacion Texto"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Ultima Capacitacion Texto": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Última fecha": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_medidas_capacitacion.valor_metrica_satisfaccion": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Medidas Capacitacion",
+			          "ConceptualProperty": "Valor Metrica Satisfaccion"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Valor": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dim_metricasatisfaccion.metrica": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Dim_MetricaSatisfaccion",
+			          "ConceptualProperty": "Metrica"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Métrica": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dim_calendario.fecha_eje": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Dim_Calendario",
+			          "ConceptualProperty": "Fecha Eje"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Fecha Eje": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "fact_satisfaccioncapacitacion.fecha_texto": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Fact_SatisfaccionCapacitacion",
+			          "ConceptualProperty": "Fecha Texto"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Fecha": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",

@@ -30,7 +30,7 @@ table '_Medidas Capacitacion'
 		lineageTag: 168f2d19-29c5-40f2-910e-584fbdfa912f
 
 	measure 'Ultima Capacitacion' = MAX(Fact_SatisfaccionCapacitacion[Fecha])
-		formatString: Short Date
+		formatString: dd/MM/yyyy
 		lineageTag: 80996b3c-a029-4e03-a476-950aa034cbe2
 
 	measure 'Capacitaciones Realizadas' =
@@ -44,6 +44,28 @@ table '_Medidas Capacitacion'
 			)
 		formatString: 0
 		lineageTag: 997b82e9-8f18-4763-9055-4502bb675e9b
+
+	measure 'Valor Metrica Satisfaccion' =
+			SWITCH(
+				SELECTEDVALUE(Dim_MetricaSatisfaccion[Metrica]),
+				"Satisfacción", [Satisfaccion Promedio Capacitacion],
+				"Claridad", [Claridad Promedio Capacitacion],
+				"Utilidad", [Utilidad Promedio Capacitacion],
+				"Dinamismo", [Dinamismo Promedio Capacitacion],
+				BLANK()
+			)
+		formatString: 0.0
+		lineageTag: 91dda347-10b6-4225-85b9-24a659d2977b
+
+	measure 'Ultima Capacitacion Texto' =
+			VAR Fecha = [Ultima Capacitacion]
+			RETURN
+				IF(
+					ISBLANK(Fecha),
+					BLANK(),
+					FORMAT(DAY(Fecha), "00") & "/" & FORMAT(MONTH(Fecha), "00") & "/" & FORMAT(YEAR(Fecha), "0000")
+				)
+		lineageTag: 5e2fb000-13a0-4493-8be9-ad9c7ee5dd90
 
 	column Columna1
 		dataType: int64

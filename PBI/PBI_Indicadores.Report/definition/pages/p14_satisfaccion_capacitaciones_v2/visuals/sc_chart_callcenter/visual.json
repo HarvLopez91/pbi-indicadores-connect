@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "sc_chart_callcenter",
   "position": {
-    "x": 248,
-    "y": 342,
+    "x": 32,
+    "y": 282,
     "z": 200,
-    "height": 210,
-    "width": 320,
+    "height": 180,
+    "width": 500,
     "tabOrder": 200
   },
   "visual": {
@@ -20,13 +20,13 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Dim_CallCenter"
+                      "Entity": "Fact_SatisfaccionCapacitacion"
                     }
                   },
                   "Property": "CallCenter"
                 }
               },
-              "queryRef": "Dim_CallCenter.CallCenter",
+              "queryRef": "Fact_SatisfaccionCapacitacion.CallCenter",
               "nativeQueryRef": "CallCenter",
               "active": true,
               "displayName": "CallCenter"
@@ -43,15 +43,32 @@
                       "Entity": "_Medidas Capacitacion"
                     }
                   },
-                  "Property": "Indice Global Capacitacion"
+                  "Property": "Capacitaciones Realizadas"
                 }
               },
-              "queryRef": "_Medidas Capacitacion.Indice Global Capacitacion",
-              "nativeQueryRef": "Indice Global Capacitacion",
-              "displayName": "Índice Global Capacitación"
+              "queryRef": "_Medidas Capacitacion.Capacitaciones Realizadas",
+              "nativeQueryRef": "Capacitaciones Realizadas",
+              "displayName": "Capacitaciones Realizadas"
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_Medidas Capacitacion"
+                  }
+                },
+                "Property": "Capacitaciones Realizadas"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
       }
     },
     "objects": {
@@ -88,6 +105,13 @@
                   }
                 }
               }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "5D"
+                }
+              }
             }
           },
           "selector": {
@@ -106,6 +130,13 @@
                       "Value": "'#F4F4F4'"
                     }
                   }
+                }
+              }
+            },
+            "start": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
                 }
               }
             }
@@ -300,7 +331,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Índice por call center'"
+                  "Value": "'Capacitaciones por call center'"
                 }
               }
             },

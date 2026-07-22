@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "sc_nota_cap_panel",
   "position": {
-    "x": 48,
-    "y": 622,
+    "x": 16,
+    "y": 664,
     "z": 300,
-    "width": 1152,
-    "height": 42,
+    "width": 1248,
+    "height": 40,
     "tabOrder": 300
   },
   "visual": {

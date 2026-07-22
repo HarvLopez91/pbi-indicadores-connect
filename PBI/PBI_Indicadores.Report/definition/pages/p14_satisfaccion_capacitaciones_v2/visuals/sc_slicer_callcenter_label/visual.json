@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "sc_slicer_callcenter_label",
   "position": {
-    "x": 322,
-    "y": 130,
+    "x": 434,
+    "y": 120,
     "z": 44,
-    "width": 250,
-    "height": 16,
+    "width": 370,
+    "height": 13,
     "tabOrder": 44
   },
   "visual": {

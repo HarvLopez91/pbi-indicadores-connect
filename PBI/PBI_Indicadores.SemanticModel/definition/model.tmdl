@@ -26,6 +26,7 @@ ref table '_Medidas Generales'
 ref table '_Medidas Calidad'
 ref table '_Medidas Capacitacion'
 ref table '_Medidas Motivacion'
+ref table Dim_MetricaSatisfaccion
 
 ref cultureInfo es-ES
 

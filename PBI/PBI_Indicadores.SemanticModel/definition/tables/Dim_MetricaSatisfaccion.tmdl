@@ -1,0 +1,29 @@
+table Dim_MetricaSatisfaccion
+	lineageTag: 2f5f0e8b-e08c-4dec-b9ef-f12108912e03
+
+	column Metrica
+		lineageTag: 7e71b4eb-03c2-487f-b840-e551972e4f27
+		isNameInferred
+		sourceColumn: [Metrica]
+		sortByColumn: Orden
+
+	column Orden
+		isHidden
+		lineageTag: f25ebb43-154c-41ef-96b5-67a60ac0b0e1
+		isNameInferred
+		sourceColumn: [Orden]
+
+	partition Dim_MetricaSatisfaccion = calculated
+		mode: import
+		source =
+				DATATABLE(
+					"Metrica", STRING,
+					"Orden", INTEGER,
+					{
+						{"Satisfacción", 1},
+						{"Claridad", 2},
+						{"Utilidad", 3},
+						{"Dinamismo", 4}
+					}
+				)
+

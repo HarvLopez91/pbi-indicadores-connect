@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "sc_header_accent",
   "position": {
-    "x": 36,
-    "y": 24,
+    "x": 16,
+    "y": 8,
     "z": 11,
     "width": 6,
-    "height": 90,
+    "height": 96,
     "tabOrder": 11
   },
   "visual": {

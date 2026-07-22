@@ -96,6 +96,18 @@ table Fact_SatisfaccionCapacitacion
 
 		annotation UnderlyingDateTimeDataType = Date
 
+	column 'Fecha Texto' =
+			VAR Fecha = Fact_SatisfaccionCapacitacion[Fecha]
+			RETURN
+				IF(
+					ISBLANK(Fecha),
+					BLANK(),
+					FORMAT(DAY(Fecha), "00") & "/" & FORMAT(MONTH(Fecha), "00") & "/" & FORMAT(YEAR(Fecha), "0000")
+				)
+		dataType: string
+		lineageTag: 4094ead9-346d-43c8-8402-13203eaf0a93
+		summarizeBy: none
+
 	partition Fact_SatisfaccionCapacitacion = m
 		mode: import
 		source =
