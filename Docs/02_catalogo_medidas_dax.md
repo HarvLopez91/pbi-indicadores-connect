@@ -1,6 +1,6 @@
 # Catálogo de medidas DAX — `PBI_Indicadores`
 
-Catálogo completo de las **25 medidas** del modelo semántico, leídas directamente de los archivos `.tmdl` en `PBI/PBI_Indicadores.SemanticModel/definition/tables/_Medidas *.tmdl`. Este documento es de solo lectura respecto al modelo: no se creó ni modificó ninguna medida para producirlo.
+Catálogo completo de las **30 medidas** del modelo semántico, leídas directamente de los archivos `.tmdl` en `PBI/PBI_Indicadores.SemanticModel/definition/tables/_Medidas *.tmdl`. Este documento es de solo lectura respecto al modelo: no se creó ni modificó ninguna medida para producirlo.
 
 El uso por página/visual se obtuvo inspeccionando los `visual.json` del reporte (`PBI/PBI_Indicadores.Report/definition/pages/`); si una medida no aparece enlazada a ningún visual, se indica explícitamente.
 
@@ -22,8 +22,8 @@ Total Respuestas Capacitacion = COUNTROWS(Fact_SatisfaccionCapacitacion)
 ```
 - **Qué calcula:** número de respuestas a la encuesta de satisfacción de capacitación.
 - **Formato:** entero (`0`).
-- **Páginas:** Home, Resumen ejecutivo, Satisfacción de capacitaciones, Detalle por call center, Notas metodológicas.
-- **Visuales:** `home_kpi_total_capacitacion`, `re_kpi_cap`, `sc_kpi_total`, `dc_kpi_cap`, `nm_kpi_cap`; también columna de la tabla `sc_tabla_formador`.
+- **Páginas:** Home, Resumen ejecutivo, Satisfacción de capacitaciones (original y v2 - borrador), Detalle por call center, Notas metodológicas.
+- **Visuales:** `home_kpi_total_capacitacion`, `re_kpi_cap`, `sc_kpi_total`, `dc_kpi_cap`, `nm_kpi_cap`; también columna de la tabla `sc_tabla_formador` (original). En la página `v2`: `sc_kpi_respuestas`, `sc_kpi_respuestas_panel` (tarjeta "Respuestas" del panel de satisfacción), y columna "Respuestas" de `sc_tabla_callcenter`.
 
 ### `Total Respuestas Motivacion`
 ```dax
@@ -169,8 +169,8 @@ Satisfaccion Promedio Capacitacion = AVERAGE(Fact_SatisfaccionCapacitacion[Satis
 ```
 - **Qué calcula:** promedio Likert (1–5) de satisfacción general con la capacitación.
 - **Formato:** decimal (`0.0`).
-- **Páginas:** Satisfacción de capacitaciones.
-- **Visuales:** `sc_kpi_satisf`.
+- **Páginas:** Satisfacción de capacitaciones (original y v2 - borrador).
+- **Visuales:** `sc_kpi_satisf` (original). En la página `v2`: `sc_kpi_satisfaccion`, columna "Satisfacción" de `sc_tabla_callcenter`; también es dependencia directa de `Valor Metrica Satisfaccion` (ver más abajo), que la usa en `sc_panel_satisf_chart`.
 
 ### `Claridad Promedio Capacitacion`
 ```dax
@@ -178,8 +178,8 @@ Claridad Promedio Capacitacion = AVERAGE(Fact_SatisfaccionCapacitacion[Claridad]
 ```
 - **Qué calcula:** promedio Likert de claridad de la capacitación.
 - **Formato:** decimal (`0.0`).
-- **Páginas:** Satisfacción de capacitaciones.
-- **Visuales:** `sc_kpi_claridad`.
+- **Páginas:** Satisfacción de capacitaciones (original y v2 - borrador).
+- **Visuales:** `sc_kpi_claridad` (original). En la página `v2`: columna "Claridad" de `sc_tabla_callcenter`; también es dependencia directa de `Valor Metrica Satisfaccion`, que la usa en `sc_panel_satisf_chart`.
 
 ### `Utilidad Promedio Capacitacion`
 ```dax
@@ -187,8 +187,8 @@ Utilidad Promedio Capacitacion = AVERAGE(Fact_SatisfaccionCapacitacion[Utilidad]
 ```
 - **Qué calcula:** promedio Likert de utilidad percibida.
 - **Formato:** decimal (`0.0`).
-- **Páginas:** Satisfacción de capacitaciones.
-- **Visuales:** `sc_kpi_utilidad`.
+- **Páginas:** Satisfacción de capacitaciones (original y v2 - borrador).
+- **Visuales:** `sc_kpi_utilidad` (original). En la página `v2`: columna "Utilidad" de `sc_tabla_callcenter`; también es dependencia directa de `Valor Metrica Satisfaccion`, que la usa en `sc_panel_satisf_chart`.
 
 ### `Dinamismo Promedio Capacitacion`
 ```dax
@@ -196,8 +196,8 @@ Dinamismo Promedio Capacitacion = AVERAGE(Fact_SatisfaccionCapacitacion[Dinamism
 ```
 - **Qué calcula:** promedio Likert de dinamismo de la capacitación.
 - **Formato:** decimal (`0.0`).
-- **Páginas:** Satisfacción de capacitaciones.
-- **Visuales:** `sc_kpi_dinamismo`.
+- **Páginas:** Satisfacción de capacitaciones (original y v2 - borrador).
+- **Visuales:** `sc_kpi_dinamismo` (original). En la página `v2`: columna "Dinamismo" de `sc_tabla_callcenter`; también es dependencia directa de `Valor Metrica Satisfaccion`, que la usa en `sc_panel_satisf_chart`.
 
 ### `Indice Global Capacitacion`
 ```dax
@@ -214,8 +214,92 @@ Indice Global Capacitacion = DIVIDE([Satisfaccion Promedio Capacitacion] + [Clar
 ```
 - **Qué calcula:** proporción de respuestas que dejaron un comentario real (distinto de `"Sin comentario"`).
 - **Formato:** porcentaje (`0.0%`).
-- **Páginas:** Satisfacción de capacitaciones.
-- **Visuales:** `sc_kpi_coment`.
+- **Páginas:** Satisfacción de capacitaciones (original y v2 - borrador).
+- **Visuales:** `sc_kpi_coment` (original); `sc_kpi_comentarios` (v2 - borrador).
+
+### `Call Centers Capacitados`
+```dax
+Call Centers Capacitados = DISTINCTCOUNT(Fact_SatisfaccionCapacitacion[CallCenter])
+```
+- **Qué calcula:** número de call centers distintos con al menos una capacitación registrada.
+- **Formato:** entero (`0`).
+- **Páginas:** Satisfacción de capacitaciones (v2 - borrador).
+- **Visuales:** `sc_kpi_callcenters`.
+- **Origen:** agregada en `SC-3` (iniciativa de rediseño de la página, ver [Outputs/39](../Outputs/39_resultado_sc3_medidas_satisfaccion_capacitaciones.md)).
+
+### `Ultima Capacitacion`
+```dax
+Ultima Capacitacion = MAX(Fact_SatisfaccionCapacitacion[Fecha])
+```
+- **Qué calcula:** la fecha más reciente con una capacitación registrada, a partir de `Fact_SatisfaccionCapacitacion[Fecha]` (la fecha ya normalizada por Power Query, ver `TimestampNormalizado` en [04_fuentes_y_actualizacion_datos.md](04_fuentes_y_actualizacion_datos.md)).
+- **Formato:** fecha (`dd/MM/yyyy`).
+- **Páginas:** no está enlazada directamente a ningún visual — es la base de `Ultima Capacitacion Texto` (ver abajo).
+- **Origen:** `SC-3`.
+- **Observaciones:** el `formatString` de fecha es sensible a la configuración regional de Power BI Desktop/Windows; para presentación en tarjetas y tablas se usa la versión de texto (`Ultima Capacitacion Texto`), no esta medida directamente.
+
+### `Capacitaciones Realizadas`
+```dax
+Capacitaciones Realizadas =
+    COUNTROWS(
+        SUMMARIZE(
+            Fact_SatisfaccionCapacitacion,
+            Fact_SatisfaccionCapacitacion[Fecha],
+            Fact_SatisfaccionCapacitacion[CallCenter],
+            Fact_SatisfaccionCapacitacion[NombreFormador]
+        )
+    )
+```
+- **Qué calcula:** número de sesiones de capacitación distintas, usando como clave provisional la combinación `Fecha + CallCenter + NombreFormador` (cada combinación distinta cuenta como una sesión).
+- **Formato:** entero (`0`).
+- **Páginas:** Satisfacción de capacitaciones (v2 - borrador).
+- **Visuales:** `sc_kpi_capacitaciones`, `sc_chart_callcenter`, `sc_chart_capxfecha`, `sc_tabla_callcenter`.
+- **Origen:** `SC-3`.
+- **Limitación importante:** `Fecha + CallCenter + NombreFormador` **no es un identificador oficial de sesión de capacitación** — es una clave provisional. Si existen variantes de escritura del mismo formador (p. ej. con o sin tilde, o con apellido abreviado) sin alias unificado, o si dos sesiones distintas del mismo formador ocurren el mismo día en el mismo call center, la medida puede **sobreestimar o subestimar** el número real de sesiones. No debe presentarse como conteo definitivo de capacitaciones hasta que el origen entregue un identificador de sesión explícito (ver `D9` en [05_decisiones_limitaciones_pendientes.md](05_decisiones_limitaciones_pendientes.md)).
+
+### `Valor Metrica Satisfaccion`
+```dax
+Valor Metrica Satisfaccion =
+    SWITCH(
+        SELECTEDVALUE(Dim_MetricaSatisfaccion[Metrica]),
+        "Satisfacción", [Satisfaccion Promedio Capacitacion],
+        "Claridad", [Claridad Promedio Capacitacion],
+        "Utilidad", [Utilidad Promedio Capacitacion],
+        "Dinamismo", [Dinamismo Promedio Capacitacion],
+        BLANK()
+    )
+```
+- **Qué calcula:** selecciona dinámicamente uno de los 4 promedios Likert de capacitación (`Satisfaccion`/`Claridad`/`Utilidad`/`Dinamismo` Promedio Capacitacion) según el valor de la fila de la tabla desconectada `Dim_MetricaSatisfaccion[Metrica]`.
+- **Formato:** decimal (`0.0`).
+- **Páginas:** Satisfacción de capacitaciones (v2 - borrador).
+- **Visuales:** `sc_panel_satisf_chart` (panel de satisfacción de 4 barras).
+- **Origen:** `SC-5` (Revisión 7).
+- **Dependencias:** requiere la tabla desconectada `Dim_MetricaSatisfaccion` (ver "Objetos de soporte técnico" abajo) — sin relación con ninguna otra tabla del modelo. Si `Dim_MetricaSatisfaccion` se elimina o pierde sus 4 filas, la medida retorna `BLANK()` para todas las categorías.
+
+### `Ultima Capacitacion Texto`
+```dax
+Ultima Capacitacion Texto =
+    VAR Fecha = [Ultima Capacitacion]
+    RETURN
+        IF(
+            ISBLANK(Fecha),
+            BLANK(),
+            FORMAT(DAY(Fecha), "00") & "/" & FORMAT(MONTH(Fecha), "00") & "/" & FORMAT(YEAR(Fecha), "0000")
+        )
+```
+- **Qué calcula:** el mismo valor que `Ultima Capacitacion`, pero como texto armado manualmente con `DAY`/`MONTH`/`YEAR` en formato `dd/MM/yyyy`, para evitar que el formato de fecha se muestre invertido (`MM/dd/yyyy`) según la configuración regional de Power BI Desktop/Windows.
+- **Formato:** texto (sin `formatString`, es una cadena).
+- **Páginas:** Satisfacción de capacitaciones (v2 - borrador).
+- **Visuales:** `sc_kpi_ultima`, columna "Última fecha" de `sc_tabla_callcenter`.
+- **Origen:** `SC-5` (Revisión 7–8, iteró desde un `FORMAT(..., "es-CO")` inicial hasta la construcción manual actual, ver [Outputs/43](../Outputs/43_resultado_sc5_rediseno_visual_satisfaccion_capacitaciones.md)).
+- **Limitación:** es una **medida de presentación**. Al retornar texto, no puede usarse para ordenar cronológicamente ni en cálculos de fecha (restas, `DATEDIFF`, comparaciones) — para eso debe usarse `Ultima Capacitacion` (la medida de fecha real).
+
+### Objetos de soporte técnico (no son medidas)
+
+Tres objetos del modelo usados por la página `p14_satisfaccion_capacitaciones_v2` (ver [03_mapa_reporte_paginas_visuales.md](03_mapa_reporte_paginas_visuales.md) §8) no son medidas DAX y no se cuentan en el total de 30:
+
+- **`Dim_Calendario[Fecha Eje]`** — columna calculada **textual** (`dataType: string`), construida con `FORMAT(DAY(Dim_Calendario[Fecha]), "00") & "/" & FORMAT(MONTH(Dim_Calendario[Fecha]), "00")` (formato `dd/MM`), ordenada por `Dim_Calendario[Fecha]` (`sortByColumn: Fecha`). Usada como categoría del gráfico `sc_chart_capxfecha` para evitar que el eje muestre horas o la jerarquía automática de fechas (Auto Date/Time) que Power BI asocia por defecto a `Fecha`. No es una columna de tipo fecha ni una medida — es una etiqueta de eje.
+- **`Fact_SatisfaccionCapacitacion[Fecha Texto]`** — columna calculada con la misma lógica de texto que `Ultima Capacitacion Texto` (`DAY`/`MONTH`/`YEAR` armado manualmente), a nivel de fila. Usada como columna de presentación en `sc_tabla_comentarios`.
+- **`Dim_MetricaSatisfaccion`** — tabla calculada desconectada (`DATATABLE("Metrica", STRING, "Orden", INTEGER, {...})` con 4 filas: Satisfacción=1, Claridad=2, Utilidad=3, Dinamismo=4). No tiene relación con ninguna otra tabla del modelo; su columna `Metrica` se ordena por `Orden` (`sortByColumn`). Existe solo para que `Valor Metrica Satisfaccion` pueda seleccionar dinámicamente entre los 4 promedios Likert de capacitación en un único visual de barras.
 
 ## `_Medidas Motivacion`
 
@@ -275,12 +359,17 @@ Indice Global Motivacion = DIVIDE([Satisfaccion Promedio Actividad] + [Claridad 
 
 ## Resumen por familia
 
-| Tabla de medidas | Cantidad | Enlazadas a algún visual | Sin enlazar |
-|---|---|---|---|
+| Tabla de medidas | Cantidad | Enlazadas directamente | Sin enlace directo |
+|---|---:|---:|---:|
 | `_Medidas Generales` | 7 | 7 | 0 |
-| `_Medidas Calidad` | 6 | 5 | 1 (`% Calidad Promedio Provisional`, documentada en texto) |
-| `_Medidas Capacitacion` | 6 | 6 | 0 |
+| `_Medidas Calidad` | 6 | 5 | 1 |
+| `_Medidas Capacitacion` | 11 | 10 | 1 |
 | `_Medidas Motivacion` | 6 | 6 | 0 |
-| **Total** | **25** | **24** | **1** |
+| **Total** | **30** | **28** | **2** |
 
-> El conteo de 25 medidas corresponde al estado del modelo al cierre de la Fase 18. El número puede cambiar en el futuro si el negocio autoriza nuevas medidas — no lo tome como un valor fijo, verifique siempre contra los archivos `_Medidas *.tmdl` vigentes en `PBI/PBI_Indicadores.SemanticModel/definition/tables/`.
+Las 2 medidas sin enlace directo a ningún visual:
+
+- **`% Calidad Promedio Provisional`** (`_Medidas Calidad`) — documentada únicamente en paneles de texto (`cl_nota_calidad_text`, `nm_calidad_text`); siempre retorna `BLANK()`.
+- **`Ultima Capacitacion`** (`_Medidas Capacitacion`) — no está enlazada a ningún visual; es la base DAX de `Ultima Capacitacion Texto` (que sí está enlazada a `sc_kpi_ultima` y `sc_tabla_callcenter`).
+
+> El conteo de 30 medidas corresponde al estado del modelo verificado durante `SC-8`. El número puede cambiar en el futuro si el negocio autoriza nuevas medidas — no lo tome como un valor fijo, verifique siempre contra los archivos `_Medidas *.tmdl` vigentes en `PBI/PBI_Indicadores.SemanticModel/definition/tables/`.
