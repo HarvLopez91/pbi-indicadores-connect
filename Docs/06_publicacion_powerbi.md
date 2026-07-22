@@ -8,6 +8,7 @@ https://app.powerbi.com/view?r=eyJrIjoiZGI2ZjNiYmItODQ0Yy00M2Y1LThkNTYtZGQ5NDIxY
 
 - **Formato del enlace:** `app.powerbi.com/view?r=...` corresponde a un enlace de **"Publicar en la Web"** de Power BI Service. Este tipo de enlace **no requiere inicio de sesión**: cualquier persona que lo reciba puede ver el informe, sin controles de acceso ni auditoría de quién lo consultó.
 - **Página inicial publicada:** el parámetro `pageName=67eff42d82e1c9c15b84` apunta a la página **Home**, consistente con el diseño de landing page del informe.
+- **Última republicación validada:** 2026-07-22, después del hotfix de `Dim_Calendario`. La nueva página oficial de Satisfacción de capacitaciones (`p14_satisfaccion_capacitaciones_v2`) quedó publicada y fue validada en navegación privada.
 - El link puede depender de la vigencia de la publicación, de la configuración del tenant de Power BI (si la organización permite "Publicar en la Web") y de que el informe no haya sido despublicado o reemplazado desde Power BI Service — nada de esto se controla desde este repositorio.
 
 ## 2. Consideración de gobierno de datos (importante)
@@ -25,7 +26,13 @@ Como el enlace publicado es de acceso público sin autenticación, **cualquier p
 
 El enlace publicado se mantiene sin cambios desde el repositorio. Cualquier republicación o reemplazo del vínculo debe hacerse manualmente desde Power BI Service después de validar el PBIP.
 
-## 3. Recomendaciones al publicar (o republicar)
+## 3. Historial de republicación validada
+
+| Fecha | Resultado | Evidencia |
+|---|---|---|
+| 2026-07-22 | Republicación manual posterior al hotfix de `Dim_Calendario`; Home cargó en navegación privada, la tarjeta de Satisfacción abrió la nueva página oficial, se vieron los datos actualizados de `ALMA` y `15/07/2026`, y no aparecieron nombres de formadores/líderes. El riesgo por `cl_tabla_asesor` continúa abierto. | [`Outputs/50`](../Outputs/50_resultado_republicacion_y_validacion_publica.md) |
+
+## 4. Recomendaciones al publicar (o republicar)
 
 Antes de generar o actualizar un enlace de publicación, validar en Power BI Desktop:
 
@@ -36,7 +43,7 @@ Antes de generar o actualizar un enlace de publicación, validar en Power BI Des
 - [ ] **Permisos**: revisar quién tiene acceso de edición al informe en Power BI Service y si el enlace de "Publicar en la Web" sigue siendo el mecanismo de distribución deseado (ver §2).
 - [ ] **Vigencia del enlace**: confirmar en Power BI Service (Archivo → Publicar en la Web → Administrar enlaces) que el enlace sigue activo y corresponde a la versión actual del informe.
 
-## 4. Checklist posterior a cada publicación
+## 5. Checklist posterior a cada publicación
 
 Después de publicar o republicar:
 
