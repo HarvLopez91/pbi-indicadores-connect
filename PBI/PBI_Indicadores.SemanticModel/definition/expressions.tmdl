@@ -54,7 +54,20 @@ expression SatisfaccionCapacitacion_Limpio =
 			EncabezadosPromovidos = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
 			NombresColumnaSinEspacios = Table.TransformColumnNames(EncabezadosPromovidos, Text.Trim),
 			TextoLimpio = Table.TransformColumns(NombresColumnaSinEspacios, {}, each if _ is text then Text.Trim(Text.Clean(_)) else _),
-			TimestampComoFechaHora = Table.TransformColumnTypes(TextoLimpio, {{"Timestamp", type datetime}}),
+			TimestampComoFechaHora = Table.TransformColumns(TextoLimpio, {{"Timestamp", each
+				if _ = null then null
+				else if _ is datetime then _
+				else if _ is date then DateTime.From(_)
+				else if _ is number then DateTime.From(_)
+				else if _ is text then
+					let
+						TextoTimestamp = Text.Trim(Text.Clean(_))
+					in
+						if TextoTimestamp = "" or Text.Length(TextoTimestamp) < 8
+						then null
+						else DateTime.FromText(TextoTimestamp, [Culture = "en-US"])
+				else error "Tipo de Timestamp no soportado en SatisfaccionCapacitacion_Limpio",
+				type nullable datetime}}),
 			TimestampNormalizado = Table.TransformColumns(TimestampComoFechaHora, {{"Timestamp", each
 				let
 					FechaBase = if _ = null then null else Date.From(_),

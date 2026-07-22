@@ -90,10 +90,14 @@ table Dim_Calendario
 		mode: import
 		source =
 				let
-					FechaMinCalidad = List.Min(Fact_CalidadLlamadas[Fecha]),
-					FechaMinCapacitacion = List.Min(Fact_SatisfaccionCapacitacion[Fecha]),
-					FechaMinMotivacion = List.Min(Fact_MotivacionActividad[Fecha]),
-					FechaMinima = List.Min({FechaMinCalidad, FechaMinCapacitacion, FechaMinMotivacion}),
+					FechasCalidadValidas = List.RemoveNulls(Fact_CalidadLlamadas[Fecha]),
+					FechasCapacitacionValidas = List.RemoveNulls(Fact_SatisfaccionCapacitacion[Fecha]),
+					FechasMotivacionValidas = List.RemoveNulls(Fact_MotivacionActividad[Fecha]),
+					FechaMinCalidad = if List.IsEmpty(FechasCalidadValidas) then null else List.Min(FechasCalidadValidas),
+					FechaMinCapacitacion = if List.IsEmpty(FechasCapacitacionValidas) then null else List.Min(FechasCapacitacionValidas),
+					FechaMinMotivacion = if List.IsEmpty(FechasMotivacionValidas) then null else List.Min(FechasMotivacionValidas),
+					FechasMinimasValidas = List.RemoveNulls({FechaMinCalidad, FechaMinCapacitacion, FechaMinMotivacion}),
+					FechaMinima = if List.IsEmpty(FechasMinimasValidas) then Date.From(DateTime.LocalNow()) else List.Min(FechasMinimasValidas),
 					FechaMaxima = Date.From(DateTime.LocalNow()),
 					CantidadDias = Duration.Days(FechaMaxima - FechaMinima) + 1,
 					ListaFechas = List.Dates(FechaMinima, CantidadDias, #duration(1, 0, 0, 0)),
