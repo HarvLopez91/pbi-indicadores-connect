@@ -1,7 +1,9 @@
 # Datos fuente con información personal (nombres de asesores, líderes, formadores).
 # Se excluyen del control de versiones por privacidad — ver Outputs/02_resultado_fase_2_versionamiento.md.
 # El respaldo de estos archivos lo cubre la sincronización de OneDrive, no Git.
-Data/*.xlsx
+# Patrón recursivo (Data/**/*.xlsx) porque las exportaciones también llegan en subcarpetas
+# (p. ej. Data/Informe de Altas/...), no solo directamente dentro de Data/ — ver Outputs/45.
+Data/**/*.xlsx
 
 # Archivos de bloqueo temporal de Excel (se generan al abrir los .xlsx)
 ~$*.xlsx
