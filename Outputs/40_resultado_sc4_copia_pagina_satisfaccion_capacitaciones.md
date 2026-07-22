@@ -18,13 +18,13 @@
 
 Working tree limpio salvo `Data/`, `git branch --show-current` = `main`, y el commit `d0c86f8 feat(dax): agregar medidas para satisfaccion capacitaciones` confirmado en `git log --oneline -3`. Sin cambios pendientes en `PBI/`.
 
-## 2. Pendiente registrado antes de duplicar (no bloqueante)
+## 2. Pendiente registrado antes de duplicar (no bloqueante) — resuelto en §10
 
-Conforme a lo indicado por el usuario, se deja registrado como **pendiente de validación funcional, no cerrado**:
+Conforme a lo indicado por el usuario, se dejó registrado inicialmente como **pendiente de validación funcional, no cerrado**:
 
-> `Ultima Capacitacion = 2026-10-07` (calculado manualmente en `SC-3` a partir del Excel origen) puede corresponder a datos de prueba o a una interpretación incorrecta de día/mes. Debe compararse en Power BI Desktop contra los valores visibles en el archivo fuente **antes del rediseño final y la publicación** (`SC-5` en adelante). No se investigó ni se corrigió en esta fase — la instrucción explícita del usuario fue no tocar la medida DAX hasta confirmar si el problema está en los datos de prueba, en el archivo Excel o en la transformación de `Fecha`.
+> `Ultima Capacitacion = 2026-10-07` (calculado manualmente en `SC-3` a partir del Excel origen) puede corresponder a datos de prueba o a una interpretación incorrecta de día/mes. Debe compararse en Power BI Desktop contra los valores visibles en el archivo fuente **antes del rediseño final y la publicación** (`SC-5` en adelante).
 
-Este pendiente no bloquea `SC-4` (duplicar la página no depende de resolverlo), pero queda anotado para retomarlo antes de `SC-5`.
+**Resuelto:** la comparación en Power BI Desktop (§10) confirmó que el valor `2026-10-07` reportado en `SC-3` era efectivamente una interpretación incorrecta — producto de la validación externa por XML, no de la medida DAX ni del dato origen. El valor real es `10/07/2026` (10 de julio de 2026), dentro del rango visible del segmentador de Fecha (`02/07/2026`–`15/07/2026`). Ver corrección aplicada en `Outputs/39` ("Corrección posterior").
 
 ## 3. Método de duplicación usado
 
@@ -73,7 +73,38 @@ Búsqueda de `satisfaccion_capacitaciones_v2` en todo `PBI/`: solo aparece en 2 
 
 ## 10. Estado de la validación de las 3 medidas de SC-3
 
-**Pendiente**, sin cambios desde `SC-3` — no se abrió Power BI Desktop en esta fase (no era parte del alcance de `SC-4`). Sigue pendiente en particular la verificación de `Ultima Capacitacion = 2026-10-07` señalada en §2, que el usuario indicó debe resolverse antes de `SC-5`, no antes de `SC-4`.
+**Completa.** El usuario abrió el `.pbip` en Power BI Desktop y ejecutó la siguiente consulta en la vista de Consulta DAX:
+
+```DAX
+EVALUATE
+ROW (
+    "Call Centers Capacitados", [Call Centers Capacitados],
+    "Capacitaciones Realizadas", [Capacitaciones Realizadas],
+    "Ultima Capacitacion", [Ultima Capacitacion]
+)
+```
+
+Resultado real del modelo:
+
+| Medida | Resultado manual (SC-3, derivado del Excel) | Resultado real en el modelo | Coincide |
+|---|---|---|---|
+| `Call Centers Capacitados` | 5 | **5** | Sí |
+| `Capacitaciones Realizadas` | 5 | **5** | Sí |
+| `Ultima Capacitacion` | ~~2026-10-07~~ (valor incorrecto, error de la validación externa por XML) | **10/07/2026** (10 de julio de 2026) — dato mostrado por el modelo en formato regional `DD/MM/AAAA` | Sí, una vez corregida la interpretación de la fecha |
+
+Las 3 medidas calculan exactamente lo esperado según la lógica definida en `SC-3` — no hay error de fórmula ni de referencia.
+
+**El pendiente de `Ultima Capacitacion` queda cerrado.** El modelo confirma que la fórmula está bien implementada y que el dato real es `10/07/2026` — una fecha dentro del rango visible del segmentador de Fecha de la página (`02/07/2026`–`15/07/2026`), consistente con el resto del dataset piloto y sin indicios de datos de prueba ni fechas anómalas. El resultado erróneo (`2026-10-07`) reportado en `SC-3` provino de la validación externa por lectura directa del XML del `.xlsx` (este entorno no tenía `openpyxl`/`pandas` disponibles), no de la medida ni del origen de datos. **Power BI Desktop queda establecido como la fuente de validación definitiva** para este tipo de comparación en fases futuras — no se debe repetir una validación externa por XML como sustituto de la lectura directa del modelo cuando Power BI Desktop esté disponible.
+
+### Hallazgo adicional — tipo real del segmentador de Fecha (DEC-4 corregida)
+
+Se releyó `sc_slicer_fecha/visual.json` en la copia `p14_satisfaccion_capacitaciones_v2` (sin modificarlo): la propiedad `objects.data[0].properties.mode` sigue siendo `'Dropdown'`, **idéntica** a la de la página original (confirmado también por el `diff -rq` sin diferencias de `SC-4`, §3). Sin embargo, Power BI Desktop confirma que el segmentador de Fecha se renderiza como un **rango con 2 casillas de calendario ("Between")**, no como una lista desplegable de fechas individuales.
+
+Esto confirma que la propiedad PBIR `mode: Dropdown` **no determina** si un segmentador sobre una columna de tipo Fecha se renderiza como lista/dropdown o como rango — Power BI Desktop aplica el estilo "Between" por defecto a los segmentadores de campos de fecha continuos, independientemente de ese valor. Como el JSON del segmentador es idéntico entre la copia y la página original (nunca se editó en `SC-4`), este comportamiento **ya existía en la página original**, no fue introducido por la duplicación.
+
+**DEC-4 corregida por el usuario:** se conserva el comportamiento actual del segmentador de Fecha en modo `Between`, únicamente en la página de Satisfacción de capacitaciones. No se requiere modificarlo durante `SC-5` — el diseño ya coincide con el mockup de referencia (`Assets/mockups/dashboard_satisfaccion_capacitaciones_mockup.png`), que muestra el mismo estilo de rango con 2 casillas. La decisión original registrada en `SC-1` ("mantener Dropdown") se actualiza: la intención de esa respuesta era preservar el comportamiento vigente sin introducir un cambio nuevo, y el comportamiento vigente resultó ser `Between`, no una lista desplegable — el resultado práctico (no tocar el segmentador en `SC-5`) es el mismo.
+
+Esta corrección se limita a esta página. La verificación de si los segmentadores de Fecha de las otras 6 páginas del reporte también renderizan como `Between` (lo cual contradiría `Docs/05_decisiones_limitaciones_pendientes.md` §1.11 de forma más amplia) queda **fuera de alcance de este plan** — se recomienda evaluarlo en una iniciativa aparte antes de tratar `Docs/05` §1.11 como definitivo para segmentadores de Fecha en general.
 
 ## 11. Confirmación de no modificación fuera de alcance
 
@@ -104,25 +135,52 @@ No se modificó:
 | Cambios en medidas/TMDL | No |
 | Cambios en Power Query | No |
 | Cambios en Data | No |
-| PBIP abre correctamente | Pendiente (requiere confirmación del usuario en Power BI Desktop) |
-| Validación de medidas SC-3 | Pendiente — incluye explícitamente la revisión de `Ultima Capacitacion = 2026-10-07` antes de `SC-5` |
-| ¿Se puede avanzar a SC-5? | **No todavía** — recomendado abrir Power BI Desktop primero para (a) confirmar que la copia carga sin error y (b) resolver el pendiente de `Ultima Capacitacion` señalado en §2, antes de iniciar el rediseño visual |
+| PBIP abre correctamente | **Sí** — confirmado por el usuario en Power BI Desktop, `p14_satisfaccion_capacitaciones_v2` carga sin error con el mismo contenido visual que la original |
+| Validación de medidas SC-3 | **Completa** — las 3 medidas calculan en el modelo exactamente el valor esperado (ver §10). `Ultima Capacitacion` real = `10/07/2026` (corregido; el valor `2026-10-07` reportado en `SC-3` fue un error de la validación externa por XML, no de la medida) |
+| Tipo real del segmentador de Fecha | **"Between" (rango con 2 casillas de calendario)**, confirmado por Power BI Desktop. Comportamiento idéntico y preexistente en la página original (JSON sin cambios desde la duplicación). **DEC-4 corregida**: se conserva este comportamiento en esta página, sin cambios en `SC-5` — coincide con el mockup (ver hallazgo detallado en §10) |
+| ¿Se puede avanzar a SC-5? | **Sí** — ambos puntos que quedaban abiertos se resolvieron: `Ultima Capacitacion` confirmada como `10/07/2026` (dato real, dentro del rango del piloto) y DEC-4 corregida a "conservar Between" |
 
-## 14. Commit
+## 14. Commit inicial de SC-4 (ya realizado, sin cambios)
 
 ```
 feat(report): crear copia pagina satisfaccion capacitaciones
 ```
 
-Archivos incluidos: `pages.json`, la carpeta completa `p14_satisfaccion_capacitaciones_v2/`, y esta bitácora.
+Archivos incluidos: `pages.json`, la carpeta completa `p14_satisfaccion_capacitaciones_v2/`, y la versión original de esta bitácora. Este commit ya quedó registrado (`ba4666e`) antes de la sesión de validación en Power BI Desktop y de las correcciones descritas en este documento.
 
-No se hizo push remoto.
+## 15. Revisión de cambios automáticos de Power BI Desktop (post-validación)
 
-## 15. Recomendación para continuar
+Al abrir y guardar el `.pbip` para ejecutar la validación de §10, Power BI Desktop reescribió, como es su comportamiento conocido (`CLAUDE.md`):
 
-Antes de iniciar `SC-5` (rediseño visual):
+| Archivo | Cambio | Acción tomada |
+|---|---|---|
+| `pages.json` | `activePageName` → `p14_satisfaccion_capacitaciones_v2` (la página vista al guardar); schema `1.0.0`→`1.1.0` | **Revertido** `activePageName` a Home (`67eff42d82e1c9c15b84`) antes de versionar, para conservar Home como apertura predeterminada del reporte. Schema `1.1.0` se conserva (metadato de Desktop, no de negocio) |
+| `database.tmdl` | `compatibilityLevel` `1550` → `1600` | Conservado — cambio de motor generado por Desktop, no se revierte |
+| `model.tmdl` | Anotación `PBI_ProTooling` ganó `"DaxQueryView_Desktop"` | Conservado — metadato de Desktop |
+| `_Medidas Capacitacion.tmdl` | Se generaron `lineageTag` para las 3 medidas nuevas de `SC-3` | Conservado — es exactamente el comportamiento esperado (nunca se escriben a mano, Desktop los genera al guardar) |
+| `PBI/PBI_Indicadores.SemanticModel/DAXQueries/` (nueva carpeta) | Contenía `Consulta 1.dax` (la consulta de validación de §10) y `.pbi/daxQueries.json` (metadato local) | `Consulta 1.dax` **eliminado** (no se usará como prueba permanente). `.pbi/daxQueries.json` se deja en disco pero **no se versiona** (metadato local de Desktop) |
 
-1. Abrir el `.pbip` en Power BI Desktop y confirmar que `p14_satisfaccion_capacitaciones_v2` carga sin error, con el mismo contenido visual que la original en este momento.
-2. Colocar `Ultima Capacitacion` en una tarjeta de prueba y comparar contra los valores de fecha visibles directamente en `Data/Satisfacción capacitación (Responses).xlsx` (columna `Timestamp`), para descartar que `2026-10-07` sea un error de datos de prueba o una interpretación incorrecta de día/mes antes de construir el KPI "Última capacitación" del mockup.
-3. Confirmar en la misma sesión los valores de `Call Centers Capacitados` (esperado `5`) y `Capacitaciones Realizadas` (esperado `5`), dejados como pendiente desde `SC-3`.
-4. Solo después de (1)-(3), autorizar `SC-5`.
+Ningún cambio funcional del reporte (visuales, medidas, Power Query, relaciones) se mezcló con estos metadatos.
+
+## 16. Recomendación para continuar
+
+Los 2 puntos que bloqueaban `SC-5` quedaron resueltos en esta sesión (§10, §13): `Ultima Capacitacion` confirmada como `10/07/2026` (dato real) y DEC-4 corregida a "conservar Between" en esta página. **`SC-5` queda desbloqueada.**
+
+Antes de iniciar `SC-5`, se recomienda comitear en 2 pasos separados (ver §17): primero los metadatos legítimos de Desktop (`chore`), luego las correcciones documentales (`docs`) — sin mezclarlos, siguiendo el patrón ya establecido en el proyecto.
+
+## 17. Commits de esta sesión de corrección
+
+**Commit 1 — Metadatos de Desktop** (`chore(pbi): sincronizar metadatos tras validacion en desktop`):
+
+- `PBI/PBI_Indicadores.Report/definition/pages/pages.json` (schema 1.1.0, `activePageName` revertido a Home)
+- `PBI/PBI_Indicadores.SemanticModel/definition/database.tmdl` (`compatibilityLevel: 1600`)
+- `PBI/PBI_Indicadores.SemanticModel/definition/model.tmdl` (anotación `PBI_ProTooling`)
+- `PBI/PBI_Indicadores.SemanticModel/definition/tables/_Medidas Capacitacion.tmdl` (`lineageTag` generados por Desktop para las 3 medidas de `SC-3`)
+
+**Commit 2 — Correcciones documentales** (`docs: corregir validacion previa a sc5`):
+
+- `Outputs/39_resultado_sc3_medidas_satisfaccion_capacitaciones.md` (corrección de `Ultima Capacitacion`)
+- `Outputs/40_resultado_sc4_copia_pagina_satisfaccion_capacitaciones.md` (este documento, actualizado)
+- `Specs/06_plan_implementacion_mockup_satisfaccion_capacitaciones.md` (DEC-4 corregida)
+
+No se hizo push remoto en ninguno de los 2 commits.

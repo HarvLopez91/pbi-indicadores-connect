@@ -76,6 +76,8 @@ Ninguna fase de este plan se ejecuta al crear este documento. Cada fase se activ
 
 Estas 4 decisiones se capturan formalmente en `SC-1` y se usan como entrada de `SC-3` (medidas) y `SC-5` (rediseño visual). No es obligatorio resolver las 4 para avanzar de `SC-1` a `SC-2` — ver criterios de avance en §11.
 
+> **Corrección de DEC-4 (post `SC-4`):** en `SC-1` se confirmó inicialmente "mantener el modo `Dropdown` actual" (opción c), bajo el supuesto de que el segmentador de Fecha se renderizaba como lista desplegable, igual que las otras 6 páginas. La validación en Power BI Desktop durante `SC-4` (`Outputs/40` §10) mostró que el segmentador **ya se renderiza como rango con 2 casillas de calendario (`Between`)**, tanto en la copia como en la página original — la propiedad PBIR `mode: Dropdown` no controla el estilo de un segmentador sobre una columna de Fecha continua; Power BI Desktop aplica `Between` por defecto independientemente de ese valor. **DEC-4 queda resuelta como:** *"Se conserva el comportamiento actual del segmentador de Fecha en modo `Between`, únicamente en la página de Satisfacción de capacitaciones. No se requiere modificarlo durante `SC-5`."* El resultado práctico coincide con la intención original de la respuesta de `SC-1` (no introducir un cambio nuevo) y además coincide con el mockup de referencia, que muestra el mismo estilo de rango. Esta corrección se limita a esta página — no se investigó si las otras 6 páginas del reporte también renderizan su segmentador de Fecha como `Between`, lo cual quedaría fuera del alcance de este plan.
+
 ---
 
 ## 5. Fases de implementación
@@ -336,7 +338,7 @@ ninguna otra página del reporte.
 
 **2. Actividades** (una por bloque del mockup, ver `Specs/05` §3–§4):
 - **Encabezado**: conservar logo, título, subtítulo, insignia "Datos piloto sujetos a validación" y botón "Volver a Home" (apuntando a Home, igual que la original) — sin cambios de fondo.
-- **Filtros**: aplicar la decisión DEC-4 al segmentador de Fecha (rango de 2 casillas vs. `Dropdown` actual); conservar Call Center y Jornada en modo `Dropdown`.
+- **Filtros**: no se requiere ninguna acción sobre el segmentador de Fecha — DEC-4 (corregida, ver §4) confirma que ya funciona en modo `Between` (rango de 2 casillas), igual que el mockup; conservar Call Center y Jornada en modo `Dropdown`.
 - **Tarjetas KPI**: reconstruir la fila de 6 tarjetas del mockup (Capacitaciones realizadas [solo si DEC-1 resuelta], Respuestas recibidas, Call centers capacitados, Satisfacción promedio, Última capacitación, % con comentarios), retirando las tarjetas de Claridad/Utilidad/Dinamismo/Índice de la fila superior (se reubican en el panel de selección y en la tabla).
 - **Gráfico "Capacitaciones por call center"**: si DEC-1 resuelta, retargetear `sc_chart_callcenter` (o su copia) para usar `Capacitaciones Realizadas` en vez de `Indice Global Capacitacion`; si DEC-1 no resuelta, mantener este gráfico fuera de alcance y documentarlo como pendiente.
 - **Gráfico "Capacitaciones por fecha"**: nuevo gráfico de líneas, mismo criterio que el anterior (bloqueado por DEC-1 si no está resuelta).
@@ -366,7 +368,7 @@ ninguna otra página del reporte.
 
 **6. Riesgos:**
 - Sobrecargar el lienzo si DEC-2 resulta en "coexisten ambas tablas" (formador/líder + call center) — puede requerir ajustar tamaños o mover la tabla de comentarios a una posición secundaria.
-- Inconsistencia visual entre esta página y las otras 6 si el segmentador de Fecha cambia de modo (DEC-4) y las demás páginas no — aceptable solo si el usuario lo confirmó explícitamente en `SC-1`.
+- ~~Inconsistencia visual entre esta página y las otras 6 si el segmentador de Fecha cambia de modo (DEC-4) y las demás páginas no~~ — **riesgo descartado**: DEC-4 corregida confirma que no se modifica el segmentador (ya funciona en `Between`); no hay cambio que introduzca inconsistencia nueva. Queda abierta, fuera de alcance de este plan, la pregunta de si las otras 6 páginas también renderizan su Fecha como `Between` (ver `Specs/06` §4, nota de corrección de DEC-4).
 - Reutilizar `sc_tabla_formador` como base de la nueva tabla de call center puede arrastrar configuraciones de columna que ya no aplican (revisar `columnFormatting` heredado).
 
 **7. Resultado esperado:** `p14_satisfaccion_capacitaciones_v2` visualmente alineada al mockup (en la medida en que las decisiones de negocio lo permitan), con los indicadores bloqueados claramente señalados como pendientes en vez de omitidos silenciosamente.
@@ -385,8 +387,9 @@ Tarea: rediseña ÚNICAMENTE la página p14_satisfaccion_capacitaciones_v2
 
 1. Encabezado: conserva logo, título, subtítulo, insignia de datos piloto y
    botón Volver a Home (sin cambios de fondo).
-2. Filtros: aplica la decisión DEC-4 al segmentador de Fecha; conserva Call
-   Center y Jornada en modo Dropdown.
+2. Filtros: no toques el segmentador de Fecha (DEC-4 corregida: ya funciona
+   en modo Between, coincide con el mockup, no requiere cambio); conserva
+   Call Center y Jornada en modo Dropdown.
 3. Fila de KPI: reconstruye las 6 tarjetas del mockup. Si DEC-1 NO fue
    resuelta en SC-1, omite la tarjeta "Capacitaciones realizadas" y dejala
    marcada visualmente como "Pendiente de definición de negocio" en vez de
@@ -728,7 +731,7 @@ SC-1 (decisiones) → SC-2 (preparación) → SC-3 (medidas) → SC-4 (copia de 
 ## 10. Riesgos consolidados
 
 - **Riesgo de grano no resuelto (DEC-1)**: si se avanza sin resolverlo, 3 de los 6 indicadores originales del mockup quedan permanentemente fuera de esta iteración — no es un riesgo técnico, es una limitación de alcance que debe comunicarse con claridad en `SC-8`.
-- **Riesgo de inconsistencia de diseño**: cambiar el segmentador de Fecha (DEC-4) o remover el gráfico de jornada (DEC-3) solo en esta página puede generar una experiencia inconsistente frente a las otras 6 — mitigar con confirmación explícita en `SC-1`, no como efecto secundario del rediseño.
+- **Riesgo de inconsistencia de diseño**: remover/reubicar el gráfico de jornada (DEC-3) solo en esta página puede generar una experiencia inconsistente frente a las otras 6 — mitigar con confirmación explícita en `SC-1`, no como efecto secundario del rediseño. (El riesgo equivalente para el segmentador de Fecha, DEC-4, quedó descartado tras `SC-4`: no se modifica nada, el segmentador ya funciona en modo `Between` desde antes — ver §4, nota de corrección de DEC-4.)
 - **Riesgo de exposición de datos personales**: si DEC-2 resulta en "coexisten ambas tablas", la página seguiría exponiendo nombres reales de formador/líder además de la nueva vista por call center — revisar contra `Docs/06` §2 antes de `SC-9`.
 - **Riesgo de regresión sobre la página publicada**: cualquier error en `SC-3`–`SC-6` que accidentalmente toque `p14_satisfaccion_capacitaciones` (original) afecta el informe ya publicado — mitigado por trabajar exclusivamente en la copia y verificar `git diff` en cada fase.
 - **Riesgo de alcance de páginas**: si `SC-9` resulta en "coexisten ambas páginas", se reabre la decisión ya cerrada de 7 páginas (`Specs/03` §2) — debe tratarse como una decisión nueva, no una consecuencia automática.

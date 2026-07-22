@@ -10,6 +10,16 @@
 
 ---
 
+## Corrección posterior (validada en Power BI Desktop durante SC-4)
+
+La validación manual de §3 originalmente reportaba `Ultima Capacitacion = 2026-10-07`, calculado leyendo directamente el XML interno del `.xlsx` sin librerías externas (openpyxl/pandas no estaban disponibles en este entorno). Ese cálculo externo **interpretó incorrectamente la fecha**.
+
+Al ejecutar la misma medida dentro de Power BI Desktop (fase `SC-4`, ver `Outputs/40` §10), el resultado real del modelo es **`10/07/2026` (10 de julio de 2026)**, valor que además cae dentro del rango visible del segmentador de Fecha de la página (`02/07/2026`–`15/07/2026`) — consistente con el resto de los datos piloto, sin fechas futuras ni anómalas.
+
+**El resultado del modelo en Power BI Desktop es la fuente de validación definitiva**, no la lectura externa del XML. Las secciones §3, §4 y §5 de este documento se corrigen a continuación para reflejar el valor correcto; el texto original tachado se conserva como referencia de lo que se reportó inicialmente y por qué se corrigió.
+
+Esta corrección **no afecta** a `Call Centers Capacitados` (5) ni a `Capacitaciones Realizadas` (5) — ambas fueron confirmadas correctas por Power BI Desktop, coincidiendo con el cálculo manual original.
+
 ## 1. Estado inicial de `git status`
 
 ```
@@ -59,18 +69,18 @@ Dado que este entorno no puede operar la interfaz de Power BI Desktop, la valida
 |---|---|---|
 | `Total Respuestas Capacitacion` (ya existente, usada como control) | 84 filas | Conteo directo de filas de datos en la hoja `Form Responses 1` |
 | `Call Centers Capacitados` | **5** (`ATENTO`, `BRM`, `GNP`, `INTERACTIVO`, `ONE CONTACT`) | Valores distintos de la columna `CallCenter`, normalizados a mayúsculas |
-| `Ultima Capacitacion` | **2026-10-07** | Máximo de la fecha (parte de fecha del `Timestamp`, sin hora) entre las 84 filas |
+| `Ultima Capacitacion` | ~~2026-10-07~~ → **corregido: `Ultima Capacitacion` real confirmada en Power BI Desktop = 10/07/2026 (10 de julio de 2026)**, ver "Corrección posterior" al inicio del documento | Máximo de la fecha (parte de fecha del `Timestamp`, sin hora) entre las 84 filas — el valor original de esta fila fue calculado incorrectamente por la lectura externa del XML, no por la fórmula DAX |
 | `Capacitaciones Realizadas` | **5** | Combinaciones únicas de (Fecha, CallCenter, NombreFormador\*) entre las 84 filas — cada una de las 5 fechas observadas corresponde a un único call center y un único formador, con entre 7 y 24 respuestas cada una |
 
 \* La columna `NombreFormador` se usó solo internamente (nunca impresa) para construir la clave de agrupación.
 
-**Resultado esperado vs. medida:** las fórmulas DAX creadas replican exactamente la misma lógica de agregación usada en esta validación manual (`DISTINCTCOUNT` sobre `CallCenter`, `MAX` sobre `Fecha`, conteo de combinaciones únicas de las 3 columnas de la clave). No hay divergencia lógica entre la fórmula y el cálculo manual. **Pendiente de confirmación en vivo**: el usuario debe abrir el `.pbip` en Power BI Desktop y colocar cada medida en una tarjeta de prueba para confirmar que el modelo calcula exactamente estos 3 valores (84 ya es un hecho conocido del modelo; 5, 2026-10-07 y 5 son la expectativa derivada de esta validación externa, no una lectura directa del modelo).
+**Resultado esperado vs. medida:** las fórmulas DAX creadas replican exactamente la misma lógica de agregación usada en esta validación manual (`DISTINCTCOUNT` sobre `CallCenter`, `MAX` sobre `Fecha`, conteo de combinaciones únicas de las 3 columnas de la clave). No hay divergencia lógica entre la fórmula y el cálculo manual. **Confirmado en vivo en `SC-4`** (ver `Outputs/40` §10): Power BI Desktop calculó `Call Centers Capacitados = 5`, `Capacitaciones Realizadas = 5` y `Ultima Capacitacion = 10/07/2026` — las 3 medidas funcionan correctamente. Solo el valor de `Ultima Capacitacion` reportado originalmente en esta tabla (2026-10-07) era incorrecto, por un error de la validación externa por XML, no de la medida.
 
 ## 4. Observaciones y riesgos documentados
 
 - **`Capacitaciones Realizadas` depende de una clave compuesta provisional (DEC-1), no de un identificador real de sesión.** Si `NombreFormador` tuviera variantes de escritura no cubiertas por la tabla de alias (dependencia D5), el conteo podría sobreestimarse — en los datos actuales no se observó ese riesgo (cada una de las 5 fechas mapea a una única combinación de call center/formador), pero sigue siendo un supuesto de negocio, no un hecho verificado.
 - **`Call Centers Capacitados` no excluye explícitamente `"Sin dato"`.** Actualmente hay **0 filas** con `CallCenter` vacío en la fuente, por lo que la medida no está inflada hoy. Si en el futuro aparece una respuesta sin `CallCenter` (que Power Query marca como `"Sin dato"`), la medida contaría ese valor como si fuera un call center real, sumando 1 de más. No se agregó un filtro adicional no solicitado — se documenta como riesgo latente a monitorear en la próxima actualización de datos.
-- **`Ultima Capacitacion` = 2026-10-07 es posterior a la fecha de referencia del proyecto (2026-07-21).** El dataset piloto contiene fechas que exceden la fecha "actual" del contexto del proyecto — es una observación de calidad de datos preexistente en la fuente (probablemente datos de prueba), no introducida por esta medida ni corregible desde una medida DAX.
+- ~~`Ultima Capacitacion` = 2026-10-07 es posterior a la fecha de referencia del proyecto~~ — **riesgo descartado**: el valor real confirmado en Power BI Desktop es `10/07/2026` (10 de julio de 2026), anterior a la fecha de referencia del proyecto (2026-07-21) y dentro del rango visible del segmentador de Fecha de la página (`02/07/2026`–`15/07/2026`). No hay evidencia de datos de prueba ni fechas anómalas en el dataset piloto — el riesgo señalado originalmente fue producto de un error en la validación externa por XML, no un hallazgo real sobre los datos.
 - **Discrepancia de nombre de call center**: los datos reales muestran `INTERACTIVO`, mientras el mockup de referencia usa `INTERASEO` — confirma lo ya señalado en `Specs/05`: los valores del mockup son ilustrativos de diseño, no deben tomarse como el resultado exacto esperado.
 
 ## 5. Resumen de validaciones
@@ -83,8 +93,8 @@ Dado que este entorno no puede operar la interfaz de Power BI Desktop, la valida
 | Cambios en PBIR | No (`git status --porcelain -- "PBI/PBI_Indicadores.Report/"` sin salida) |
 | Cambios en Power Query / relaciones | No (`expressions.tmdl` y `relationships.tmdl` sin cambios) |
 | Cambios en `Data/` | No (`Data/` sigue sin seguimiento, ningún archivo agregado al índice) |
-| Resultado manual vs. medida | Lógica equivalente confirmada por derivación externa de los datos reales (84 / 5 / 2026-10-07 / 5); cálculo en vivo dentro de Power BI Desktop queda pendiente de confirmación por el usuario |
-| Riesgos documentados | 4 (clave compuesta provisional de DEC-1, posible inflación por `"Sin dato"` en `CallCenter`, fecha máxima posterior a "hoy" del proyecto, discrepancia de nombre de call center entre mockup y datos reales) |
+| Resultado manual vs. medida | Confirmado en vivo en Power BI Desktop durante `SC-4`: `Call Centers Capacitados = 5`, `Capacitaciones Realizadas = 5`, `Ultima Capacitacion = 10/07/2026` (corregido; el valor original de 2026-10-07 reportado aquí fue un error de la validación externa por XML, no de la medida — ver "Corrección posterior") |
+| Riesgos documentados | 3 vigentes (clave compuesta provisional de DEC-1, posible inflación por `"Sin dato"` en `CallCenter`, discrepancia de nombre de call center entre mockup y datos reales) + 1 descartado tras corrección (fecha máxima posterior a "hoy" del proyecto — ya no aplica) |
 | ¿Se puede avanzar a SC-4? | **Sí** |
 
 ## 6. Confirmación de no modificación fuera de alcance
@@ -113,6 +123,4 @@ No se hizo push remoto.
 
 ## 9. Recomendación para continuar
 
-Avanzar a **SC-4 — Creación de copia de página**, duplicando `p14_satisfaccion_capacitaciones` sin tocar la original, para poder construir en `SC-5` los visuales que consumirán estas 3 medidas nuevas (tarjeta "Capacitaciones realizadas", tarjeta "Call centers capacitados", tarjeta "Última capacitación", y los gráficos "por fecha"/"por call center" reutilizando `Capacitaciones Realizadas`).
-
-Antes de `SC-5`, se recomienda que el usuario confirme en Power BI Desktop los 3 valores calculados en vivo (§3), ya que esta validación se hizo por derivación externa del Excel, no por lectura directa del modelo.
+**Actualizado tras `SC-4`:** la recomendación original (avanzar a `SC-4` y confirmar las 3 medidas en Power BI Desktop) ya se ejecutó y quedó completa — ver `Outputs/40` §10. Las 3 medidas funcionan correctamente; el único punto que requería corrección era el valor de `Ultima Capacitacion` reportado en este documento (ya corregido arriba), no la fórmula. `SC-5` queda desbloqueada en lo relativo a estas medidas.
