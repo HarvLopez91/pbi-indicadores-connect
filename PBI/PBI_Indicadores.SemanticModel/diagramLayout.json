@@ -85,6 +85,58 @@
             "width": 234
           },
           "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 571.4219469017786,
+            "y": 453.28362438585009
+          },
+          "nodeIndex": "_Medidas Calidad",
+          "nodeLineageTag": "a5f94871-40b2-4a63-a791-a168acfb9cc7",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 855.4219469017786,
+            "y": 427.28362438585009
+          },
+          "nodeIndex": "_Medidas Capacitacion",
+          "nodeLineageTag": "37844e70-23b6-415d-8042-e3f845aa89cc",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1139.4219469017785,
+            "y": 441.28362438585009
+          },
+          "nodeIndex": "_Medidas Generales",
+          "nodeLineageTag": "e10fcda6-d4e7-4f4c-8f22-fcffd13f8745",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1423.4219469017785,
+            "y": 453.28362438585009
+          },
+          "nodeIndex": "_Medidas Motivacion",
+          "nodeLineageTag": "0e6c5b3a-76d8-4cb1-a52c-1ed068cce3ca",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "Todas las tablas",
