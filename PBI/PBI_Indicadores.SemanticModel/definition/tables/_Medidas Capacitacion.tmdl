@@ -25,6 +25,23 @@ table '_Medidas Capacitacion'
 		formatString: 0.0%
 		lineageTag: b6305f66-fcab-42d1-b9ba-c304588f47f9
 
+	measure 'Call Centers Capacitados' = DISTINCTCOUNT(Fact_SatisfaccionCapacitacion[CallCenter])
+		formatString: 0
+
+	measure 'Ultima Capacitacion' = MAX(Fact_SatisfaccionCapacitacion[Fecha])
+		formatString: Short Date
+
+	measure 'Capacitaciones Realizadas' =
+			COUNTROWS(
+				SUMMARIZE(
+					Fact_SatisfaccionCapacitacion,
+					Fact_SatisfaccionCapacitacion[Fecha],
+					Fact_SatisfaccionCapacitacion[CallCenter],
+					Fact_SatisfaccionCapacitacion[NombreFormador]
+				)
+			)
+		formatString: 0
+
 	column Columna1
 		dataType: int64
 		isHidden
