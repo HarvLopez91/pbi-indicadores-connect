@@ -7,10 +7,10 @@ Punto de entrada a toda la documentación técnica y funcional del informe Conne
 | Documento | Para qué sirve |
 |---|---|
 | [`01_modelo_datos.md`](01_modelo_datos.md) | Estructura del modelo estrella: tablas de hechos, dimensiones, columnas técnicas y su origen, relaciones, convenciones de nombres, y el ruido conocido de las tablas automáticas de fecha. |
-| [`02_catalogo_medidas_dax.md`](02_catalogo_medidas_dax.md) | Catálogo completo de las 25 medidas DAX: fórmula exacta, qué calcula cada una, en qué páginas/visuales se usa, formato y observaciones/limitaciones. |
+| [`02_catalogo_medidas_dax.md`](02_catalogo_medidas_dax.md) | Catálogo completo de las 30 medidas DAX: fórmula exacta, qué calcula cada una, en qué páginas/visuales se usa, formato y observaciones/limitaciones. |
 | [`03_mapa_reporte_paginas_visuales.md`](03_mapa_reporte_paginas_visuales.md) | Recorrido por las 7 páginas del reporte: objetivo, indicadores, medidas, visuales principales, segmentadores, notas visibles y navegación de cada una. |
 | [`04_fuentes_y_actualizacion_datos.md`](04_fuentes_y_actualizacion_datos.md) | Guía operativa paso a paso para reexportar los 3 Google Forms, colocarlos en `Data/`, actualizar el modelo en Power BI Desktop y qué validar después. |
-| [`05_decisiones_limitaciones_pendientes.md`](05_decisiones_limitaciones_pendientes.md) | Decisiones de diseño tomadas (definitivas y provisionales), estado actualizado de las dependencias D1–D8, pendientes de negocio y riesgos de mantenimiento. |
+| [`05_decisiones_limitaciones_pendientes.md`](05_decisiones_limitaciones_pendientes.md) | Decisiones de diseño tomadas (definitivas y provisionales), estado actualizado de las dependencias D1–D9, pendientes de negocio y riesgos de mantenimiento. |
 | [`06_publicacion_powerbi.md`](06_publicacion_powerbi.md) | Enlace publicado del informe, consideración de gobierno de datos sobre el acceso público, y checklist de validación antes/después de publicar. |
 | [`07_arquitectura_sistema.md`](07_arquitectura_sistema.md) | Big Picture del sistema: diagrama Mermaid y flujo end-to-end de cómo se conectan fuentes de datos, Power Query, modelo TMDL, medidas DAX, reporte PBIR, documentación, Git/GitHub y Power BI Service, más tabla de capas, dependencias y riesgos de arquitectura. |
 
@@ -28,7 +28,7 @@ Documentos relacionados fuera de esta carpeta:
 
 1. [README.md](../README.md) (raíz) — qué es el informe y su enlace publicado.
 2. [03_mapa_reporte_paginas_visuales.md](03_mapa_reporte_paginas_visuales.md) — qué muestra cada página y qué preguntas responde.
-3. [05_decisiones_limitaciones_pendientes.md](05_decisiones_limitaciones_pendientes.md) §4 — qué está pendiente de confirmar y por qué los indicadores no deben leerse como definitivos todavía.
+3. [05_decisiones_limitaciones_pendientes.md](05_decisiones_limitaciones_pendientes.md) §5 — qué está pendiente de confirmar y por qué los indicadores no deben leerse como definitivos todavía.
 4. [06_publicacion_powerbi.md](06_publicacion_powerbi.md) §1–2 — cómo acceder al informe publicado y la consideración de gobierno de datos.
 
 ### Desarrollador Power BI (mantenimiento del modelo/reporte)

@@ -11,7 +11,7 @@ flowchart TD
     A["Google Forms<br/>3 encuestas piloto"] -->|"exportacion manual"| B["Data/*.xlsx<br/>local, fuera de git"]
     B -->|"parametro RutaCarpetaData"| C["Power Query<br/>Base_* -> *_Limpio -> particion Fact_*"]
     C --> D["Modelo TMDL<br/>Fact_* + Dim_* + relationships.tmdl"]
-    D --> E["Medidas DAX<br/>4 tablas _Medidas*, 25 medidas"]
+    D --> E["Medidas DAX<br/>4 tablas _Medidas*, 30 medidas"]
     E --> F["Reporte PBIR<br/>7 paginas + tema Connect"]
     D --> F
     F -->|"Power BI Desktop:<br/>abrir, actualizar, publicar"| G["Power BI Service<br/>Publicar en la Web"]
@@ -41,7 +41,7 @@ Las cajas naranjas marcan los dos puntos de mayor riesgo operativo: `Data/` (fue
 2. **Exportación manual → `Data/`**: cada encuesta se exporta a un `.xlsx` (hoja `Form Responses 1`) y se coloca en `Data/`, carpeta excluida de git (`.gitignore`) porque contiene nombres reales de personas. Guía operativa completa en [Docs/04](04_fuentes_y_actualizacion_datos.md). Los archivos deben estar **cerrados** en Excel antes de actualizar en Power BI Desktop.
 3. **Ingesta y limpieza (Power Query)**: `expressions.tmdl` referencia `Data/` mediante el parámetro `RutaCarpetaData` (sin rutas absolutas embebidas). Cada fuente sigue la misma cadena de 3 etapas: `Base_<Fuente>` (staging crudo, carga deshabilitada) → `<Fuente>_Limpio` (Trim/Clean, tipos, `Fecha` desde `Timestamp`, `CallCenter` en mayúsculas) → partición de la tabla `Fact_<Fuente>` (nombres técnicos finales, reglas de negocio como `"N/A"` → `null`). Ver la convención completa en `CLAUDE.md` §"Convenciones de trabajo".
 4. **Modelo semántico (TMDL)**: las 3 tablas `Fact_*` cargan al modelo en estrella. `Dim_Calendario`, `Dim_CallCenter` y `Dim_Jornada` se construyen dinámicamente en Power Query (uniones de valores distintos observados, nunca listas fijas) y se relacionan con las `Fact_*` en `relationships.tmdl` (8 relaciones de negocio `1:*`, más 3 auxiliares de Auto Date/Time — ruido conocido). Detalle completo en [Docs/01](01_modelo_datos.md).
-5. **Medidas DAX**: 4 tablas de medidas (`_Medidas Generales/Calidad/Capacitacion/Motivacion`, 25 medidas) se calculan sobre el modelo TMDL — nunca sobre `Data/` directamente. Catálogo completo con fórmula exacta en [Docs/02](02_catalogo_medidas_dax.md).
+5. **Medidas DAX**: 4 tablas de medidas (`_Medidas Generales/Calidad/Capacitacion/Motivacion`, 30 medidas) se calculan sobre el modelo TMDL — nunca sobre `Data/` directamente. Catálogo completo con fórmula exacta en [Docs/02](02_catalogo_medidas_dax.md).
 6. **Reporte (PBIR)**: 7 páginas (`PBI_Indicadores.Report/definition/pages/`) consumen las medidas DAX y las dimensiones para segmentadores, tarjetas y gráficos, con navegación `PageNavigation` entre Home y páginas internas, y el tema visual `Assets/theme/connect_assistance_theme.json`. Mapa completo en [Docs/03](03_mapa_reporte_paginas_visuales.md).
 7. **Validación en Power BI Desktop**: no hay build ni pruebas automáticas — cada cambio se valida abriendo el `.pbip` en Power BI Desktop. Desktop reescribe archivos automáticamente al abrir/guardar (`lineageTag`, `summarizeBy`, tablas ocultas de Auto Date/Time, `PBI_QueryOrder`); esos cambios se revisan con `git status`/`git diff` y se comitean por separado de los cambios intencionales.
 8. **Publicación (Power BI Service)**: desde Power BI Desktop, "Publicar en la Web" genera el enlace público usado hoy (ver [Docs/06](06_publicacion_powerbi.md)). Es un mecanismo sin autenticación — cualquier persona con el enlace ve el informe, incluyendo 2 tablas con nombres reales de asesores/formadores.
@@ -56,7 +56,7 @@ Las cajas naranjas marcan los dos puntos de mayor riesgo operativo: `Data/` (fue
 | 2 | Datos crudos | Exportaciones `.xlsx` | `Data/` (no versionada) | [Docs/04](04_fuentes_y_actualizacion_datos.md) |
 | 3 | Power Query | Ingesta + limpieza + reglas de negocio | `PBI_Indicadores.SemanticModel/definition/expressions.tmdl` y bloque `partition ... = m` de cada `tables/*.tmdl` | `CLAUDE.md`, [Docs/01](01_modelo_datos.md) |
 | 4 | Modelo TMDL | Tablas de hechos/dimensión, relaciones | `PBI_Indicadores.SemanticModel/definition/{model,relationships}.tmdl`, `tables/*.tmdl` | [Docs/01](01_modelo_datos.md) |
-| 5 | Medidas DAX | 25 medidas en 4 tablas `_Medidas *` | `tables/_Medidas *.tmdl` | [Docs/02](02_catalogo_medidas_dax.md) |
+| 5 | Medidas DAX | 30 medidas en 4 tablas `_Medidas *` | `tables/_Medidas *.tmdl` | [Docs/02](02_catalogo_medidas_dax.md) |
 | 6 | Reporte PBIR | Páginas, visuales, navegación, tema | `PBI_Indicadores.Report/definition/` (`pages/`, `report.json`, `StaticResources/`) | [Docs/03](03_mapa_reporte_paginas_visuales.md) |
 | 7 | Recursos de marca / referencia | Logos, imágenes, tema JSON, mockups de referencia (no cargados al PBIR) | `Assets/{logos,imagenes,theme,mockups}/` | Este documento, `Outputs/17` |
 | 8 | Documentación | Planeación, referencia técnica, bitácora | `Specs/`, `Docs/`, `Outputs/`, `README.md`, `CLAUDE.md`, `AGENTS.md` | [Docs/00](00_indice_documentacion.md) |

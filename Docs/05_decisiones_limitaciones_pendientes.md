@@ -1,6 +1,6 @@
 # Decisiones, limitaciones y pendientes
 
-Registro consolidado de las decisiones de diseño tomadas durante la construcción del informe (Fases 1 a 18, más la iniciativa `SC-1` a `SC-7` de rediseño de Satisfacción de capacitaciones), cuáles son definitivas y cuáles son provisionales por depender de confirmación de negocio, más el estado actualizado de las dependencias D1–D9.
+Registro consolidado de las decisiones de diseño tomadas durante la construcción del informe (Fases 1 a 18, más la iniciativa `SC-1` a `SC-9` de rediseño y reemplazo de Satisfacción de capacitaciones), cuáles son definitivas y cuáles son provisionales por depender de confirmación de negocio, más el estado actualizado de las dependencias D1–D9.
 
 ## 1. Decisiones de diseño tomadas (definitivas)
 
@@ -16,9 +16,9 @@ Estas decisiones ya están implementadas y no dependen de ninguna confirmación 
 8. **`% Calidad Promedio Provisional` se implementó como `BLANK()` explícito**, no se omitió la medida — deja visible en el modelo el placeholder de una medida que negocio aún no puede calcular correctamente (Fase 10).
 9. **Tema visual con colores reales de marca** (`#F15B2B` naranja, `#002733` oscuro), obtenidos de un logo SVG a color entregado durante la Fase 12 — reemplazaron la paleta placeholder inicial (`#F37021`/`#1F1F1F`).
 10. **Navegación reforzada con "hitzones"**: rectángulos transparentes superpuestos a cada tarjeta/botón de navegación, con el mismo `visualLink`, para que el clic funcione en toda el área visual y no solo en los sub-elementos individuales (corrección QA, `Outputs/28`).
-11. **Segmentadores en modo menú desplegable (`Dropdown`)**, en la misma posición relativa en todas las páginas internas. Aplica a las **7 páginas oficiales**; la página de trabajo `v2` (`SC-1`–`SC-7`) conserva la excepción documentada de Fecha en comportamiento visual `Between` — ver `DEC-4` en §3.
+11. **Segmentadores en modo menú desplegable (`Dropdown`)**, en la misma posición relativa en todas las páginas internas. Aplica a las **7 páginas oficiales**; la página oficial de Satisfacción de capacitaciones conserva la excepción documentada de Fecha en comportamiento visual `Between` — ver `DEC-4` en §3.
 12. **Etiquetas de datos activas en los 8 gráficos** del informe, con estilo Connect (`#002733`, tamaño moderado).
-13. **No se construyó una página separada "Detalle por asesor/líder"**: el desglose por asesor/formador quedó cubierto dentro de las tablas `cl_tabla_asesor` (Calidad de llamadas) y `sc_tabla_formador` (Satisfacción de capacitaciones). El informe final tiene **7 páginas**, no las 8 originalmente esbozadas en `Specs/01`/`Specs/02`.
+13. **No se construyó una página separada "Detalle por asesor/líder"**: el desglose nominal por asesor queda cubierto dentro de `cl_tabla_asesor` (Calidad de llamadas). La tabla nominal de formador/líder de Satisfacción de capacitaciones fue retirada del PBIR activo en `SC-9`; el informe final mantiene **7 páginas**, no las 8 originalmente esbozadas en `Specs/01`/`Specs/02`.
 14. **No se creó `Dim_Colaborador` maestro** con ID único — evaluado y descartado para esta primera implementación por falta de fuente de nómina/WFM; queda como iniciativa futura.
 15. **No se implementó conexión automática a Google Forms/Sheets** — la ingesta sigue siendo manual vía los 3 archivos Excel exportados en `Data/`.
 
@@ -31,9 +31,9 @@ Estas decisiones ya están implementadas y no dependen de ninguna confirmación 
 | Nombres estándar de líderes/formadores | Se aplicó una tabla de alias solo para las variantes de un líder ya detectadas en el diagnóstico inicial | Cualquier variante nueva de nombre que aparezca en futuras respuestas requiere ampliar manualmente la tabla de alias en Power Query |
 | Colores/logo oficiales de marca | **Resuelta** desde la Fase 12 con un logo SVG a color real | No aplica — ya no es un supuesto, ver dependencia D6 abajo |
 
-## 3. Decisiones de la iniciativa `SC-1`–`SC-7` (rediseño de Satisfacción de capacitaciones)
+## 3. Decisiones de la iniciativa `SC-1`–`SC-9` (rediseño y reemplazo de Satisfacción de capacitaciones)
 
-Estas decisiones aplican únicamente a la página de trabajo `p14_satisfaccion_capacitaciones_v2` (ver [Docs/03](03_mapa_reporte_paginas_visuales.md) §8), **no** a la página original ni a ninguna otra página del informe.
+Estas decisiones aplican a la página oficial `p14_satisfaccion_capacitaciones_v2` (ver [Docs/03](03_mapa_reporte_paginas_visuales.md) §4), que reemplazó a la página original en `SC-9`.
 
 ### DEC-1 — Clave de capacitación única
 
@@ -43,9 +43,9 @@ Estas decisiones aplican únicamente a la página de trabajo `p14_satisfaccion_c
 
 ### DEC-2 — Tabla de detalle sin nombres personales
 
-**Decisión aplicada:** en la página `v2`, la tabla `sc_tabla_callcenter` (detalle por call center) **reemplaza** a la tabla nominal de formador/líder (`sc_tabla_formador`) que sigue existiendo en la página original.
+**Decisión aplicada:** en la página oficial, la tabla `sc_tabla_callcenter` (detalle por call center) **reemplaza** a la tabla nominal de formador/líder (`sc_tabla_formador`) de la página original.
 
-**Efecto:** reduce la exposición de nombres personales en la página candidata a reemplazo. La página original **todavía conserva** la tabla nominal, porque aún no ha sido reemplazada — la decisión de reemplazo es de `SC-9`.
+**Efecto:** la tabla nominal de formador/líder deja de formar parte del informe activo. El respaldo queda disponible mediante Git en commits anteriores, no dentro del PBIR publicado.
 
 ### DEC-3 — Gráfico de Jornada retirado del lienzo principal
 
@@ -58,6 +58,16 @@ Estas decisiones aplican únicamente a la página de trabajo `p14_satisfaccion_c
 **Decisión aplicada:** se conserva en la página `v2` el comportamiento visual de rango (`Between`, dos casillas de fecha) del segmentador de Fecha, confirmado en `SC-7`.
 
 **Detalle técnico:** el PBIR del visual (`sc_slicer_fecha`) declara `mode: 'Dropdown'`, pero Power BI Desktop renderiza la columna de fecha (`Dim_Calendario[Fecha]`) como control de rango con dos casillas independientemente de ese valor declarado. Esta observación **no se extiende automáticamente** a otras páginas ni segmentadores de fecha del informe — cada uno debe verificarse por separado si se cuestiona su comportamiento.
+
+### SC-9 — Reemplazo definitivo de la página
+
+**Decisión aplicada:** `p14_satisfaccion_capacitaciones_v2` reemplaza definitivamente a `p14_satisfaccion_capacitaciones` como página oficial de Satisfacción de capacitaciones.
+
+**Implementación:** la página validada conserva su nombre técnico `p14_satisfaccion_capacitaciones_v2`, cambia su nombre visible a `Satisfacción de capacitaciones`, Home navega hacia ella y la carpeta original `p14_satisfaccion_capacitaciones` se retira del PBIR activo.
+
+**Motivo:** Git conserva el respaldo histórico; mantener dentro del informe activo una página antigua con tabla nominal de formador/líder aumenta innecesariamente el riesgo de exposición al usar un enlace público sin autenticación.
+
+**Límite:** esta decisión no cierra `D9`: la clave `Fecha + CallCenter + NombreFormador` sigue siendo provisional hasta que negocio defina o entregue un identificador oficial de sesión.
 
 ## 4. Estado actualizado de dependencias D1–D9 (`Specs/02` §4 y `SC-1`–`SC-7`)
 
@@ -81,15 +91,14 @@ Estas decisiones aplican únicamente a la página de trabajo `p14_satisfaccion_c
 - **Limpieza de las tablas automáticas de fecha (Auto Date/Time)**: técnicamente pendiente, no de negocio — requiere que el usuario deshabilite la detección automática de tabla de fechas desde Power BI Desktop y quite el bloque `variation` de cada `Fact_*`. Ver [Docs/01_modelo_datos.md](01_modelo_datos.md) §6.
 - **Posible ajuste de `% Llamadas con Venta`**: sigue documentado como observación pendiente si continúa apareciendo en blanco en vez de `0,0%` en ciertos contextos de filtro. Alternativa propuesta (no aplicada): reescribir la medida con `SUMX` sobre una columna booleana en vez de `CALCULATE` + `COUNTROWS` con `IN`.
 - **Posible medida `Fecha Corte Datos`**: propuesta en la Fase 16 (`Outputs/29`) como `MAX(Dim_Calendario[Fecha])`, para mostrar la fecha de corte de los datos en Notas metodológicas sin texto fijo. No implementada — pendiente de autorización explícita, ya que la instrucción del proyecto es no crear medidas DAX nuevas sin aprobación.
-- **Gobierno de publicación**: el informe está publicado mediante un enlace de "Publicar en la Web" (`app.powerbi.com/view?r=...`), que **no requiere autenticación** para ser visto por cualquier persona con el enlace. Dos tablas del informe (`cl_tabla_asesor`, `sc_tabla_formador`) muestran nombres reales de asesores/líderes/formadores. Se recomienda que negocio confirme si ese nivel de exposición pública es aceptable o si el informe debe migrarse a un espacio de trabajo de Power BI Service con control de acceso (ver [Docs/06_publicacion_powerbi.md](06_publicacion_powerbi.md)).
+- **Gobierno de publicación**: el informe está publicado mediante un enlace de "Publicar en la Web" (`app.powerbi.com/view?r=...`), que **no requiere autenticación** para ser visto por cualquier persona con el enlace. Tras `SC-9`, la página oficial de Satisfacción de capacitaciones ya no contiene la tabla nominal de formador/líder; sin embargo, `cl_tabla_asesor` (Calidad de llamadas) conserva `NombreAsesor`. Se recomienda que negocio confirme si ese nivel de exposición pública es aceptable o si el informe debe migrarse a un espacio de trabajo de Power BI Service con control de acceso (ver [Docs/06_publicacion_powerbi.md](06_publicacion_powerbi.md)).
 - **Identificador oficial de sesión de capacitación** (D9) — la clave provisional `Fecha + CallCenter + NombreFormador` usada por `Capacitaciones Realizadas` en la página `v2` puede sobre/subestimar el conteo real de sesiones (ver `DEC-1`).
-- **Decisión de reemplazo, coexistencia o descarte de la página `v2`** — pendiente de `SC-9`, condicionada a que `SC-7` cerrara sin errores (ya ocurrió, ver [Outputs/45](../Outputs/45_resultado_sc7_validacion_tecnica_funcional_visual.md)).
 
 ## 6. Riesgos de mantenimiento
 
 - **`Data/*.xlsx` no está versionado** — solo se respalda vía sincronización de OneDrive. Si OneDrive falla o el archivo se sobrescribe por error, no hay historial en Git para recuperarlo. El patrón de `.gitignore` se amplió de `Data/*.xlsx` a `Data/**/*.xlsx` durante `SC-7` (ver [Outputs/45](../Outputs/45_resultado_sc7_validacion_tecnica_funcional_visual.md)) porque el patrón anterior no cubría exportaciones ubicadas en subcarpetas de `Data/`.
 - **Bloqueo de archivo**: si algún Excel de `Data/` queda abierto durante una actualización, la actualización falla (ver `Docs/04`).
-- **Fragmentación por nombre**: con el volumen actual, cualquier variante nueva de escritura de un nombre de líder/formador no cubierta por la tabla de alias fragmentará esa persona en múltiples filas en las tablas `cl_tabla_asesor`/`sc_tabla_formador`.
+- **Fragmentación por nombre**: con el volumen actual, cualquier variante nueva de escritura de un nombre de asesor no cubierta por una regla de limpieza puede fragmentar filas en `cl_tabla_asesor`. Para capacitaciones, los nombres de formador/líder ya no se exponen en la página activa, pero siguen participando en la clave provisional de `Capacitaciones Realizadas` hasta resolver `D9`.
 - **Cambios automáticos de Power BI Desktop**: cada apertura/guardado puede reescribir archivos TMDL/JSON (metadatos, `lineageTag`, orden de página activa). Si no se revisa `git status` con regularidad, estos cambios pueden mezclarse con cambios intencionales futuros y dificultar la revisión de diffs.
 - **Documentación desactualizada**: si se agregan/quitan medidas, páginas o fuentes sin actualizar la carpeta `Docs/`, la documentación deja de reflejar el estado real del modelo. Ver la recomendación de mantenimiento en el [README.md](../README.md) raíz.
 - **Exposición pública de nombres reales** vía el enlace de "Publicar en la Web" activo (ver §5) — riesgo de gobierno de datos, no técnico.

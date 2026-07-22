@@ -2,8 +2,6 @@
 
 Inventario de las **7 páginas** del informe (`PBI/PBI_Indicadores.Report/definition/pages/`), construido leyendo directamente los `page.json` y `visual.json` vigentes. El catálogo de medidas referenciadas está en [`02_catalogo_medidas_dax.md`](02_catalogo_medidas_dax.md).
 
-> El informe contiene además una **8ª página de trabajo** (`p14_satisfaccion_capacitaciones_v2`), no navegable desde Home y no contada entre las 7 oficiales — ver [8. Satisfacción de capacitaciones (v2 - borrador)](#8-satisfacción-de-capacitaciones-v2---borrador) al final de este documento.
-
 ## 1. Home
 
 - **Nombre técnico de página:** `67eff42d82e1c9c15b84` · **Rol:** landing page / punto de entrada.
@@ -39,14 +37,14 @@ Inventario de las **7 páginas** del informe (`PBI/PBI_Indicadores.Report/defini
 
 ## 4. Satisfacción de capacitaciones
 
-- **Nombre técnico:** `p14_satisfaccion_capacitaciones`.
-- **Objetivo:** percepción de los participantes sobre claridad, utilidad y dinamismo de las capacitaciones recibidas.
-- **Indicadores principales:** satisfacción, claridad, utilidad y dinamismo promedio, índice global de capacitación, % de respuestas con comentario, total de respuestas.
-- **Medidas usadas:** `Satisfaccion Promedio Capacitacion`, `Claridad Promedio Capacitacion`, `Utilidad Promedio Capacitacion`, `Dinamismo Promedio Capacitacion`, `Indice Global Capacitacion`, `% Comentarios Capacitacion`, `Total Respuestas Capacitacion`.
-- **Visuales principales:** 7 tarjetas KPI (`sc_kpi_*`), gráfico de columnas del índice global por call center (`sc_chart_callcenter`), gráfico de barras del índice global por jornada (`sc_chart_jornada`), tabla `sc_tabla_formador` (formador, líder, total de respuestas, índice global).
-- **Segmentadores:** Fecha, Call Center, Jornada.
-- **Notas visibles:** *"Resultados sobre datos piloto. Usar junto con n de respuestas y validar alias de líderes/formadores antes de conclusiones nominales."*
-- **Navegación:** botón "Volver a Home" hacia Home.
+- **Nombre técnico:** `p14_satisfaccion_capacitaciones_v2`.
+- **Objetivo:** percepción de los participantes sobre claridad, utilidad y dinamismo de las capacitaciones recibidas, con vista operativa por call center y comentarios destacados.
+- **Indicadores principales:** capacitaciones realizadas, respuestas recibidas, call centers capacitados, satisfacción promedio, última capacitación, % con comentarios, métricas de satisfacción por dimensión.
+- **Medidas usadas:** `Capacitaciones Realizadas`, `Total Respuestas Capacitacion`, `Call Centers Capacitados`, `Satisfaccion Promedio Capacitacion`, `Ultima Capacitacion Texto`, `% Comentarios Capacitacion`, `Valor Metrica Satisfaccion`, `Claridad Promedio Capacitacion`, `Utilidad Promedio Capacitacion`, `Dinamismo Promedio Capacitacion`.
+- **Visuales principales:** 6 tarjetas KPI (`sc_kpi_capacitaciones`, `sc_kpi_respuestas`, `sc_kpi_callcenters`, `sc_kpi_satisfaccion`, `sc_kpi_ultima`, `sc_kpi_comentarios`), gráfico de capacitaciones por call center (`sc_chart_callcenter`), gráfico de capacitaciones por fecha (`sc_chart_capxfecha`), panel de satisfacción de 4 barras (`sc_panel_satisf_chart`), tarjeta de respuestas del panel (`sc_kpi_respuestas_panel`), tabla de detalle por call center (`sc_tabla_callcenter`) y tabla de comentarios destacados (`sc_tabla_comentarios`).
+- **Segmentadores:** Fecha, Call Center, Jornada. El segmentador de Fecha se renderiza visualmente como control de rango (`Between`) aunque el PBIR conserve `mode: 'Dropdown'` para el visual.
+- **Notas visibles:** *"Muestra piloto: interpretar cada indicador con base en el n visible. El conteo de capacitaciones utiliza una clave provisional pendiente de validación oficial."*
+- **Navegación:** Home apunta a esta página oficial mediante los cuatro elementos del módulo `home_nav_03_*` (tarjeta, acento, etiqueta y hitzone). La página conserva botón "Volver a Home" (`sc_home_btn`/`sc_home_label`/`sc_home_hitzone`) hacia Home.
 
 ## 5. Motivación comercial
 
@@ -70,7 +68,7 @@ Inventario de las **7 páginas** del informe (`PBI/PBI_Indicadores.Report/defini
 - **Notas visibles:** *"Comparativo operativo de referencia. Evitar conclusiones fuertes por el bajo volumen actual del piloto."*
 - **Navegación:** botón "Volver a Home" hacia Home.
 
-> Nota de alcance: el plan original (`Specs/01`, `Specs/02`) proponía además una página separada "Detalle por asesor/líder". En la implementación final ese desglose por asesor quedó cubierto dentro de las tablas `cl_tabla_asesor` (Calidad de llamadas) y `sc_tabla_formador` (Satisfacción de capacitaciones), sin una página dedicada adicional — el informe final tiene 7 páginas, no 8.
+> Nota de alcance: el plan original (`Specs/01`, `Specs/02`) proponía además una página separada "Detalle por asesor/líder". En la implementación final ese desglose nominal queda cubierto solo por `cl_tabla_asesor` (Calidad de llamadas); la página oficial de Satisfacción de capacitaciones usa detalle por call center y ya no incluye la tabla nominal de formador/líder. El informe final tiene 7 páginas, no 8.
 
 ## 7. Notas metodológicas
 
@@ -83,48 +81,6 @@ Inventario de las **7 páginas** del informe (`PBI/PBI_Indicadores.Report/defini
 - **Notas visibles (resumen; texto completo de cada panel en [Docs/05_decisiones_limitaciones_pendientes.md](05_decisiones_limitaciones_pendientes.md)):** alcance del piloto, fuentes en `Data/` y su actualización dinámica, estado piloto e interpretación por `n`, encuesta de motivación anónima, `% Calidad Promedio Provisional` pendiente de rúbrica, `% Llamadas con Venta` con observación pendiente, pendientes de negocio (rúbrica, catálogo oficial, alias de líderes, colores de marca).
 - **Navegación:** botón "Volver a Home" hacia Home.
 
-## 8. Satisfacción de capacitaciones (v2 - borrador)
-
-- **Nombre técnico:** `p14_satisfaccion_capacitaciones_v2`. **Nombre visible actual:** *"Satisfacción de capacitaciones (v2 - borrador)"*.
-- **Rol:** página de trabajo (`SC-1` a `SC-7`), validada técnica, funcional y visualmente, **todavía no oficial**. No forma parte de las 7 páginas del informe publicado y no está enlazada desde Home — Home sigue apuntando a la página original (`p14_satisfaccion_capacitaciones`, sección 4). La decisión de reemplazar la original, mantener ambas o descartar esta copia corresponde a `SC-9` (aún no ejecutada).
-- **Objetivo:** mismo objetivo que la original (percepción de participantes sobre claridad, utilidad y dinamismo), con un rediseño visual alineado al mockup y una tabla de detalle por call center en vez de la tabla nominal de formador/líder.
-
-### Encabezado y navegación
-
-Logo Connect (`sc_logo_connect`), título y subtítulo (`sc_title`/`sc_subtitle`), insignia "Datos piloto sujetos a validación" (`sc_pilot_badge`/`sc_pilot_note`), botón "Volver a Home" con fondo naranja sólido (`sc_home_btn`/`sc_home_label`/`sc_home_hitzone`, funciona en toda su superficie — confirmado en `SC-7`).
-
-### Segmentadores
-
-Fecha, Call Center, Jornada (`sc_slicer_*`). El segmentador de Fecha se comporta visualmente como control de rango (`Between`, dos casillas de fecha) pese a declarar `mode: 'Dropdown'` en el PBIR — ver `DEC-4` en [05_decisiones_limitaciones_pendientes.md](05_decisiones_limitaciones_pendientes.md).
-
-### KPI
-
-6 tarjetas (`sc_kpi_capacitaciones`, `sc_kpi_respuestas`, `sc_kpi_callcenters`, `sc_kpi_satisfaccion`, `sc_kpi_ultima`, `sc_kpi_comentarios`): Capacitaciones realizadas, Respuestas recibidas, Call centers capacitados, Satisfacción promedio, Última capacitación, % con comentarios.
-
-### Visuales analíticos
-
-- **Capacitaciones por call center** (`sc_chart_callcenter`): columnas descendentes por `Capacitaciones Realizadas`, categoría tomada directamente de `Fact_SatisfaccionCapacitacion[CallCenter]` (no de `Dim_CallCenter`) para que solo aparezcan los call centers con capacitaciones reales.
-- **Capacitaciones por fecha** (`sc_chart_capxfecha`): línea por `Dim_Calendario[Fecha Eje]` (columna calculada **textual** `dd/MM`, ordenada por `Dim_Calendario[Fecha]`, ver "Objetos de soporte técnico" en [Docs/02](02_catalogo_medidas_dax.md)), sin horas ni jerarquía automática.
-- **Panel de satisfacción** (`sc_panel_satisf_chart`): barras horizontales de las 4 métricas (Satisfacción, Claridad, Utilidad, Dinamismo) vía `Valor Metrica Satisfaccion` + `Dim_MetricaSatisfaccion`.
-- **Tarjeta de respuestas del panel** (`sc_kpi_respuestas_panel`).
-- **Detalle por call center** (`sc_tabla_callcenter`): tabla con Total, categoría también tomada de `Fact_SatisfaccionCapacitacion[CallCenter]` — reemplaza a la tabla nominal de formador/líder de la página original (ver `DEC-2`).
-- **Comentarios destacados** (`sc_tabla_comentarios`): excluye `"Sin comentario"` y `"."` vía `filterConfig`.
-
-### Nota metodológica
-
-*"Muestra piloto: interpretar cada indicador con base en el n visible. El conteo de capacitaciones utiliza una clave provisional pendiente de validación oficial."* (`sc_nota_cap_text`).
-
-### Interacciones (`SC-6`, aprobadas en `SC-7`)
-
-167 interacciones `DataFilter`/`NoFilter` declaradas en `page.json`. Comportamiento aprobado:
-
-- Los 3 segmentadores filtran los 6 KPI, ambos gráficos, el panel, la tarjeta de respuestas, la tabla de detalle y los comentarios.
-- El gráfico por call center, el gráfico por fecha y la tabla de detalle funcionan como orígenes de filtro adicionales entre sí.
-- Los KPI, el panel de satisfacción, la tarjeta de respuestas y los comentarios son únicamente receptores — no filtran el resto del dashboard.
-- "Volver a Home" funciona en toda su superficie clicable.
-
-Detalle completo de la matriz de interacciones en [Outputs/44](../Outputs/44_resultado_sc6_interacciones_satisfaccion_capacitaciones.md); validación funcional/visual en [Outputs/45](../Outputs/45_resultado_sc7_validacion_tecnica_funcional_visual.md).
-
 ## Resumen de navegación global
 
 | Desde | Hacia | Mecanismo |
@@ -134,7 +90,7 @@ Detalle completo de la matriz de interacciones en [Outputs/44](../Outputs/44_res
 
 Total de visuales con acción de navegación (`PageNavigation`) en las **7 páginas oficiales**: **42** (24 en Home — 6 módulos × 4 elementos — y 18 en las 6 páginas internas — 3 elementos × 6 páginas). Detalle técnico de la corrección de áreas clicables en [Outputs/28_correccion_qa_final_navegacion_data_labels.md](../Outputs/28_correccion_qa_final_navegacion_data_labels.md).
 
-La página de trabajo `v2` (sección 8) agrega 3 elementos de navegación adicionales (`sc_home_btn`/`sc_home_label`/`sc_home_hitzone`) no incluidos en el conteo de 42 anterior, ya que no es una de las 6 páginas internas oficiales y Home no navega hacia ella.
+La tarjeta de Home "Satisfacción de capacitaciones" ya apunta a la página oficial `p14_satisfaccion_capacitaciones_v2`.
 
 ## Resumen de segmentadores por página
 
@@ -148,4 +104,4 @@ La página de trabajo `v2` (sección 8) agrega 3 elementos de navegación adicio
 | Detalle por call center | Sí | Sí | Sí |
 | Notas metodológicas | Sí | Sí | — (no incluida por diseño) |
 
-Los 16 segmentadores de las 7 páginas oficiales usan estilo de menú desplegable (`Dropdown`), no lista expandida. La página de trabajo `v2` (sección 8) agrega 3 segmentadores adicionales (Fecha, Call Center, Jornada); el de Fecha declara `Dropdown` en el PBIR pero se renderiza visualmente como control de rango `Between` — ver `DEC-4` en [05_decisiones_limitaciones_pendientes.md](05_decisiones_limitaciones_pendientes.md).
+El informe conserva **16 segmentadores** en las 7 páginas oficiales. La página oficial de Satisfacción de capacitaciones conserva Fecha, Call Center y Jornada; su segmentador de Fecha declara `Dropdown` en el PBIR, pero se renderiza visualmente como control de rango `Between` — ver `DEC-4` en [05_decisiones_limitaciones_pendientes.md](05_decisiones_limitaciones_pendientes.md).

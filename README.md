@@ -78,11 +78,11 @@ El informe está publicado mediante un enlace de "Publicar en la Web" de Power B
 - **Catálogo oficial de call centers y alias de líderes**: pendientes de confirmación de negocio; se usa un catálogo dinámico y una tabla de alias parcial mientras tanto.
 - **Los datos se actualizarán constantemente**: cualquier conteo mostrado en el informe (o en esta documentación) es dinámico y puede cambiar con la próxima actualización de `Data/`.
 
-Detalle completo, incluyendo el estado de las dependencias D1–D8 del plan de implementación, en [Docs/05_decisiones_limitaciones_pendientes.md](Docs/05_decisiones_limitaciones_pendientes.md).
+Detalle completo, incluyendo el estado de las dependencias D1–D9 del plan de implementación, en [Docs/05_decisiones_limitaciones_pendientes.md](Docs/05_decisiones_limitaciones_pendientes.md).
 
 ## Mantenimiento
 
-- **No versionar `Data/*.xlsx`** — contiene nombres reales de personas; se excluye deliberadamente del repositorio.
+- **No versionar `Data/**/*.xlsx`** — contiene nombres reales de personas; se excluye deliberadamente del repositorio, incluidas subcarpetas.
 - **No escribir manualmente `lineageTag`, `description` ni `queryGroup`** en archivos `.tmdl` nuevos o editados — Power BI Desktop los genera automáticamente al guardar; escribirlos a mano rompe el analizador de la vista previa de Desktop.
 - **Documentar cambios relevantes en `Outputs/`** — cada fase o corrección se registra en un archivo `Outputs/NN_...md` nuevo, sin sobrescribir el historial existente.
 - **Actualizar `Docs/`** cuando cambien medidas DAX, páginas del reporte o fuentes de datos, para que la documentación siga reflejando el estado real del proyecto.
