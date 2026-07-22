@@ -12,6 +12,7 @@ Punto de entrada a toda la documentación técnica y funcional del informe Conne
 | [`04_fuentes_y_actualizacion_datos.md`](04_fuentes_y_actualizacion_datos.md) | Guía operativa paso a paso para reexportar los 3 Google Forms, colocarlos en `Data/`, actualizar el modelo en Power BI Desktop y qué validar después. |
 | [`05_decisiones_limitaciones_pendientes.md`](05_decisiones_limitaciones_pendientes.md) | Decisiones de diseño tomadas (definitivas y provisionales), estado actualizado de las dependencias D1–D8, pendientes de negocio y riesgos de mantenimiento. |
 | [`06_publicacion_powerbi.md`](06_publicacion_powerbi.md) | Enlace publicado del informe, consideración de gobierno de datos sobre el acceso público, y checklist de validación antes/después de publicar. |
+| [`07_arquitectura_sistema.md`](07_arquitectura_sistema.md) | Big Picture del sistema: diagrama Mermaid y flujo end-to-end de cómo se conectan fuentes de datos, Power Query, modelo TMDL, medidas DAX, reporte PBIR, documentación, Git/GitHub y Power BI Service, más tabla de capas, dependencias y riesgos de arquitectura. |
 
 Documentos relacionados fuera de esta carpeta:
 
