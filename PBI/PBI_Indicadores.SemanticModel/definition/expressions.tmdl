@@ -3,9 +3,21 @@ expression RutaCarpetaData = "C:\Users\edwin.clavijo\OneDrive\PBI_Indicadores\Da
 
 	annotation PBI_ResultType = Text
 
+expression RutaWebMatrizCalidad = "https://onedrive.live.com/personal/889f5434194ce56e/Documents/CONNECT/PBI_Indicadores/Data/Matriz%20de%20calidad%20(Responses).xlsx" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+
+	annotation PBI_ResultType = Text
+
+expression RutaWebSatisfaccionCapacitacion = "https://onedrive.live.com/personal/889f5434194ce56e/Documents/CONNECT/PBI_Indicadores/Data/Satisfacci%C3%B3n%20capacitaci%C3%B3n%20(Responses).xlsx" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+
+	annotation PBI_ResultType = Text
+
+expression RutaWebEncuestaMotivacion = "https://onedrive.live.com/personal/889f5434194ce56e/Documents/CONNECT/PBI_Indicadores/Data/Encuesta%20satisfacci%C3%B3n%20(Responses).xlsx" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+
+	annotation PBI_ResultType = Text
+
 expression Base_MatrizCalidad =
 		let
-			Source = Excel.Workbook(File.Contents(RutaCarpetaData & "\Matriz de calidad (Responses).xlsx"), null, true),
+			Source = Excel.Workbook(Web.Contents(RutaWebMatrizCalidad), null, true),
 			#"Form Responses 1_Sheet" = Source{[Item="Form Responses 1",Kind="Sheet"]}[Data]
 		in
 			#"Form Responses 1_Sheet"
@@ -15,7 +27,7 @@ expression Base_MatrizCalidad =
 
 expression Base_SatisfaccionCapacitacion =
 		let
-			Source = Excel.Workbook(File.Contents(RutaCarpetaData & "\Satisfacción capacitación (Responses).xlsx"), null, true),
+			Source = Excel.Workbook(Web.Contents(RutaWebSatisfaccionCapacitacion), null, true),
 			#"Form Responses 1_Sheet" = Source{[Item="Form Responses 1",Kind="Sheet"]}[Data]
 		in
 			#"Form Responses 1_Sheet"
@@ -25,7 +37,7 @@ expression Base_SatisfaccionCapacitacion =
 
 expression Base_EncuestaMotivacion =
 		let
-			Source = Excel.Workbook(File.Contents(RutaCarpetaData & "\Encuesta satisfacción (Responses).xlsx"), null, true),
+			Source = Excel.Workbook(Web.Contents(RutaWebEncuestaMotivacion), null, true),
 			#"Form Responses 1_Sheet" = Source{[Item="Form Responses 1",Kind="Sheet"]}[Data]
 		in
 			#"Form Responses 1_Sheet"
