@@ -34,7 +34,7 @@ Esta fase solo define el plan. No implementa Power Query, TMDL, DAX, relaciones,
 | Mapeo | `Map_PusherAliado` | Catálogo gobernado de las 16 coincidencias exactas; carga deshabilitada |
 | Control | `Control_Aliados_Sin_Clasificar` | Salida de calidad con los valores no clasificados; no se publica en el modelo |
 | Dimensión | `Dim_Aliado` | Un aliado por `Descripcion` normalizada, con `Pusher` y estado de clasificación |
-| Hecho | `Fact_AltasTeResuelve` | Grano transaccional de la fuente, sin `JEFE`, `ESPECIALISTA` ni `ASESOR` |
+| Hecho | `Fact_AltasTeResuelve` | Conserva el grano de fila agregada de `Insumo2`, sin `JEFE`, `ESPECIALISTA` ni `ASESOR`. Una fila puede representar múltiples altas y no debe interpretarse como una venta o transacción individual; el volumen comercial se calcula mediante `SUM(Fact_AltasTeResuelve[Altas])` |
 | Dimensión | `Dim_Calendario` | Reutilizar y ampliar su rango para incluir `FechaAlta` sin afectar las tres fuentes existentes |
 | Medidas | `_Medidas_Altas` | Tabla exclusiva para las medidas comerciales |
 | Reporte | `GestionComercialAltas` | Página adicional; nombre visible `Gestión comercial de altas` |
