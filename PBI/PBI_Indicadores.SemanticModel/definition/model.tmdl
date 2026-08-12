@@ -10,7 +10,7 @@ annotation __PBI_TimeIntelligenceEnabled = 1
 
 annotation PBI_ProTooling = ["DevMode","DaxQueryView_Desktop"]
 
-annotation PBI_QueryOrder = ["Fact_CalidadLlamadas","Fact_SatisfaccionCapacitacion","Fact_MotivacionActividad","RutaCarpetaData","Ruta_Informe_Altas","Periodo_Corte_Comercial","Fecha_Inicio_Gestion_Pusher_2","Base_AltasTeResuelve","AltasTeResuelve_Limpio","Map_PusherAliado","Dim_Aliado","Control_Aliados_Sin_Clasificar","Base_MatrizCalidad","Base_SatisfaccionCapacitacion","Base_EncuestaMotivacion","MatrizCalidad_Limpio","SatisfaccionCapacitacion_Limpio","EncuestaMotivacion_Limpio","Dim_Calendario","Dim_CallCenter","Dim_Jornada","_Medidas Generales","_Medidas Calidad","_Medidas Capacitacion","_Medidas Motivacion"]
+annotation PBI_QueryOrder = ["Fact_CalidadLlamadas","Fact_SatisfaccionCapacitacion","Fact_MotivacionActividad","Fact_AltasTeResuelve","RutaCarpetaData","Ruta_Informe_Altas","Periodo_Corte_Comercial","Fecha_Inicio_Gestion_Pusher_2","Base_AltasTeResuelve","AltasTeResuelve_Limpio","Map_PusherAliado","Dim_Aliado","Control_Aliados_Sin_Clasificar","Base_MatrizCalidad","Base_SatisfaccionCapacitacion","Base_EncuestaMotivacion","MatrizCalidad_Limpio","SatisfaccionCapacitacion_Limpio","EncuestaMotivacion_Limpio","Dim_Calendario","Dim_CallCenter","Dim_Jornada","_Medidas Generales","_Medidas Calidad","_Medidas Capacitacion","_Medidas Motivacion"]
 
 ref table Fact_CalidadLlamadas
 ref table Fact_SatisfaccionCapacitacion
@@ -28,6 +28,7 @@ ref table '_Medidas Capacitacion'
 ref table '_Medidas Motivacion'
 ref table Dim_MetricaSatisfaccion
 ref table Dim_Aliado
+ref table Fact_AltasTeResuelve
 
 ref cultureInfo es-ES
 

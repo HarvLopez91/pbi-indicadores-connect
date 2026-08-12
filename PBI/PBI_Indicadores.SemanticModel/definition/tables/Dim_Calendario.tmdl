@@ -80,6 +80,21 @@ table Dim_Calendario
 		summarizeBy: none
 		sourceColumn: EsFinDeSemana
 
+	column Periodo_Gestion
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Periodo_Gestion
+
+	column Estado_Periodo
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Estado_Periodo
+
+	column Es_Periodo_Comparable
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: Es_Periodo_Comparable
+
 	column 'Fecha Eje' = FORMAT(DAY(Dim_Calendario[Fecha]), "00") & "/" & FORMAT(MONTH(Dim_Calendario[Fecha]), "00")
 		dataType: string
 		lineageTag: 617bae76-9ae8-4b37-9af8-f1782759e834
@@ -93,12 +108,23 @@ table Dim_Calendario
 					FechasCalidadValidas = List.RemoveNulls(Fact_CalidadLlamadas[Fecha]),
 					FechasCapacitacionValidas = List.RemoveNulls(Fact_SatisfaccionCapacitacion[Fecha]),
 					FechasMotivacionValidas = List.RemoveNulls(Fact_MotivacionActividad[Fecha]),
+					FechasAltasValidas = List.RemoveNulls(Fact_AltasTeResuelve[FechaAlta]),
 					FechaMinCalidad = if List.IsEmpty(FechasCalidadValidas) then null else List.Min(FechasCalidadValidas),
 					FechaMinCapacitacion = if List.IsEmpty(FechasCapacitacionValidas) then null else List.Min(FechasCapacitacionValidas),
 					FechaMinMotivacion = if List.IsEmpty(FechasMotivacionValidas) then null else List.Min(FechasMotivacionValidas),
-					FechasMinimasValidas = List.RemoveNulls({FechaMinCalidad, FechaMinCapacitacion, FechaMinMotivacion}),
+					FechaMinAltas = if List.IsEmpty(FechasAltasValidas) then null else List.Min(FechasAltasValidas),
+					FechaMaxCalidad = if List.IsEmpty(FechasCalidadValidas) then null else List.Max(FechasCalidadValidas),
+					FechaMaxCapacitacion = if List.IsEmpty(FechasCapacitacionValidas) then null else List.Max(FechasCapacitacionValidas),
+					FechaMaxMotivacion = if List.IsEmpty(FechasMotivacionValidas) then null else List.Max(FechasMotivacionValidas),
+					FechaMaxAltas = if List.IsEmpty(FechasAltasValidas) then null else List.Max(FechasAltasValidas),
+					FechasMinimasValidas = List.RemoveNulls({FechaMinCalidad, FechaMinCapacitacion, FechaMinMotivacion, FechaMinAltas}),
+					FechasMaximasValidas = List.RemoveNulls({FechaMaxCalidad, FechaMaxCapacitacion, FechaMaxMotivacion, FechaMaxAltas}),
 					FechaMinima = if List.IsEmpty(FechasMinimasValidas) then Date.From(DateTime.LocalNow()) else List.Min(FechasMinimasValidas),
-					FechaMaxima = Date.From(DateTime.LocalNow()),
+					FechaActual = Date.From(DateTime.LocalNow()),
+					FechaMaximaFuentes = if List.IsEmpty(FechasMaximasValidas) then FechaActual else List.Max(FechasMaximasValidas),
+					FechaMaxima = List.Max({FechaActual, FechaMaximaFuentes}),
+					PeriodosComerciales = List.Transform(FechasAltasValidas, each Date.Year(Date.From(_)) * 100 + Date.Month(Date.From(_))),
+					MaximoPeriodoComercial = if List.IsEmpty(PeriodosComerciales) then null else List.Max(PeriodosComerciales),
 					CantidadDias = Duration.Days(FechaMaxima - FechaMinima) + 1,
 					ListaFechas = List.Dates(FechaMinima, CantidadDias, #duration(1, 0, 0, 0)),
 					TablaFechas = Table.FromList(ListaFechas, Splitter.SplitByNothing(), {"Fecha"}, null, ExtraValues.Error),
@@ -113,7 +139,16 @@ table Dim_Calendario
 					ColumnaDiaSemanaNumero = Table.AddColumn(ColumnaDiaMes, "DiaSemanaNumero", each Date.DayOfWeek([Fecha], Day.Monday) + 1, Int64.Type),
 					ColumnaDiaSemanaNombre = Table.AddColumn(ColumnaDiaSemanaNumero, "DiaSemanaNombre", each Date.DayOfWeekName([Fecha], "es-CO"), type text),
 					ColumnaEsFinDeSemana = Table.AddColumn(ColumnaDiaSemanaNombre, "EsFinDeSemana", each Date.DayOfWeek([Fecha], Day.Monday) >= 5, type logical),
-					TipoFechaFinal = Table.TransformColumnTypes(ColumnaEsFinDeSemana, {{"Fecha", type datetime}})
+					ColumnaPeriodoGestion = Table.AddColumn(ColumnaEsFinDeSemana, "Periodo_Gestion", each if [Fecha] < Fecha_Inicio_Gestion_Pusher_2 then "Antes de gestion" else "Desde inicio gestion", type text),
+					ColumnaEstadoPeriodo = Table.AddColumn(ColumnaPeriodoGestion, "Estado_Periodo", each
+						let PeriodoFila = Date.Year([Fecha]) * 100 + Date.Month([Fecha])
+						in
+							if PeriodoFila <= Int64.From(Periodo_Corte_Comercial) then "Cerrado"
+							else if MaximoPeriodoComercial <> null and PeriodoFila = MaximoPeriodoComercial then "En curso"
+							else if MaximoPeriodoComercial <> null and PeriodoFila < MaximoPeriodoComercial then "Posterior al corte sin validar"
+							else "Posterior a fuente", type text),
+					ColumnaEsPeriodoComparable = Table.AddColumn(ColumnaEstadoPeriodo, "Es_Periodo_Comparable", each Date.Year([Fecha]) * 100 + Date.Month([Fecha]) <= Int64.From(Periodo_Corte_Comercial), type logical),
+					TipoFechaFinal = Table.TransformColumnTypes(ColumnaEsPeriodoComparable, {{"Fecha", type datetime}})
 				in
 					TipoFechaFinal
 

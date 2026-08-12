@@ -48,3 +48,12 @@ relationship bd031db9-85c9-4af2-93ed-de5f81152089
 	fromColumn: Fact_MotivacionActividad.Jornada
 	toColumn: Dim_Jornada.Jornada
 
+relationship 95a46464-58ed-42f8-a78e-8a3fa54902cd
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Fact_AltasTeResuelve.FechaAlta
+	toColumn: Dim_Calendario.Fecha
+
+relationship 52b9615c-98c9-4dd9-b684-7401f6ba5cf9
+	fromColumn: Fact_AltasTeResuelve.AliadoKey
+	toColumn: Dim_Aliado.AliadoKey
+
