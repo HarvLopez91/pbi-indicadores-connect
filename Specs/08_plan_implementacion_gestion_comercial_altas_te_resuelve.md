@@ -36,7 +36,7 @@ Esta fase solo define el plan. No implementa Power Query, TMDL, DAX, relaciones,
 | Dimensión | `Dim_Aliado` | Un aliado por `Descripcion` normalizada, con `Pusher` y estado de clasificación |
 | Hecho | `Fact_AltasTeResuelve` | Grano transaccional de la fuente, sin `JEFE`, `ESPECIALISTA` ni `ASESOR` |
 | Dimensión | `Dim_Calendario` | Reutilizar y ampliar su rango para incluir `FechaAlta` sin afectar las tres fuentes existentes |
-| Medidas | `_Medidas Altas` | Tabla exclusiva para las medidas comerciales |
+| Medidas | `_Medidas_Altas` | Tabla exclusiva para las medidas comerciales |
 | Reporte | `GestionComercialAltas` | Página adicional; nombre visible `Gestión comercial de altas` |
 
 No se incorporarán los 167 valores comerciales a `Dim_CallCenter`. Una homologación entre el dominio comercial y el de encuestas requiere un catálogo maestro y queda fuera de alcance.
@@ -125,7 +125,7 @@ Auto date/time y las tres `LocalDateTable` son deuda técnica preexistente. Se v
 
 ## 4. Catálogo planificado de medidas
 
-Todas las medidas vivirán en `_Medidas Altas`. Las fórmulas son pseudocódigo y deberán ajustarse a los nombres físicos confirmados. Las medidas de tiempo exigirán un contexto mensual inequívoco; cuando no exista, devolverán `BLANK()` o una etiqueta neutra. Toda división usará `DIVIDE(..., ..., BLANK())`.
+Todas las medidas vivirán en `_Medidas_Altas`. Las fórmulas son pseudocódigo y deberán ajustarse a los nombres físicos confirmados. Las medidas de tiempo exigirán un contexto mensual inequívoco; cuando no exista, devolverán `BLANK()` o una etiqueta neutra. Toda división usará `DIVIDE(..., ..., BLANK())`.
 
 | Medida técnica | Objetivo y definición funcional | DAX o pseudocódigo | Contexto, filtros y validación |
 | --- | --- | --- | --- |
@@ -298,7 +298,7 @@ Cada fase comienza solo cuando la anterior cumple su criterio de cierre. Antes d
 - agregar `Periodo_Gestion`, `Estado_Periodo` y `Es_Periodo_Comparable` a calendario;
 - crear las dos relaciones 1:* unidireccionales;
 - ocultar claves y campos técnicos;
-- crear `_Medidas Altas` vacía o mínima para recibir GC-5;
+- crear `_Medidas_Altas` vacía o mínima para recibir GC-5;
 - verificar Auto date/time sin corregirlo.
 
 **Validaciones automáticas:** unicidad, huérfanos, cardinalidad, dirección, rango calendario, ausencia de relaciones entre hechos y diff TMDL limitado.
@@ -318,7 +318,7 @@ Cada fase comienza solo cuando la anterior cumple su criterio de cierre. Antes d
 
 **Prerrequisitos:** GC-4 aprobado y totales del modelo conciliados.
 
-**Archivos previstos:** TMDL de `_Medidas Altas` y documentación técnica de medidas.
+**Archivos previstos:** TMDL de `_Medidas_Altas` y documentación técnica de medidas.
 
 **Acciones:** implementar las 23 medidas obligatorias y auxiliares de drivers; asignar formatos, carpetas de visualización y descripciones; aplicar guardas de periodo parcial y división por cero.
 
@@ -331,7 +331,7 @@ Cada fase comienza solo cuando la anterior cumple su criterio de cierre. Antes d
 **Criterio de cierre:** todas las medidas responden a sus matrices de prueba y no comparan agosto parcial como mes cerrado.
 
 **Commit sugerido:** `feat(dax): agrega medidas de gestion comercial de altas`. **Push:** sí.
-**Rollback:** revertir exclusivamente `_Medidas Altas` y sus referencias visuales aún inexistentes.
+**Rollback:** revertir exclusivamente `_Medidas_Altas` y sus referencias visuales aún inexistentes.
 
 ### GC-6 — Conciliación técnica
 
@@ -518,7 +518,7 @@ GC-1 podrá iniciar únicamente cuando el usuario apruebe:
 5. `Sin asignar` para los 151 valores sin coincidencia exacta inicial.
 6. Cobertura ponderada por altas como definición del KPI principal.
 7. Exclusión de `JEFE`, `ESPECIALISTA` y `ASESOR` antes de la carga final.
-8. `_Medidas Altas` como tabla comercial de medidas.
+8. `_Medidas_Altas` como tabla comercial de medidas.
 9. El catálogo de medidas y las guardas para periodos parciales.
 10. Los gates manuales de Desktop, privacidad, narrativa y publicación.
 
