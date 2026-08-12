@@ -1,0 +1,215 @@
+table _Medidas_Altas
+
+	measure Altas_Total = SUM(Fact_AltasTeResuelve[Altas])
+		formatString: #,0
+
+	measure Altas_Mes_Anterior =
+			VAR MesUnico = HASONEVALUE(Dim_Calendario[AnioMes])
+			VAR PeriodoComparable = SELECTEDVALUE(Dim_Calendario[Es_Periodo_Comparable], FALSE())
+			VAR AltasAnteriores =
+				CALCULATE(
+					[Altas_Total],
+					DATEADD(Dim_Calendario[Fecha], -1, MONTH)
+				)
+			RETURN
+				IF(MesUnico && PeriodoComparable && NOT ISBLANK(AltasAnteriores), AltasAnteriores, BLANK())
+		formatString: #,0
+
+	measure Diferencia_Altas_Mes =
+			VAR AltasActuales = [Altas_Total]
+			VAR AltasAnteriores = [Altas_Mes_Anterior]
+			RETURN
+				IF(NOT ISBLANK(AltasActuales) && NOT ISBLANK(AltasAnteriores), AltasActuales - AltasAnteriores, BLANK())
+		formatString: +#,0;-#,0;0
+
+	measure Variacion_Altas_Mes_Pct = DIVIDE([Diferencia_Altas_Mes], [Altas_Mes_Anterior], BLANK())
+		formatString: +0.00%;-0.00%;0.00%
+
+	measure Crecimiento_Altas_Mes =
+			VAR DeltaMes = [Diferencia_Altas_Mes]
+			RETURN
+				SWITCH(
+					TRUE(),
+					ISBLANK(DeltaMes), BLANK(),
+					DeltaMes > 0, "Crecimiento",
+					DeltaMes < 0, "Decrecimiento",
+					"Sin cambio"
+				)
+
+	measure Promedio_Altas_Abr_Jun =
+			VAR AltasAbril = CALCULATE([Altas_Total], REMOVEFILTERS(Dim_Calendario), Dim_Calendario[Anio] = 2026, Dim_Calendario[MesNumero] = 4)
+			VAR AltasMayo = CALCULATE([Altas_Total], REMOVEFILTERS(Dim_Calendario), Dim_Calendario[Anio] = 2026, Dim_Calendario[MesNumero] = 5)
+			VAR AltasJunio = CALCULATE([Altas_Total], REMOVEFILTERS(Dim_Calendario), Dim_Calendario[Anio] = 2026, Dim_Calendario[MesNumero] = 6)
+			RETURN
+				IF(
+					ISBLANK(AltasAbril) || ISBLANK(AltasMayo) || ISBLANK(AltasJunio),
+					BLANK(),
+					DIVIDE(AltasAbril + AltasMayo + AltasJunio, 3, BLANK())
+				)
+		formatString: #,0.00
+
+	measure Altas_Julio = CALCULATE([Altas_Total], REMOVEFILTERS(Dim_Calendario), Dim_Calendario[Anio] = 2026, Dim_Calendario[MesNumero] = 7)
+		formatString: #,0
+
+	measure Variacion_Julio_Vs_Promedio_Abr_Jun_Pct = DIVIDE([Altas_Julio] - [Promedio_Altas_Abr_Jun], [Promedio_Altas_Abr_Jun], BLANK())
+		formatString: +0.00%;-0.00%;0.00%
+
+	measure Altas_Pusher_1 = CALCULATE([Altas_Total], Dim_Aliado[Pusher] = "PUSHER 1")
+		formatString: #,0
+
+	measure Altas_Pusher_2 = CALCULATE([Altas_Total], Dim_Aliado[Pusher] = "PUSHER 2")
+		formatString: #,0
+
+	measure Participacion_Pusher_1_Pct =
+			VAR TotalUniverso = CALCULATE([Altas_Total], REMOVEFILTERS(Dim_Aliado[Pusher]))
+			RETURN DIVIDE([Altas_Pusher_1], TotalUniverso, BLANK())
+		formatString: 0.00%
+
+	measure Participacion_Pusher_2_Pct =
+			VAR TotalUniverso = CALCULATE([Altas_Total], REMOVEFILTERS(Dim_Aliado[Pusher]))
+			RETURN DIVIDE([Altas_Pusher_2], TotalUniverso, BLANK())
+		formatString: 0.00%
+
+	measure Diferencia_Pusher_2_Vs_Pusher_1 = [Altas_Pusher_2] - [Altas_Pusher_1]
+		formatString: +#,0;-#,0;0
+
+	measure Delta_Pusher_1_Mes =
+			VAR MesUnico = HASONEVALUE(Dim_Calendario[AnioMes])
+			VAR PeriodoComparable = SELECTEDVALUE(Dim_Calendario[Es_Periodo_Comparable], FALSE())
+			VAR AltasActuales = [Altas_Pusher_1]
+			VAR AltasAnteriores = CALCULATE([Altas_Pusher_1], DATEADD(Dim_Calendario[Fecha], -1, MONTH))
+			RETURN
+				IF(MesUnico && PeriodoComparable && NOT ISBLANK(AltasActuales) && NOT ISBLANK(AltasAnteriores), AltasActuales - AltasAnteriores, BLANK())
+		formatString: +#,0;-#,0;0
+
+	measure Delta_Pusher_2_Mes =
+			VAR MesUnico = HASONEVALUE(Dim_Calendario[AnioMes])
+			VAR PeriodoComparable = SELECTEDVALUE(Dim_Calendario[Es_Periodo_Comparable], FALSE())
+			VAR AltasActuales = [Altas_Pusher_2]
+			VAR AltasAnteriores = CALCULATE([Altas_Pusher_2], DATEADD(Dim_Calendario[Fecha], -1, MONTH))
+			RETURN
+				IF(MesUnico && PeriodoComparable && NOT ISBLANK(AltasActuales) && NOT ISBLANK(AltasAnteriores), AltasActuales - AltasAnteriores, BLANK())
+		formatString: +#,0;-#,0;0
+
+	measure Variacion_Pusher_1_Pct =
+			VAR MesUnico = HASONEVALUE(Dim_Calendario[AnioMes])
+			VAR PeriodoComparable = SELECTEDVALUE(Dim_Calendario[Es_Periodo_Comparable], FALSE())
+			VAR AltasAnteriores = CALCULATE([Altas_Pusher_1], DATEADD(Dim_Calendario[Fecha], -1, MONTH))
+			RETURN
+				IF(MesUnico && PeriodoComparable, DIVIDE([Delta_Pusher_1_Mes], AltasAnteriores, BLANK()), BLANK())
+		formatString: +0.00%;-0.00%;0.00%
+
+	measure Variacion_Pusher_2_Pct =
+			VAR MesUnico = HASONEVALUE(Dim_Calendario[AnioMes])
+			VAR PeriodoComparable = SELECTEDVALUE(Dim_Calendario[Es_Periodo_Comparable], FALSE())
+			VAR AltasAnteriores = CALCULATE([Altas_Pusher_2], DATEADD(Dim_Calendario[Fecha], -1, MONTH))
+			RETURN
+				IF(MesUnico && PeriodoComparable, DIVIDE([Delta_Pusher_2_Mes], AltasAnteriores, BLANK()), BLANK())
+		formatString: +0.00%;-0.00%;0.00%
+
+	measure Contribucion_Cambio_Pusher_2_Pct =
+			VAR CambioUniverso = CALCULATE([Diferencia_Altas_Mes], REMOVEFILTERS(Dim_Aliado[Pusher]))
+			RETURN DIVIDE([Delta_Pusher_2_Mes], CambioUniverso, BLANK())
+		formatString: +0.00%;-0.00%;0.00%
+
+	measure Call_Center_Top_Altas =
+			VAR AliadosConAltas = FILTER(VALUES(Dim_Aliado[Descripcion]), NOT ISBLANK([Altas_Total]))
+			VAR AliadoTop = TOPN(1, AliadosConAltas, [Altas_Total], DESC, Dim_Aliado[Descripcion], ASC)
+			RETURN CONCATENATEX(AliadoTop, Dim_Aliado[Descripcion], "")
+
+	measure Call_Center_Mayor_Crecimiento =
+			VAR MesUnico = HASONEVALUE(Dim_Calendario[AnioMes])
+			VAR PeriodoComparable = SELECTEDVALUE(Dim_Calendario[Es_Periodo_Comparable], FALSE())
+			VAR AliadosConDelta = FILTER(VALUES(Dim_Aliado[Descripcion]), NOT ISBLANK([Delta_Aliado_Mes]))
+			VAR AliadoTop = TOPN(1, AliadosConDelta, [Delta_Aliado_Mes], DESC, Dim_Aliado[Descripcion], ASC)
+			RETURN IF(MesUnico && PeriodoComparable, CONCATENATEX(AliadoTop, Dim_Aliado[Descripcion], ""), BLANK())
+
+	measure Tendencia_Altas =
+			VAR MesesComparables =
+				FILTER(
+					SUMMARIZE(
+						ALLSELECTED(Dim_Calendario),
+						Dim_Calendario[AnioMes],
+						"FechaMes", MIN(Dim_Calendario[Fecha]),
+						"Comparable", SELECTEDVALUE(Dim_Calendario[Es_Periodo_Comparable])
+					),
+					[Comparable] = TRUE()
+				)
+			VAR SerieMensual = ADDCOLUMNS(MesesComparables, "ValorAltas", CALCULATE([Altas_Total]))
+			VAR SerieValida = FILTER(SerieMensual, NOT ISBLANK([ValorAltas]))
+			VAR PrimeraFecha = MINX(SerieValida, [FechaMes])
+			VAR UltimaFecha = MAXX(SerieValida, [FechaMes])
+			VAR PrimerValor = MAXX(FILTER(SerieValida, [FechaMes] = PrimeraFecha), [ValorAltas])
+			VAR UltimoValor = MAXX(FILTER(SerieValida, [FechaMes] = UltimaFecha), [ValorAltas])
+			RETURN
+				IF(
+					COUNTROWS(SerieValida) < 3,
+					BLANK(),
+					SWITCH(TRUE(), UltimoValor > PrimerValor, "Tendencia creciente", UltimoValor < PrimerValor, "Tendencia decreciente", "Tendencia estable")
+				)
+
+	measure Impacto_Observado_Pusher_2_Desde_Julio =
+			VAR P2Abril = CALCULATE([Altas_Pusher_2], REMOVEFILTERS(Dim_Calendario), Dim_Calendario[Anio] = 2026, Dim_Calendario[MesNumero] = 4)
+			VAR P2Mayo = CALCULATE([Altas_Pusher_2], REMOVEFILTERS(Dim_Calendario), Dim_Calendario[Anio] = 2026, Dim_Calendario[MesNumero] = 5)
+			VAR P2Junio = CALCULATE([Altas_Pusher_2], REMOVEFILTERS(Dim_Calendario), Dim_Calendario[Anio] = 2026, Dim_Calendario[MesNumero] = 6)
+			VAR P2Julio = CALCULATE([Altas_Pusher_2], REMOVEFILTERS(Dim_Calendario), Dim_Calendario[Anio] = 2026, Dim_Calendario[MesNumero] = 7)
+			VAR PromedioBase =
+				IF(
+					ISBLANK(P2Abril) || ISBLANK(P2Mayo) || ISBLANK(P2Junio),
+					BLANK(),
+					DIVIDE(P2Abril + P2Mayo + P2Junio, 3, BLANK())
+				)
+			RETURN IF(NOT ISBLANK(P2Julio) && NOT ISBLANK(PromedioBase), P2Julio - PromedioBase, BLANK())
+		formatString: +#,0.00;-#,0.00;0.00
+
+	measure Cobertura_Clasificacion_Pusher_Pct =
+			VAR AltasClasificadas =
+				CALCULATE(
+					[Altas_Total],
+					REMOVEFILTERS(Dim_Aliado[Pusher]),
+					Dim_Aliado[Pusher] IN {"PUSHER 1", "PUSHER 2"}
+				)
+			VAR TotalUniverso = CALCULATE([Altas_Total], REMOVEFILTERS(Dim_Aliado[Pusher]))
+			RETURN DIVIDE(AltasClasificadas, TotalUniverso, BLANK())
+		formatString: 0.00%
+
+	measure Delta_Aliado_Mes = [Diferencia_Altas_Mes]
+		formatString: +#,0;-#,0;0
+
+	measure Variacion_Aliado_Mes_Pct = DIVIDE([Delta_Aliado_Mes], [Altas_Mes_Anterior], BLANK())
+		formatString: +0.00%;-0.00%;0.00%
+
+	measure Contribucion_Aliado_Cambio_Pct =
+			VAR CambioUniverso =
+				CALCULATE(
+					[Diferencia_Altas_Mes],
+					REMOVEFILTERS(Dim_Aliado[AliadoKey], Dim_Aliado[Descripcion])
+				)
+			RETURN DIVIDE([Delta_Aliado_Mes], CambioUniverso, BLANK())
+		formatString: +0.00%;-0.00%;0.00%
+
+	measure Ranking_Driver_Positivo =
+			VAR DeltaActual = [Delta_Aliado_Mes]
+			VAR AliadosPositivos = FILTER(ALLSELECTED(Dim_Aliado[Descripcion]), [Delta_Aliado_Mes] > 0)
+			RETURN IF(NOT ISBLANK(DeltaActual) && DeltaActual > 0, RANKX(AliadosPositivos, [Delta_Aliado_Mes], , DESC, DENSE), BLANK())
+		formatString: 0
+
+	measure Ranking_Driver_Negativo =
+			VAR DeltaActual = [Delta_Aliado_Mes]
+			VAR AliadosNegativos = FILTER(ALLSELECTED(Dim_Aliado[Descripcion]), [Delta_Aliado_Mes] < 0)
+			RETURN IF(NOT ISBLANK(DeltaActual) && DeltaActual < 0, RANKX(AliadosNegativos, [Delta_Aliado_Mes], , ASC, DENSE), BLANK())
+		formatString: 0
+
+	column Columna1
+		dataType: int64
+		isHidden
+		summarizeBy: none
+		sourceColumn: Columna1
+
+	partition _Medidas_Altas = m
+		mode: import
+		source =
+				let
+					Origen = #table(type table[Columna1 = Int64.Type], {})
+				in
+					Origen
