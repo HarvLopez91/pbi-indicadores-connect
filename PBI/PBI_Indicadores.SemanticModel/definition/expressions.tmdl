@@ -147,6 +147,45 @@ expression AltasTeResuelve_Limpio =
 
 	annotation PBI_ResultType = Table
 
+expression Map_PusherAliado =
+		#table(
+			type table [Descripcion = text, Pusher = text],
+			{
+				{"MILLENIUM", "PUSHER 1"},
+				{"VECTOR", "PUSHER 1"},
+				{"INTELIGENCE BUSSINES RECOVERY COL", "PUSHER 1"},
+				{"ASISTE ING", "PUSHER 1"},
+				{"COS", "PUSHER 1"},
+				{"CAV BOGOTA CENTRO MAYOR", "PUSHER 1"},
+				{"AIB", "PUSHER 1"},
+				{"BRM", "PUSHER 2"},
+				{"CAV BOGOTA PLAZA IMPERIAL", "PUSHER 2"},
+				{"CAPITALS TELECOM BPO", "PUSHER 2"},
+				{"ONE CONTACT", "PUSHER 2"},
+				{"INTERACTIVO", "PUSHER 2"},
+				{"ATENTO", "PUSHER 2"},
+				{"CAV BOGOTA PLAZA DE LAS AMERICAS", "PUSHER 2"},
+				{"ALMAEXPERIENCE SAS", "PUSHER 2"},
+				{"GNP", "PUSHER 2"}
+			}
+		)
+
+	annotation PBI_ResultType = Table
+
+expression Control_Aliados_Sin_Clasificar =
+		let
+			FilasValidas = Table.SelectRows(AltasTeResuelve_Limpio, each [EstadoFila] = "Valida"),
+			AltasPorAliado = Table.Group(FilasValidas, {"Descripcion"}, {{"CantidadAltas", each List.Sum([Altas]), Int64.Type}}),
+			ConMapa = Table.NestedJoin(AltasPorAliado, {"Descripcion"}, Map_PusherAliado, {"Descripcion"}, "Mapeo", JoinKind.LeftOuter),
+			SinClasificar = Table.SelectRows(ConMapa, each Table.IsEmpty([Mapeo])),
+			SinMapeoAnidado = Table.RemoveColumns(SinClasificar, {"Mapeo"}),
+			ConEstadoClasificacion = Table.AddColumn(SinMapeoAnidado, "Estado_Clasificacion", each "Pendiente", type text),
+			Ordenado = Table.Sort(ConEstadoClasificacion, {{"CantidadAltas", Order.Descending}, {"Descripcion", Order.Ascending}})
+		in
+			Ordenado
+
+	annotation PBI_ResultType = Table
+
 expression Base_MatrizCalidad =
 		let
 			Source = Excel.Workbook(File.Contents(RutaCarpetaData & "\Matriz de calidad (Responses).xlsx"), null, true),

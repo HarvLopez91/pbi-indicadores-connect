@@ -1,0 +1,38 @@
+table Dim_Aliado
+
+	column AliadoKey
+		dataType: string
+		summarizeBy: none
+		sourceColumn: AliadoKey
+
+	column Descripcion
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Descripcion
+
+	column Pusher
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Pusher
+
+	column Estado_Clasificacion
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Estado_Clasificacion
+
+	partition Dim_Aliado = m
+		mode: import
+		source =
+				let
+					FilasValidas = Table.SelectRows(AltasTeResuelve_Limpio, each [EstadoFila] = "Valida" and [Descripcion] <> null and [Descripcion] <> ""),
+					Descripciones = Table.Distinct(Table.SelectColumns(FilasValidas, {"Descripcion"})),
+					ConAliadoKey = Table.AddColumn(Descripciones, "AliadoKey", each [Descripcion], type text),
+					ConMapa = Table.NestedJoin(ConAliadoKey, {"Descripcion"}, Map_PusherAliado, {"Descripcion"}, "Mapeo", JoinKind.LeftOuter),
+					ConPusher = Table.ExpandTableColumn(ConMapa, "Mapeo", {"Pusher"}, {"PusherMapeado"}),
+					PusherAsignado = Table.AddColumn(ConPusher, "Pusher", each if [PusherMapeado] = null then "Sin asignar" else [PusherMapeado], type text),
+					ConEstadoClasificacion = Table.AddColumn(PusherAsignado, "Estado_Clasificacion", each if [Pusher] = "Sin asignar" then "Pendiente" else "Clasificado", type text),
+					ColumnasFinales = Table.SelectColumns(ConEstadoClasificacion, {"AliadoKey", "Descripcion", "Pusher", "Estado_Clasificacion"}),
+					TiposAplicados = Table.TransformColumnTypes(ColumnasFinales, {{"AliadoKey", type text}, {"Descripcion", type text}, {"Pusher", type text}, {"Estado_Clasificacion", type text}}),
+					Ordenado = Table.Sort(TiposAplicados, {{"Descripcion", Order.Ascending}})
+				in
+					Ordenado
