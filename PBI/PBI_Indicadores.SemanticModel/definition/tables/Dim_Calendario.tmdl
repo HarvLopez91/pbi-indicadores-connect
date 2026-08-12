@@ -29,6 +29,7 @@ table Dim_Calendario
 		lineageTag: 9bb63839-8f98-4d03-85b3-7f969853f9b8
 		summarizeBy: none
 		sourceColumn: MesNombre
+		sortByColumn: MesNumero
 
 	column AnioMes
 		dataType: string

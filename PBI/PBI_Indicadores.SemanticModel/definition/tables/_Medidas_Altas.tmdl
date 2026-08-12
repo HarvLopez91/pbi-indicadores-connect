@@ -1,7 +1,9 @@
 table _Medidas_Altas
+	lineageTag: ce5e4c3e-f3c1-4fb2-9ffc-bd55fae14b0a
 
 	measure Altas_Total = SUM(Fact_AltasTeResuelve[Altas])
 		formatString: #,0
+		lineageTag: 76b86aba-20c4-4bcc-9dc0-1420c6f8b854
 
 	measure Altas_Mes_Anterior =
 			VAR MesUnico = HASONEVALUE(Dim_Calendario[AnioMes])
@@ -14,6 +16,7 @@ table _Medidas_Altas
 			RETURN
 				IF(MesUnico && PeriodoComparable && NOT ISBLANK(AltasAnteriores), AltasAnteriores, BLANK())
 		formatString: #,0
+		lineageTag: e175157e-0ccb-4d31-9f83-44ae4233551a
 
 	measure Diferencia_Altas_Mes =
 			VAR AltasActuales = [Altas_Total]
@@ -21,9 +24,11 @@ table _Medidas_Altas
 			RETURN
 				IF(NOT ISBLANK(AltasActuales) && NOT ISBLANK(AltasAnteriores), AltasActuales - AltasAnteriores, BLANK())
 		formatString: +#,0;-#,0;0
+		lineageTag: 294e4eaa-c4d5-4558-8bc8-112b5d3974d9
 
 	measure Variacion_Altas_Mes_Pct = DIVIDE([Diferencia_Altas_Mes], [Altas_Mes_Anterior], BLANK())
 		formatString: +0.00%;-0.00%;0.00%
+		lineageTag: 05eb9ba3-b43c-4bf1-a790-4a8c339d6963
 
 	measure Crecimiento_Altas_Mes =
 			VAR DeltaMes = [Diferencia_Altas_Mes]
@@ -35,6 +40,7 @@ table _Medidas_Altas
 					DeltaMes < 0, "Decrecimiento",
 					"Sin cambio"
 				)
+		lineageTag: f59759f6-aa1b-4c2b-a5ae-0a565ba67828
 
 	measure Promedio_Altas_Abr_Jun =
 			VAR AltasAbril = CALCULATE([Altas_Total], REMOVEFILTERS(Dim_Calendario), Dim_Calendario[Anio] = 2026, Dim_Calendario[MesNumero] = 4)
@@ -47,31 +53,39 @@ table _Medidas_Altas
 					DIVIDE(AltasAbril + AltasMayo + AltasJunio, 3, BLANK())
 				)
 		formatString: #,0.00
+		lineageTag: 9c211559-9847-449f-9189-933ffe146d45
 
 	measure Altas_Julio = CALCULATE([Altas_Total], REMOVEFILTERS(Dim_Calendario), Dim_Calendario[Anio] = 2026, Dim_Calendario[MesNumero] = 7)
 		formatString: #,0
+		lineageTag: afe51d16-a6e7-43fc-b96a-be06e2688517
 
 	measure Variacion_Julio_Vs_Promedio_Abr_Jun_Pct = DIVIDE([Altas_Julio] - [Promedio_Altas_Abr_Jun], [Promedio_Altas_Abr_Jun], BLANK())
 		formatString: +0.00%;-0.00%;0.00%
+		lineageTag: ecec2870-0176-4b94-93fc-3b436c8fc51b
 
 	measure Altas_Pusher_1 = CALCULATE([Altas_Total], Dim_Aliado[Pusher] = "PUSHER 1")
 		formatString: #,0
+		lineageTag: 62734c66-8b74-4cb7-bc1f-1e21aa1d7b36
 
 	measure Altas_Pusher_2 = CALCULATE([Altas_Total], Dim_Aliado[Pusher] = "PUSHER 2")
 		formatString: #,0
+		lineageTag: 6ccfd873-cb9d-4a3b-824b-a61a35bca848
 
 	measure Participacion_Pusher_1_Pct =
 			VAR TotalUniverso = CALCULATE([Altas_Total], REMOVEFILTERS(Dim_Aliado[Pusher]))
 			RETURN DIVIDE([Altas_Pusher_1], TotalUniverso, BLANK())
 		formatString: 0.00%
+		lineageTag: a47c26ec-34c9-4bb0-b396-f98b8cec131a
 
 	measure Participacion_Pusher_2_Pct =
 			VAR TotalUniverso = CALCULATE([Altas_Total], REMOVEFILTERS(Dim_Aliado[Pusher]))
 			RETURN DIVIDE([Altas_Pusher_2], TotalUniverso, BLANK())
 		formatString: 0.00%
+		lineageTag: 7b8cd49f-7a37-4a03-826e-859c17e14be4
 
 	measure Diferencia_Pusher_2_Vs_Pusher_1 = [Altas_Pusher_2] - [Altas_Pusher_1]
 		formatString: +#,0;-#,0;0
+		lineageTag: 6d3705c0-c15a-4aec-9e0e-6be88c51adf2
 
 	measure Delta_Pusher_1_Mes =
 			VAR MesUnico = HASONEVALUE(Dim_Calendario[AnioMes])
@@ -81,6 +95,7 @@ table _Medidas_Altas
 			RETURN
 				IF(MesUnico && PeriodoComparable && NOT ISBLANK(AltasActuales) && NOT ISBLANK(AltasAnteriores), AltasActuales - AltasAnteriores, BLANK())
 		formatString: +#,0;-#,0;0
+		lineageTag: 79a99427-d03a-4128-8a6a-37d2ed72fef5
 
 	measure Delta_Pusher_2_Mes =
 			VAR MesUnico = HASONEVALUE(Dim_Calendario[AnioMes])
@@ -90,6 +105,7 @@ table _Medidas_Altas
 			RETURN
 				IF(MesUnico && PeriodoComparable && NOT ISBLANK(AltasActuales) && NOT ISBLANK(AltasAnteriores), AltasActuales - AltasAnteriores, BLANK())
 		formatString: +#,0;-#,0;0
+		lineageTag: dcbf27ef-c33e-48c4-81b8-07ac67098941
 
 	measure Variacion_Pusher_1_Pct =
 			VAR MesUnico = HASONEVALUE(Dim_Calendario[AnioMes])
@@ -98,6 +114,7 @@ table _Medidas_Altas
 			RETURN
 				IF(MesUnico && PeriodoComparable, DIVIDE([Delta_Pusher_1_Mes], AltasAnteriores, BLANK()), BLANK())
 		formatString: +0.00%;-0.00%;0.00%
+		lineageTag: 39be0785-463b-452a-b503-3c8fc7394459
 
 	measure Variacion_Pusher_2_Pct =
 			VAR MesUnico = HASONEVALUE(Dim_Calendario[AnioMes])
@@ -106,16 +123,19 @@ table _Medidas_Altas
 			RETURN
 				IF(MesUnico && PeriodoComparable, DIVIDE([Delta_Pusher_2_Mes], AltasAnteriores, BLANK()), BLANK())
 		formatString: +0.00%;-0.00%;0.00%
+		lineageTag: 660fb00b-5ffe-484f-9557-3a4ce21a6cd7
 
 	measure Contribucion_Cambio_Pusher_2_Pct =
 			VAR CambioUniverso = CALCULATE([Diferencia_Altas_Mes], REMOVEFILTERS(Dim_Aliado[Pusher]))
 			RETURN DIVIDE([Delta_Pusher_2_Mes], CambioUniverso, BLANK())
 		formatString: +0.00%;-0.00%;0.00%
+		lineageTag: 38812639-3af5-4d4f-8d60-3fde49032617
 
 	measure Call_Center_Top_Altas =
 			VAR AliadosConAltas = FILTER(VALUES(Dim_Aliado[Descripcion]), NOT ISBLANK([Altas_Total]))
 			VAR AliadoTop = TOPN(1, AliadosConAltas, [Altas_Total], DESC, Dim_Aliado[Descripcion], ASC)
 			RETURN CONCATENATEX(AliadoTop, Dim_Aliado[Descripcion], "")
+		lineageTag: 3ccc2b4a-4b59-4be0-9387-1b716041d140
 
 	measure Call_Center_Mayor_Crecimiento =
 			VAR MesUnico = HASONEVALUE(Dim_Calendario[AnioMes])
@@ -123,6 +143,7 @@ table _Medidas_Altas
 			VAR AliadosConDelta = FILTER(VALUES(Dim_Aliado[Descripcion]), NOT ISBLANK([Delta_Aliado_Mes]))
 			VAR AliadoTop = TOPN(1, AliadosConDelta, [Delta_Aliado_Mes], DESC, Dim_Aliado[Descripcion], ASC)
 			RETURN IF(MesUnico && PeriodoComparable, CONCATENATEX(AliadoTop, Dim_Aliado[Descripcion], ""), BLANK())
+		lineageTag: bb8bea33-13a4-4ff5-a3fc-49a1f1f7d463
 
 	measure Tendencia_Altas =
 			VAR MesesComparables =
@@ -147,6 +168,7 @@ table _Medidas_Altas
 					BLANK(),
 					SWITCH(TRUE(), UltimoValor > PrimerValor, "Tendencia creciente", UltimoValor < PrimerValor, "Tendencia decreciente", "Tendencia estable")
 				)
+		lineageTag: 1c8760f3-56dd-4e77-a6a0-212da7b43532
 
 	measure Impacto_Observado_Pusher_2_Desde_Julio =
 			VAR P2Abril = CALCULATE([Altas_Pusher_2], REMOVEFILTERS(Dim_Calendario), Dim_Calendario[Anio] = 2026, Dim_Calendario[MesNumero] = 4)
@@ -161,6 +183,7 @@ table _Medidas_Altas
 				)
 			RETURN IF(NOT ISBLANK(P2Julio) && NOT ISBLANK(PromedioBase), P2Julio - PromedioBase, BLANK())
 		formatString: +#,0.00;-#,0.00;0.00
+		lineageTag: 3468ba02-b78f-4d8e-87ef-da8c0c61867f
 
 	measure Cobertura_Clasificacion_Pusher_Pct =
 			VAR AltasClasificadas =
@@ -172,12 +195,15 @@ table _Medidas_Altas
 			VAR TotalUniverso = CALCULATE([Altas_Total], REMOVEFILTERS(Dim_Aliado[Pusher]))
 			RETURN DIVIDE(AltasClasificadas, TotalUniverso, BLANK())
 		formatString: 0.00%
+		lineageTag: fc73dc2f-96d8-49c3-9cb3-95ab282c96af
 
 	measure Delta_Aliado_Mes = [Diferencia_Altas_Mes]
 		formatString: +#,0;-#,0;0
+		lineageTag: e2f1143b-6c1b-4d86-9652-94359fd9d62e
 
 	measure Variacion_Aliado_Mes_Pct = DIVIDE([Delta_Aliado_Mes], [Altas_Mes_Anterior], BLANK())
 		formatString: +0.00%;-0.00%;0.00%
+		lineageTag: 05745708-e531-4085-ba91-27f2577e771f
 
 	measure Contribucion_Aliado_Cambio_Pct =
 			VAR CambioUniverso =
@@ -187,22 +213,113 @@ table _Medidas_Altas
 				)
 			RETURN DIVIDE([Delta_Aliado_Mes], CambioUniverso, BLANK())
 		formatString: +0.00%;-0.00%;0.00%
+		lineageTag: aa7ff8bc-51f8-467a-9cf1-98804b4cb34b
 
 	measure Ranking_Driver_Positivo =
 			VAR DeltaActual = [Delta_Aliado_Mes]
 			VAR AliadosPositivos = FILTER(ALLSELECTED(Dim_Aliado[Descripcion]), [Delta_Aliado_Mes] > 0)
 			RETURN IF(NOT ISBLANK(DeltaActual) && DeltaActual > 0, RANKX(AliadosPositivos, [Delta_Aliado_Mes], , DESC, DENSE), BLANK())
 		formatString: 0
+		lineageTag: 1c51c2a1-5198-48f7-a71a-9f33eddc0925
 
 	measure Ranking_Driver_Negativo =
 			VAR DeltaActual = [Delta_Aliado_Mes]
 			VAR AliadosNegativos = FILTER(ALLSELECTED(Dim_Aliado[Descripcion]), [Delta_Aliado_Mes] < 0)
 			RETURN IF(NOT ISBLANK(DeltaActual) && DeltaActual < 0, RANKX(AliadosNegativos, [Delta_Aliado_Mes], , ASC, DENSE), BLANK())
 		formatString: 0
+		lineageTag: 3b14402b-f694-474c-95f2-3c779245abab
+
+	measure Contribucion_Cambio_Pusher_1_Pct =
+			VAR CambioUniverso = CALCULATE([Diferencia_Altas_Mes], REMOVEFILTERS(Dim_Aliado[Pusher]))
+			RETURN DIVIDE([Delta_Pusher_1_Mes], CambioUniverso, BLANK())
+		formatString: +0.00%;-0.00%;0.00%
+		lineageTag: 7bee9e07-2fbe-43b7-b0c9-ae3bb3668658
+
+	measure Contribucion_Cambio_Sin_Asignar_Pct =
+			VAR CambioUniverso = CALCULATE([Diferencia_Altas_Mes], REMOVEFILTERS(Dim_Aliado[Pusher]))
+			VAR CambioSinAsignar =
+				CALCULATE(
+					[Diferencia_Altas_Mes],
+					REMOVEFILTERS(Dim_Aliado[Pusher]),
+					Dim_Aliado[Pusher] = "Sin asignar"
+				)
+			RETURN DIVIDE(CambioSinAsignar, CambioUniverso, BLANK())
+		formatString: +0.00%;-0.00%;0.00%
+		lineageTag: 313c35fe-14bf-4d94-a960-a90c353454b9
+
+	measure Altas_Portafolio_Pusher_2_Linea_Base =
+			CALCULATE(
+				[Altas_Pusher_2],
+				KEEPFILTERS(Dim_Calendario[Periodo_Gestion] = "Antes de gestion")
+			)
+		formatString: #,0
+		lineageTag: cd2300ab-f982-444d-a90f-3b852096297a
+
+	measure Altas_Pusher_2_Desde_Gestion =
+			CALCULATE(
+				[Altas_Pusher_2],
+				KEEPFILTERS(Dim_Calendario[Periodo_Gestion] = "Desde inicio gestion")
+			)
+		formatString: #,0
+		lineageTag: 1b12cfd9-6185-4ac6-bcba-2f8487819d56
+
+	measure Altas_Sin_Asignar =
+			CALCULATE(
+				[Altas_Total],
+				Dim_Aliado[Pusher] = "Sin asignar"
+			)
+		formatString: #,0
+		lineageTag: 60524f07-2f94-4619-98bc-1a604b0270d3
+
+	measure Promedio_Altas_Hasta_Mes_Anterior =
+			VAR AnioSeleccionado = SELECTEDVALUE(Dim_Calendario[Anio])
+			VAR MesSeleccionado = SELECTEDVALUE(Dim_Calendario[MesNumero])
+			VAR MesesPreviosCerrados =
+				FILTER(
+					SUMMARIZE(
+						ALL(Dim_Calendario),
+						Dim_Calendario[Anio],
+						Dim_Calendario[MesNumero],
+						Dim_Calendario[Es_Periodo_Comparable]
+					),
+					Dim_Calendario[Anio] = AnioSeleccionado
+						&& Dim_Calendario[MesNumero] < MesSeleccionado
+						&& Dim_Calendario[Es_Periodo_Comparable] = TRUE()
+				)
+			RETURN
+				IF(
+					ISBLANK(AnioSeleccionado) || ISBLANK(MesSeleccionado) || MesSeleccionado = 1,
+					BLANK(),
+					AVERAGEX(
+						MesesPreviosCerrados,
+						VAR AnioEvaluado = Dim_Calendario[Anio]
+						VAR MesEvaluado = Dim_Calendario[MesNumero]
+						RETURN
+							CALCULATE(
+								[Altas_Total],
+								REMOVEFILTERS(Dim_Calendario),
+								Dim_Calendario[Anio] = AnioEvaluado,
+								Dim_Calendario[MesNumero] = MesEvaluado
+							)
+					)
+				)
+		formatString: #,0
+		lineageTag: aafef1a7-0634-4694-83ef-f6ad396d9cc7
+
+	measure Meta_Altas_Promedio_Mas_30_Pct = [Promedio_Altas_Hasta_Mes_Anterior] * 1.30
+		formatString: #,0
+		lineageTag: 35c759b8-b805-49fa-994f-cc9d5a968603
+
+	measure Participacion_Sin_Asignar_Pct =
+			VAR TotalUniverso = CALCULATE([Altas_Total], REMOVEFILTERS(Dim_Aliado[Pusher]))
+			RETURN DIVIDE([Altas_Sin_Asignar], TotalUniverso, BLANK())
+		formatString: 0.00%
+		lineageTag: 03548c0d-df79-430d-a732-0511670aca0b
 
 	column Columna1
 		dataType: int64
 		isHidden
+		lineageTag: acd3fc70-8110-4304-83dd-b69e697ce6de
 		summarizeBy: none
 		sourceColumn: Columna1
 
