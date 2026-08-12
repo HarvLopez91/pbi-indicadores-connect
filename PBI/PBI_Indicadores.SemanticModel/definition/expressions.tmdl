@@ -64,6 +64,89 @@ expression Base_AltasTeResuelve =
 
 	annotation PBI_ResultType = Table
 
+expression AltasTeResuelve_Limpio =
+		let
+			Origen = Base_AltasTeResuelve,
+			SinColumnasSensibles = Table.RemoveColumns(Origen, {"JEFE", "ESPECIALISTA", "ASESOR"}, MissingField.Ignore),
+			ConvertirEntero = (Valor as any) as nullable number =>
+				if Valor = null then null
+				else
+					let
+						ConversionDirecta = try Int64.From(Valor),
+						ConversionTexto = if ConversionDirecta[HasError] then try Int64.From(Number.FromText(Text.Trim(Text.Clean(Text.From(Valor))), "es-CO")) else ConversionDirecta
+					in
+						if ConversionTexto[HasError] then null else ConversionTexto[Value],
+			ConvertirFecha = (Valor as any) as nullable date =>
+				if Valor = null then null
+				else
+					let
+						ConversionDirecta = try Date.From(Valor),
+						ConversionTexto = if ConversionDirecta[HasError] then try Date.FromText(Text.Trim(Text.Clean(Text.From(Valor))), [Culture="es-CO"]) else ConversionDirecta
+					in
+						if ConversionTexto[HasError] then null else ConversionTexto[Value],
+			ConAltas = Table.AddColumn(SinColumnasSensibles, "Altas", each ConvertirEntero([ALTAS]), Int64.Type),
+			ConFechaAlta = Table.AddColumn(ConAltas, "FechaAlta", each ConvertirFecha([FECHA_ALTA]), type date),
+			ConMes = Table.AddColumn(ConFechaAlta, "Mes", each ConvertirEntero([MES]), Int64.Type),
+			ConDescripcion = Table.AddColumn(ConMes, "Descripcion", each if [DESCRIPCION] = null then null else Text.Upper(Text.Trim(Text.Clean(Text.From([DESCRIPCION])))), type nullable text),
+			SinColumnasOrigenTipadas = Table.RemoveColumns(ConDescripcion, {"ALTAS", "FECHA_ALTA", "MES", "DESCRIPCION"}),
+			NombresTecnicos = Table.RenameColumns(SinColumnasOrigenTipadas, {
+				{"FECHA_ALTA - Copy.1", "FechaAltaCopia1"},
+				{"DIVISION", "Division"},
+				{"CANAL", "Canal"},
+				{"CANAL2", "Canal2"},
+				{"TIPO_PAQUETE", "TipoPaquete"},
+				{"DESCRIPCION2", "Descripcion2"},
+				{"TIPO", "Tipo"},
+				{"SUBTIPO", "Subtipo"},
+				{"SERVICIO", "Servicio"},
+				{"UNIDAD_NEGOCIO", "UnidadNegocio"},
+				{"UNIDAD_NEGOCIO2", "UnidadNegocio2"}
+			}, MissingField.Ignore),
+			TiposTexto = Table.TransformColumnTypes(NombresTecnicos, {
+				{"Division", type text},
+				{"Canal", type text},
+				{"Canal2", type text},
+				{"TipoPaquete", type text},
+				{"Descripcion2", type text},
+				{"Tipo", type text},
+				{"Subtipo", type text},
+				{"Servicio", type text},
+				{"UnidadNegocio", type text},
+				{"UnidadNegocio2", type text}
+			}, "es-CO"),
+			ConMesFechaCalculado = Table.AddColumn(TiposTexto, "MesFechaCalculado", each if [FechaAlta] = null then null else Date.Year([FechaAlta]) * 100 + Date.Month([FechaAlta]), Int64.Type),
+			ConMesCoincideFecha = Table.AddColumn(ConMesFechaCalculado, "MesCoincideFecha", each [Mes] <> null and [MesFechaCalculado] <> null and [Mes] = [MesFechaCalculado], type logical),
+			PeriodosValidos = List.RemoveNulls(Table.Column(ConMesCoincideFecha, "Mes")),
+			MaximoPeriodoFuente = if List.IsEmpty(PeriodosValidos) then null else List.Max(PeriodosValidos),
+			ConEstadoPeriodo = Table.AddColumn(ConMesCoincideFecha, "EstadoPeriodo", each
+				if [Mes] = null then "Periodo invalido"
+				else if [Mes] <= Int64.From(Periodo_Corte_Comercial) then "Cerrado"
+				else if [Mes] = MaximoPeriodoFuente then "En curso"
+				else "Posterior al corte sin validar", type text),
+			ConEsPeriodoComparable = Table.AddColumn(ConEstadoPeriodo, "EsPeriodoComparable", each [Mes] <> null and [Mes] <= Int64.From(Periodo_Corte_Comercial), type logical),
+			ConMotivoInvalidez = Table.AddColumn(ConEsPeriodoComparable, "MotivoInvalidez", each Text.Combine(List.RemoveNulls({
+				if [Altas] = null then "Altas invalida" else if [Altas] < 0 then "Altas negativa" else null,
+				if [FechaAlta] = null then "FechaAlta invalida" else null,
+				if [Mes] = null then "Mes invalido" else null,
+				if [Descripcion] = null or [Descripcion] = "" then "Descripcion vacia" else null,
+				if [MesCoincideFecha] then null else "Mes no corresponde a FechaAlta"
+			}), "; "), type text),
+			ConEstadoFila = Table.AddColumn(ConMotivoInvalidez, "EstadoFila", each if [MotivoInvalidez] = "" then "Valida" else "Invalida", type text),
+			SumaAltasOrigen = List.Sum(List.RemoveNulls(List.Transform(Table.Column(SinColumnasSensibles, "ALTAS"), each ConvertirEntero(_)))),
+			SumaAltasLimpia = List.Sum(List.RemoveNulls(Table.Column(ConEstadoFila, "Altas"))),
+			FilasConciliadas =
+				if Table.RowCount(SinColumnasSensibles) = Table.RowCount(ConEstadoFila)
+				then ConEstadoFila
+				else error "La limpieza altero el numero de filas de Base_AltasTeResuelve.",
+			AltasConciliadas =
+				if SumaAltasOrigen = SumaAltasLimpia
+				then FilasConciliadas
+				else error "La suma de Altas no concilia entre staging y limpieza."
+		in
+			AltasConciliadas
+
+	annotation PBI_ResultType = Table
+
 expression Base_MatrizCalidad =
 		let
 			Source = Excel.Workbook(File.Contents(RutaCarpetaData & "\Matriz de calidad (Responses).xlsx"), null, true),
