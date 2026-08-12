@@ -3,6 +3,67 @@ expression RutaCarpetaData = "C:\Users\eclavijo\OneDrive\PBI_Indicadores\Data" m
 
 	annotation PBI_ResultType = Text
 
+expression Ruta_Informe_Altas = RutaCarpetaData & "\Informe de Altas\INFORME ALTAS TE RESUELVE Cierre Julio.xlsx" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 2addb121-3da1-44a4-9336-ae42f4221c11
+
+	annotation PBI_ResultType = Text
+
+expression Periodo_Corte_Comercial = 202607 meta [IsParameterQuery=true, Type="Number", IsParameterQueryRequired=true]
+	lineageTag: 6a94d8e9-f22e-4a76-850b-0ee5521d2ed7
+
+	annotation PBI_ResultType = Number
+
+expression Fecha_Inicio_Gestion_Pusher_2 = #date(2026, 7, 1) meta [IsParameterQuery=true, Type="Date", IsParameterQueryRequired=true]
+	lineageTag: 659b41aa-882a-4ca8-9d4a-0aa2c922733b
+
+	annotation PBI_ResultType = Date
+
+expression Base_AltasTeResuelve =
+		let
+			NombreArchivo = "INFORME ALTAS TE RESUELVE Cierre Julio.xlsx",
+			CarpetaFuente = RutaCarpetaData & "\Informe de Altas",
+			RutaEsperada = CarpetaFuente & "\" & NombreArchivo,
+			RutaValidada = if Ruta_Informe_Altas = RutaEsperada then Ruta_Informe_Altas else error "Ruta_Informe_Altas no corresponde al archivo comercial esperado dentro de RutaCarpetaData.",
+			ArchivosCarpeta = Folder.Contents(CarpetaFuente),
+			CoincidenciasArchivo = Table.SelectRows(ArchivosCarpeta, each [Name] = NombreArchivo),
+			ArchivoFuente =
+				if Table.RowCount(CoincidenciasArchivo) = 1
+				then CoincidenciasArchivo{0}
+				else error "No se encontro un unico archivo fuente para Base_AltasTeResuelve.",
+			ContenidoArchivo = if RutaValidada <> null then ArchivoFuente[Content] else error "Ruta de fuente no valida.",
+			FechaModificacionFuente = Record.Field(ArchivoFuente, "Date modified"),
+			TamanoFuenteBytes = Int64.From(ArchivoFuente[Size]),
+			HuellaFuenteOperativa = NombreArchivo & "|" & Text.From(TamanoFuenteBytes, "en-US") & "|" & DateTimeZone.ToText(DateTimeZone.From(FechaModificacionFuente), [Format="yyyy-MM-ddTHH:mm:ssK", Culture="en-US"]),
+			Libro = Excel.Workbook(ContenidoArchivo, null, true),
+			CoincidenciasInsumo2 = Table.SelectRows(Libro, each [Item] = "Insumo2" and [Kind] = "Table"),
+			TablaInsumo2 =
+				if Table.RowCount(CoincidenciasInsumo2) = 1
+				then CoincidenciasInsumo2{0}[Data]
+				else error "No se encontro una unica tabla formal Insumo2 en el libro de altas.",
+			ColumnasRequeridas = {"ALTAS", "DESCRIPCION", "FECHA_ALTA", "MES"},
+			ColumnasFaltantes = List.Difference(ColumnasRequeridas, Table.ColumnNames(TablaInsumo2)),
+			DatosConEsquemaValido =
+				if List.IsEmpty(ColumnasFaltantes)
+				then TablaInsumo2
+				else error "Faltan columnas obligatorias en Insumo2: " & Text.Combine(ColumnasFaltantes, ", "),
+			PeriodosDisponibles = List.RemoveNulls(List.Transform(Table.Column(DatosConEsquemaValido, "MES"), each try Int64.From(_) otherwise null)),
+			DatosConCorteValido =
+				if List.Contains(PeriodosDisponibles, Int64.From(Periodo_Corte_Comercial))
+				then DatosConEsquemaValido
+				else error "Periodo_Corte_Comercial no existe en Insumo2.",
+			ConArchivoFuente = Table.AddColumn(DatosConCorteValido, "ArchivoFuente", each NombreArchivo, type text),
+			ConObjetoFuente = Table.AddColumn(ConArchivoFuente, "ObjetoFuente", each "Insumo2", type text),
+			ConRutaFuente = Table.AddColumn(ConObjetoFuente, "RutaFuente", each RutaValidada, type text),
+			ConFechaModificacion = Table.AddColumn(ConRutaFuente, "FechaModificacionFuente", each FechaModificacionFuente),
+			ConTamanoFuente = Table.AddColumn(ConFechaModificacion, "TamanoFuenteBytes", each TamanoFuenteBytes, Int64.Type),
+			ConHuellaFuente = Table.AddColumn(ConTamanoFuente, "HuellaFuenteOperativa", each HuellaFuenteOperativa, type text),
+			ConPeriodoCorte = Table.AddColumn(ConHuellaFuente, "PeriodoCorteConfigurado", each Int64.From(Periodo_Corte_Comercial), Int64.Type)
+		in
+			ConPeriodoCorte
+	lineageTag: d2a235dc-60bf-40b2-a3b8-bccd57eaed3a
+
+	annotation PBI_ResultType = Table
+
 expression Base_MatrizCalidad =
 		let
 			Source = Excel.Workbook(File.Contents(RutaCarpetaData & "\Matriz de calidad (Responses).xlsx"), null, true),
