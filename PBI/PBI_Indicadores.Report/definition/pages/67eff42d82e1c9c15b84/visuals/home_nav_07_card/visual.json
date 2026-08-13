@@ -224,14 +224,14 @@
             "navigationSection": {
               "expr": {
                 "Literal": {
-                  "Value": "'p14_notas_metodologicas'"
+                  "Value": "'GestionComercialAltas'"
                 }
               }
             },
             "tooltip": {
               "expr": {
                 "Literal": {
-                  "Value": "'Ir a Notas metodológicas'"
+                  "Value": "'Ir a Gestión comercial de altas'"
                 }
               }
             }
