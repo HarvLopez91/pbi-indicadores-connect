@@ -5,7 +5,7 @@
 | Proyecto | `PBI_Indicadores` |
 | Iniciativa | Gestión comercial de altas Te Resuelve (GC-1 a GC-10) |
 | Fase de este documento | GC-10 — cierre y publicación |
-| Estado | Validación estática cerrada; publicación manual pendiente de ejecución por el usuario |
+| Estado | Validación estática cerrada; publicación manual ejecutada y validada por el usuario |
 
 ## 1. Objetivo
 
@@ -89,8 +89,22 @@ Rama `main`, `HEAD` local = `origin/main` = `0d93173` (baseline confirmado), wor
 
 ## 15. Publicación
 
-**Pendiente de ejecución manual por el usuario.** La publicación en Power BI Service es un paso manual (checklist entregado por separado); este documento no certifica un artefacto publicado hasta que el usuario confirme el resultado.
+**Ejecutada y validada por el usuario en Power BI Service.** Evidencia confirmada mediante captura del artefacto publicado:
+
+**Julio 2026** (Año=2026, Mes=julio, PUSHER=Todas, Aliado=Todas): Altas = 4.518, Cambio = +818, Variación = +22,11 %, Promedio histórico previo = 4.796, Meta +30 % = 6.235, Cobertura = 83,80 %. Gráfico histórico con etiquetas por segmento, totales mensuales y colores correctos; drivers ATENTO +381 / ONE CONTACT +201; caída GNP -70; ranking visible; navegación disponible. PASS.
+
+**Agosto 2026 parcial** (Mes=agosto): Altas = 559, Cambio y Variación en blanco (`--`), Promedio histórico previo = 4.756, Meta +30 % = 6.183, Cobertura = 85,15 %. Drivers comparativos vacíos, ranking muestra altas del periodo sin comparación mensual, histórico conserva enero-julio sin presentar agosto como cierre. PASS.
+
+### Modalidad de publicación — decisión intencional
+
+El artefacto se distribuye mediante **"Publicar en la Web"** (enlace público, sin autenticación). Esta es una **decisión funcional consciente**, no un descuido: los usuarios finales no cuentan con licencia de Power BI y el reporte debe poder consultarse mediante enlace público por un consumidor externo a Connect. No se sustituye por una modalidad autenticada.
+
+Esta decisión hace que la restricción de privacidad del modelo comercial sea **permanente, no solo de esta fase**: cualquier actualización futura del modelo de Gestión comercial de altas debe seguir excluyendo `JEFE`, `ESPECIALISTA`, `ASESOR`, nombres individuales y cualquier dato no autorizado para exposición pública, porque el enlace público no tiene control de acceso. El URL completo no se reproduce en esta documentación por no ser necesario para el mantenimiento técnico.
+
+### Privacidad del artefacto publicado
+
+Confirmado sobre las capturas del reporte publicado: sin nombres individuales, sin cargos sensibles, datos agregados por aliado/PUSHER únicamente — consistente con lo validado en el modelo local (§8).
 
 ## 16. Resultado final
 
-GC-1 a GC-9 cerrados y verificados sin regresiones. GC-10 con validación estática completa y sin hallazgos bloqueantes. La iniciativa queda lista para el gate de publicación manual; el cierre absoluto de GC-10 se registrará en `Outputs/60` una vez confirmada la publicación.
+GC-1 a GC-9 cerrados y verificados sin regresiones. GC-10 con validación estática completa, gate manual de Power BI Desktop aprobado y publicación en Power BI Service ejecutada y validada por el usuario (julio y agosto parcial, ambos PASS). **Implementación de Gestión comercial de altas Te Resuelve cerrada.**
