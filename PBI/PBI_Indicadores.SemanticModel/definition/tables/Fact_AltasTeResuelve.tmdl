@@ -17,13 +17,44 @@ table Fact_AltasTeResuelve
 		summarizeBy: sum
 		sourceColumn: Altas
 
+	column PeriodoAliadoKey
+		dataType: string
+		isHidden
+		isNullable: false
+		lineageTag: d4a505b8-e395-41e7-83b4-807d630d8537
+		summarizeBy: none
+		sourceColumn: PeriodoAliadoKey
+
 	partition Fact_AltasTeResuelve = m
 		mode: import
 		source =
 				let
-					FilasValidas = Table.SelectRows(AltasTeResuelve_Limpio, each [EstadoFila] = "Valida"),
-					ConAliadoKey = Table.AddColumn(FilasValidas, "AliadoKey", each [Descripcion], type text),
-					ColumnasFinales = Table.SelectColumns(ConAliadoKey, {"FechaAlta", "AliadoKey", "Altas"}),
-					TiposAplicados = Table.TransformColumnTypes(ColumnasFinales, {{"FechaAlta", type date}, {"AliadoKey", type text}, {"Altas", Int64.Type}})
+				    FilasValidas = Table.SelectRows(AltasTeResuelve_Limpio, each [EstadoFila] = "Valida"),
+				    ConAliadoKey = Table.AddColumn(FilasValidas, "AliadoKey", each [Descripcion], type text),
+				    ConAnioMesClave = Table.AddColumn(
+				        ConAliadoKey,
+				        "AnioMesClave",
+				        each Date.Year(Date.From([FechaAlta])) * 100 + Date.Month(Date.From([FechaAlta])),
+				        Int64.Type
+				    ),
+				    ConPeriodoAliadoKey = Table.AddColumn(
+				        ConAnioMesClave,
+				        "PeriodoAliadoKey",
+				        each Text.From([AnioMesClave], "en-US") & "|" & [AliadoKey],
+				        type text
+				    ),
+				    ColumnasFinales = Table.SelectColumns(
+				        ConPeriodoAliadoKey,
+				        {"FechaAlta", "AliadoKey", "Altas", "PeriodoAliadoKey"}
+				    ),
+				    TiposAplicados = Table.TransformColumnTypes(
+				        ColumnasFinales,
+				        {
+				            {"FechaAlta", type date},
+				            {"AliadoKey", type text},
+				            {"Altas", Int64.Type},
+				            {"PeriodoAliadoKey", type text}
+				        }
+				    )
 				in
-					TiposAplicados
+				    TiposAplicados

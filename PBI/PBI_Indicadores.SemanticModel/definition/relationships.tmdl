@@ -57,3 +57,19 @@ relationship 52b9615c-98c9-4dd9-b684-7401f6ba5cf9
 	fromColumn: Fact_AltasTeResuelve.AliadoKey
 	toColumn: Dim_Aliado.AliadoKey
 
+relationship Rel_Calendario_Metas
+	fromColumn: Fact_MetasComerciales.FechaPeriodo
+	toColumn: Dim_Calendario.Fecha
+
+relationship Rel_Aliado_Metas
+	fromColumn: Fact_MetasComerciales.AliadoKey
+	toColumn: Dim_Aliado.AliadoKey
+
+relationship Rel_Asignacion_Altas
+	fromColumn: Fact_AltasTeResuelve.PeriodoAliadoKey
+	toColumn: Dim_AsignacionPusherPeriodo.PeriodoAliadoKey
+
+relationship Rel_Asignacion_Metas
+	fromColumn: Fact_MetasComerciales.PeriodoAliadoKey
+	toColumn: Dim_AsignacionPusherPeriodo.PeriodoAliadoKey
+

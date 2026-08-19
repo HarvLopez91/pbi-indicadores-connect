@@ -1,0 +1,76 @@
+table Fact_MetasComerciales
+	lineageTag: 9fd94ffd-a95e-4920-8180-2ba9749a3085
+
+	column FechaPeriodo
+		dataType: dateTime
+		isNullable: false
+		formatString: Short Date
+		lineageTag: 81f52c24-0fe3-41b6-9e8f-3b3a2d79b736
+		summarizeBy: none
+		sourceColumn: FechaPeriodo
+
+	column AnioMes
+		dataType: int64
+		isHidden
+		isNullable: false
+		formatString: 0
+		lineageTag: 87005b1f-9d18-46bd-a2d1-cc7693ec7afc
+		summarizeBy: none
+		sourceColumn: AnioMes
+
+	column AliadoKey
+		dataType: string
+		isNullable: false
+		lineageTag: da7f482c-365f-48e3-9eec-6f6bd4fe4aeb
+		summarizeBy: none
+		sourceColumn: AliadoKey
+
+	column PeriodoAliadoKey
+		dataType: string
+		isHidden
+		isNullable: false
+		lineageTag: cbca71a4-b333-45cf-9ffb-c72529a804dd
+		summarizeBy: none
+		sourceColumn: PeriodoAliadoKey
+
+	column MetaAltas
+		dataType: int64
+		isNullable: false
+		formatString: #,0
+		lineageTag: 7d1c4d56-ab74-4dc1-9a5e-137fc262036b
+		summarizeBy: sum
+		sourceColumn: MetaAltas
+
+	partition Fact_MetasComerciales = m
+		mode: import
+		source =
+				let
+				    Origen = Config_MetasComerciales,
+				    ConFechaPeriodo = Table.AddColumn(
+				        Origen,
+				        "FechaPeriodo",
+				        each #date(Number.IntegerDivide([AnioMes], 100), Number.Mod([AnioMes], 100), 1),
+				        type date
+				    ),
+				    ConPeriodoAliadoKey = Table.AddColumn(
+				        ConFechaPeriodo,
+				        "PeriodoAliadoKey",
+				        each Text.From([AnioMes], "en-US") & "|" & [AliadoKey],
+				        type text
+				    ),
+				    ColumnasFinales = Table.SelectColumns(
+				        ConPeriodoAliadoKey,
+				        {"FechaPeriodo", "AnioMes", "AliadoKey", "PeriodoAliadoKey", "MetaAltas"}
+				    ),
+				    TiposAplicados = Table.TransformColumnTypes(
+				        ColumnasFinales,
+				        {
+				            {"FechaPeriodo", type date},
+				            {"AnioMes", Int64.Type},
+				            {"AliadoKey", type text},
+				            {"PeriodoAliadoKey", type text},
+				            {"MetaAltas", Int64.Type}
+				        }
+				    )
+				in
+				    TiposAplicados

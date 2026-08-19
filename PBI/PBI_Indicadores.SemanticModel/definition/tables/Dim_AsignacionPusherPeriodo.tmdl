@@ -1,0 +1,122 @@
+table Dim_AsignacionPusherPeriodo
+	lineageTag: cab4baa2-8874-44c6-89c0-00d14c63d619
+
+	column PeriodoAliadoKey
+		dataType: string
+		isHidden
+		isUnique
+		isKey
+		isNullable: false
+		lineageTag: ed643d70-9de3-488f-93e1-e3c93c600720
+		summarizeBy: none
+		sourceColumn: PeriodoAliadoKey
+
+	column AnioMes
+		dataType: int64
+		isHidden
+		isNullable: false
+		formatString: 0
+		lineageTag: 242917ed-4be9-4241-9701-a968b49039c2
+		summarizeBy: none
+		sourceColumn: AnioMes
+
+	column AliadoKey
+		dataType: string
+		isHidden
+		isNullable: false
+		lineageTag: 64767fef-329d-45f8-a85b-59cedc53f1de
+		summarizeBy: none
+		sourceColumn: AliadoKey
+
+	column PusherPeriodo
+		dataType: string
+		isNullable: false
+		lineageTag: ae981731-1dda-4877-8df9-484c985dfa9e
+		summarizeBy: none
+		sourceColumn: PusherPeriodo
+
+	column TipoAsignacion
+		dataType: string
+		isNullable: false
+		lineageTag: 11b7e061-04c7-4aaa-8a17-cc8561cd290a
+		summarizeBy: none
+		sourceColumn: TipoAsignacion
+
+	partition Dim_AsignacionPusherPeriodo = m
+		mode: import
+		source =
+				let
+				    AltasConAnioMes = Table.AddColumn(
+				        Fact_AltasTeResuelve,
+				        "AnioMes",
+				        each Date.Year(Date.From([FechaAlta])) * 100 + Date.Month(Date.From([FechaAlta])),
+				        Int64.Type
+				    ),
+				    CombinacionesAltas = Table.Distinct(
+				        Table.SelectColumns(AltasConAnioMes, {"PeriodoAliadoKey", "AnioMes", "AliadoKey"})
+				    ),
+				    CombinacionesMetas = Table.Distinct(
+				        Table.SelectColumns(Fact_MetasComerciales, {"PeriodoAliadoKey", "AnioMes", "AliadoKey"})
+				    ),
+				    Combinaciones = Table.Distinct(Table.Combine({CombinacionesAltas, CombinacionesMetas})),
+				    ConClasificacionBase = Table.NestedJoin(
+				        Combinaciones,
+				        {"AliadoKey"},
+				        Dim_Aliado,
+				        {"AliadoKey"},
+				        "ClasificacionBase",
+				        JoinKind.LeftOuter
+				    ),
+				    PusherBaseExpandido = Table.ExpandTableColumn(
+				        ConClasificacionBase,
+				        "ClasificacionBase",
+				        {"Pusher"},
+				        {"PusherBase"}
+				    ),
+				    PusherBaseNormalizado = Table.TransformColumns(
+				        PusherBaseExpandido,
+				        {{"PusherBase", each if _ = null then "Sin asignar" else _, type text}}
+				    ),
+				    ConOverride = Table.NestedJoin(
+				        PusherBaseNormalizado,
+				        {"AnioMes", "AliadoKey"},
+				        Map_AsignacionPusherPeriodo,
+				        {"AnioMes", "AliadoKey"},
+				        "Override",
+				        JoinKind.LeftOuter
+				    ),
+				    OverrideExpandido = Table.ExpandTableColumn(
+				        ConOverride,
+				        "Override",
+				        {"PusherPeriodo"},
+				        {"PusherOverride"}
+				    ),
+				    ConPusherPeriodo = Table.AddColumn(
+				        OverrideExpandido,
+				        "PusherPeriodo",
+				        each if [PusherOverride] <> null then [PusherOverride] else [PusherBase],
+				        type text
+				    ),
+				    ConTipoAsignacion = Table.AddColumn(
+				        ConPusherPeriodo,
+				        "TipoAsignacion",
+				        each if [PusherOverride] <> null then "Override temporal" else "Clasificacion base",
+				        type text
+				    ),
+				    ColumnasFinales = Table.SelectColumns(
+				        ConTipoAsignacion,
+				        {"PeriodoAliadoKey", "AnioMes", "AliadoKey", "PusherPeriodo", "TipoAsignacion"}
+				    ),
+				    TiposAplicados = Table.TransformColumnTypes(
+				        ColumnasFinales,
+				        {
+				            {"PeriodoAliadoKey", type text},
+				            {"AnioMes", Int64.Type},
+				            {"AliadoKey", type text},
+				            {"PusherPeriodo", type text},
+				            {"TipoAsignacion", type text}
+				        }
+				    ),
+				    Ordenado = Table.Sort(TiposAplicados, {{"AnioMes", Order.Ascending}, {"AliadoKey", Order.Ascending}})
+				in
+				    Ordenado
