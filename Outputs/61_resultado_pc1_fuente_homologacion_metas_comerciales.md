@@ -6,7 +6,7 @@
 
 ## Preflight
 
-- Repositorio: `C:\Users\eclavijo\OneDrive\PBI_Indicadores`.
+- Repositorio local del proyecto.
 - Rama: `main`.
 - Baseline local y remoto: `81cda6187ce939a4544609b85c76065d20ee90a4`.
 - Working tree y staging iniciales: limpios.
