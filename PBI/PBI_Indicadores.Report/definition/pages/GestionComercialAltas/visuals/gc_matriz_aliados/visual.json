@@ -36,14 +36,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Dim_Aliado"
+                      "Entity": "Dim_AsignacionPusherPeriodo"
                     }
                   },
-                  "Property": "Pusher"
+                  "Property": "PusherPeriodo"
                 }
               },
-              "queryRef": "Dim_Aliado.Pusher",
-              "nativeQueryRef": "Pusher",
+              "queryRef": "Dim_AsignacionPusherPeriodo.PusherPeriodo",
+              "nativeQueryRef": "PusherPeriodo",
               "active": true,
               "displayName": "PUSHER"
             },
@@ -267,7 +267,7 @@
             }
           },
           "selector": {
-            "metadata": "Dim_Aliado.Pusher"
+            "metadata": "Dim_AsignacionPusherPeriodo.PusherPeriodo"
           }
         },
         {

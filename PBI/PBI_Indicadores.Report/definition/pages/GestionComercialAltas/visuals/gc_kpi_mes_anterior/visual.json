@@ -39,13 +39,13 @@
                       "Entity": "_Medidas_Altas"
                     }
                   },
-                  "Property": "Meta_Altas_Promedio_Mas_30_Pct"
+                  "Property": "Cumplimiento_Meta_Pct"
                 }
               },
-              "queryRef": "_Medidas_Altas.Meta_Altas_Promedio_Mas_30_Pct",
-              "nativeQueryRef": "Meta_Altas_Promedio_Mas_30_Pct",
+              "queryRef": "_Medidas_Altas.Cumplimiento_Meta_Pct",
+              "nativeQueryRef": "Cumplimiento_Meta_Pct",
               "active": true,
-              "displayName": "Meta +30 %"
+              "displayName": "% Cumplimiento"
             }
           ]
         }
