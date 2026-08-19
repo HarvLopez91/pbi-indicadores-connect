@@ -294,3 +294,34 @@ expression EncuestaMotivacion_Limpio =
 
 	annotation PBI_ResultType = Table
 
+expression Config_MetasComerciales =
+		#table(
+		    type table [AnioMes = Int64.Type, AliadoKey = text, MetaAltas = Int64.Type],
+		    {
+		        {202607, "BRM", 50},
+		        {202607, "CAPITALS TELECOM BPO", 70},
+		        {202607, "ONE CONTACT", 636},
+		        {202607, "INTERACTIVO", 50},
+		        {202607, "ATENTO", 1400},
+		        {202607, "ALMAEXPERIENCE SAS", 70},
+		        {202607, "GNP", 1082},
+		        {202607, "MILLENIUM", 100},
+		        {202607, "VECTOR", 70},
+		        {202607, "INTELIGENCE BUSSINES RECOVERY COL", 1026},
+		        {202607, "ASISTE ING", 70},
+		        {202607, "COS", 1343},
+		        {202607, "AIB", 125},
+		        {202607, "UNO 27", 225}
+		    }
+		)
+	lineageTag: fe2344f9-761c-419a-8990-4bbe7561f9c7
+
+expression Map_AsignacionPusherPeriodo =
+		#table(
+		    type table [AnioMes = Int64.Type, AliadoKey = text, PusherPeriodo = text],
+		    {
+		        {202607, "UNO 27", "PUSHER 1"}
+		    }
+		)
+	lineageTag: f079fd8e-b23e-4e92-8912-bd1758a0db0a
+
