@@ -49,6 +49,13 @@ table Dim_AsignacionPusherPeriodo
 		summarizeBy: none
 		sourceColumn: PusherAsignacion
 
+	column PusherNombre
+		dataType: string
+		isNullable: false
+		summarizeBy: none
+		sourceColumn: PusherNombre
+		sortByColumn: PusherAsignacion
+
 	column TipoReglaAsignacion
 		dataType: string
 		isNullable: false
@@ -133,24 +140,31 @@ table Dim_AsignacionPusherPeriodo
 				    AsignacionFuenteExpandida = Table.ExpandTableColumn(
 				        ConAsignacionFuente,
 				        "AsignacionFuente",
-				        {"Pusher", "TipoRegla"},
-				        {"PusherAsignacionFuente", "TipoReglaAsignacionFuente"}
+				        {"Pusher", "PusherNombre", "TipoRegla"},
+				        {"PusherAsignacionFuente", "PusherNombreFuente", "TipoReglaAsignacionFuente"}
 				    ),
 				    ConPusherAsignacion = Table.AddColumn(
 				        AsignacionFuenteExpandida,
 				        "PusherAsignacion",
-				        each if [PusherOverride] <> null then [PusherOverride] else if [PusherAsignacionFuente] = null then "Sin asignar" else [PusherAsignacionFuente],
+				        // La clasificacion gobernada sigue solo a Asignacion_PUSHER; el override temporal aplica unicamente a PusherPeriodo.
+				        each if [PusherAsignacionFuente] = null then "Sin asignar" else [PusherAsignacionFuente],
 				        type text
 				    ),
 				    ConTipoReglaAsignacion = Table.AddColumn(
 				        ConPusherAsignacion,
 				        "TipoReglaAsignacion",
-				        each if [PusherOverride] <> null then "Override temporal" else if [TipoReglaAsignacionFuente] = null then "Sin coincidencia" else [TipoReglaAsignacionFuente],
+				        each if [TipoReglaAsignacionFuente] = null then "Sin coincidencia" else [TipoReglaAsignacionFuente],
 				        type text
 				    ),
 				    // Gestion atribuible: PUSHER 2 y 3 solo desde su fecha de inicio; PUSHER 1 sin fecha de inicio; Sin asignar nunca.
-				    ConGestionAtribuible = Table.AddColumn(
+				    ConPusherNombre = Table.AddColumn(
 				        ConTipoReglaAsignacion,
+				        "PusherNombre",
+				        each if [PusherNombreFuente] = null then "Sin asignar" else [PusherNombreFuente],
+				        type text
+				    ),
+				    ConGestionAtribuible = Table.AddColumn(
+				        ConPusherNombre,
 				        "EsGestionAtribuible",
 				        each
 				            let InicioMes = #date(Number.IntegerDivide([AnioMes], 100), Number.Mod([AnioMes], 100), 1)
@@ -162,7 +176,7 @@ table Dim_AsignacionPusherPeriodo
 				    ),
 				    ColumnasFinales = Table.SelectColumns(
 				        ConGestionAtribuible,
-				        {"PeriodoAliadoKey", "AnioMes", "AliadoKey", "PusherPeriodo", "TipoAsignacion", "PusherAsignacion", "TipoReglaAsignacion", "EsGestionAtribuible"}
+				        {"PeriodoAliadoKey", "AnioMes", "AliadoKey", "PusherPeriodo", "TipoAsignacion", "PusherAsignacion", "PusherNombre", "TipoReglaAsignacion", "EsGestionAtribuible"}
 				    ),
 				    TiposAplicados = Table.TransformColumnTypes(
 				        ColumnasFinales,
@@ -173,6 +187,7 @@ table Dim_AsignacionPusherPeriodo
 				            {"PusherPeriodo", type text},
 				            {"TipoAsignacion", type text},
 				            {"PusherAsignacion", type text},
+				            {"PusherNombre", type text},
 				            {"TipoReglaAsignacion", type text},
 				            {"EsGestionAtribuible", type logical}
 				        }

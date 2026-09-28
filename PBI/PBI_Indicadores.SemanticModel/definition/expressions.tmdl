@@ -447,15 +447,16 @@ expression Map_AsignacionPusherFuente =
 				else error "Asignacion_PUSHER no contiene las tres etiquetas publicas esperadas.",
 			ConPusherPublico = Table.NestedJoin(FilasValidas, {"PusherOrigen"}, MapaGruposValidado, {"PusherOrigen"}, "MapaPusher", JoinKind.LeftOuter),
 			PusherExpandido = Table.ExpandTableColumn(ConPusherPublico, "MapaPusher", {"Pusher"}, {"Pusher"}),
-			SinPusherOrigen = Table.RemoveColumns(PusherExpandido, {"PusherOrigen"}),
-			SinDuplicados = Table.Distinct(SinPusherOrigen),
+			// Nombre de la fuente conservado como etiqueta de presentacion (autorizado por negocio en R7).
+			ConPusherNombre = Table.RenameColumns(PusherExpandido, {{"PusherOrigen", "PusherNombre"}}),
+			SinDuplicados = Table.Distinct(ConPusherNombre),
 			ConTipoRegla = Table.AddColumn(SinDuplicados, "TipoRegla", each if [Descripcion2] = null then "General" else "Especifica", type text),
 			ConAliadoKey = Table.AddColumn(ConTipoRegla, "AliadoKey", each if [TipoRegla] = "Especifica" then [Descripcion] & "|" & [Descripcion2] else [Descripcion], type text),
 			ReglasAgrupadas = Table.Group(ConAliadoKey, {"TipoRegla", "Descripcion", "Descripcion2"}, {{"CantidadPusher", each List.Count(List.Distinct([Pusher])), Int64.Type}}),
 			Colisiones = Table.SelectRows(ReglasAgrupadas, each [CantidadPusher] <> 1),
 			MapaValidado =
 				if Table.IsEmpty(Colisiones)
-				then Table.SelectColumns(ConAliadoKey, {"AliadoKey", "Descripcion", "Descripcion2", "Pusher", "TipoRegla"})
+				then Table.SelectColumns(ConAliadoKey, {"AliadoKey", "Descripcion", "Descripcion2", "Pusher", "PusherNombre", "TipoRegla"})
 				else error "Existen reglas de asignacion PUSHER con clasificaciones diferentes.",
 			Ordenado = Table.Sort(MapaValidado, {{"TipoRegla", Order.Ascending}, {"Descripcion", Order.Ascending}, {"Descripcion2", Order.Ascending}})
 		in

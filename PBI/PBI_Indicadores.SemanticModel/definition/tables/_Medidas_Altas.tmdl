@@ -429,6 +429,15 @@ table _Medidas_Altas
 			RETURN IF(ISBLANK(Recibido), BLANK(), Recibido - COALESCE([Valor_Legalizado], 0))
 		formatString: #,0;-#,0;0
 
+	/// Valor legalizado para la pagina Resumen Comercial: aplica el PUSHER solo si PusherAsignacion o PusherNombre estan filtrados directamente (TREATAS sobre Fact_LegalizacionBonos[Pusher]). No responde a Aliado.
+	measure Valor_Legalizado_Filtro_Pusher =
+			IF(
+				ISFILTERED(Dim_AsignacionPusherPeriodo[PusherAsignacion]) || ISFILTERED(Dim_AsignacionPusherPeriodo[PusherNombre]),
+				CALCULATE([Valor_Legalizado], TREATAS(VALUES(Dim_AsignacionPusherPeriodo[PusherAsignacion]), Fact_LegalizacionBonos[Pusher])),
+				[Valor_Legalizado]
+			)
+		formatString: $#,0
+
 	measure Fecha_Corte_Incentivos = MAX(Fact_LegalizacionBonos[Fecha])
 		formatString: Short Date
 
