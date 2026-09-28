@@ -308,25 +308,76 @@ expression Control_Aliados_Sin_Clasificar =
 	annotation PBI_ResultType = Table
 
 expression Config_MetasComerciales =
-		#table(
-		    type table [AnioMes = Int64.Type, AliadoKey = text, MetaAltas = Int64.Type],
-		    {
-		        {202607, "BRM", 50},
-		        {202607, "CAPITALS TELECOM BPO", 70},
-		        {202607, "ONE CONTACT", 636},
-		        {202607, "INTERACTIVO", 50},
-		        {202607, "ATENTO", 1400},
-		        {202607, "ALMAEXPERIENCE SAS", 70},
-		        {202607, "GNP", 1082},
-		        {202607, "MILLENIUM", 100},
-		        {202607, "VECTOR", 70},
-		        {202607, "INTELIGENCE BUSSINES RECOVERY COL", 1026},
-		        {202607, "ASISTE ING", 70},
-		        {202607, "COS", 1343},
-		        {202607, "AIB", 125},
-		        {202607, "UNO 27", 225}
-		    }
-		)
+		let
+			RutaFuente = RutaCarpetaData & "\BI - NUEVO.xlsx",
+			Libro = Excel.Workbook(File.Contents(RutaFuente), null, true),
+			Coincidencias = Table.SelectRows(Libro, each [Item] = "Metas_Bonos" and [Kind] = "Sheet"),
+			Origen =
+				if Table.RowCount(Coincidencias) = 1
+				then Coincidencias{0}[Data]
+				else error "No se encontro una unica hoja Metas_Bonos.",
+			Encabezados = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+			ColumnasRequeridas = {"Año", "Mes", "PUSHER", "Aliado_BI", "Asesor_Equipo", "Tipo_Meta", "Meta_Ventas"},
+			ColumnasFaltantes = List.Difference(ColumnasRequeridas, Table.ColumnNames(Encabezados)),
+			ConEsquemaValido =
+				if List.IsEmpty(ColumnasFaltantes)
+				then Table.SelectColumns(Encabezados, ColumnasRequeridas)
+				else error "Faltan columnas obligatorias en Metas_Bonos: " & Text.Combine(ColumnasFaltantes, ", "),
+			NormalizarTexto = (Valor as any) as nullable text =>
+				if Valor = null then null
+				else
+					let Texto = Text.Upper(Text.Trim(Text.Clean(Text.From(Valor))))
+					in if Texto = "" then null else Texto,
+			Renombradas = Table.RenameColumns(ConEsquemaValido, {
+				{"Año", "Anio"},
+				{"PUSHER", "PusherOrigen"},
+				{"Aliado_BI", "Aliado"},
+				{"Asesor_Equipo", "Nivel"},
+				{"Tipo_Meta", "TipoMeta"},
+				{"Meta_Ventas", "Meta"}
+			}),
+			Normalizadas = Table.TransformColumns(Renombradas, {
+				{"Anio", each try Int64.From(_) otherwise null, Int64.Type},
+				{"Mes", NormalizarTexto, type nullable text},
+				{"PusherOrigen", NormalizarTexto, type nullable text},
+				{"Aliado", NormalizarTexto, type nullable text},
+				{"Nivel", NormalizarTexto, type nullable text},
+				{"TipoMeta", NormalizarTexto, type nullable text},
+				{"Meta", each try Int64.From(_) otherwise null, Int64.Type}
+			}),
+			FilasMeta = Table.SelectRows(Normalizadas, each [Anio] <> null and [Mes] <> null and [Aliado] <> null and [TipoMeta] = "META PARA BONO" and List.Contains({"CALL", "ESPECIALISTA", "ASESOR"}, [Nivel])),
+			Meses = [ENERO = 1, FEBRERO = 2, MARZO = 3, ABRIL = 4, MAYO = 5, JUNIO = 6, JULIO = 7, AGOSTO = 8, SEPTIEMBRE = 9, OCTUBRE = 10, NOVIEMBRE = 11, DICIEMBRE = 12],
+			ConAnioMes = Table.AddColumn(FilasMeta, "AnioMes", each
+				let MesNumero = Record.FieldOrDefault(Meses, [Mes], null)
+				in if MesNumero = null then error "Mes no reconocido en Metas_Bonos: " & [Mes] else [Anio] * 100 + MesNumero, Int64.Type),
+			// Llave logica: Anio + Mes + PUSHER + Aliado + Asesor_Equipo + Tipo_Meta. Las filas ASESOR repetidas por incentivo colapsan aqui.
+			Llaves = Table.Group(ConAnioMes, {"AnioMes", "PusherOrigen", "Aliado", "Nivel", "TipoMeta"}, {{"Metas", each List.Distinct(List.RemoveNulls([Meta])), type list}}),
+			LlavesInvalidas = Table.SelectRows(Llaves, each List.Count([Metas]) <> 1),
+			LlavesUnicas =
+				if Table.IsEmpty(LlavesInvalidas)
+				then Table.AddColumn(Llaves, "Meta", each [Metas]{0}, Int64.Type)
+				else error "Metas_Bonos tiene llaves logicas con Meta_Ventas ausente o multiple.",
+			Contextos = Table.Group(LlavesUnicas, {"AnioMes", "Aliado"}, {
+				{"CantidadPusher", each List.Count(List.Distinct([PusherOrigen])), Int64.Type},
+				{"MetaCall", each List.First(List.RemoveNulls(List.Transform(Table.ToRecords(_), (r) => if r[Nivel] = "CALL" then r[Meta] else null))), Int64.Type},
+				{"MetaEspecialista", each List.First(List.RemoveNulls(List.Transform(Table.ToRecords(_), (r) => if r[Nivel] = "ESPECIALISTA" then r[Meta] else null))), Int64.Type},
+				{"MetaAsesor", each List.First(List.RemoveNulls(List.Transform(Table.ToRecords(_), (r) => if r[Nivel] = "ASESOR" then r[Meta] else null))), Int64.Type}
+			}),
+			ContextosInvalidos = Table.SelectRows(Contextos, each [CantidadPusher] <> 1 or [MetaCall] = null or [MetaEspecialista] = null or [MetaCall] <> [MetaEspecialista]),
+			ContextosValidos =
+				if Table.IsEmpty(ContextosInvalidos)
+				then Contextos
+				else error "Metas_Bonos: contexto sin PUSHER unico o con CALL distinto de ESPECIALISTA.",
+			// Suboperaciones gobernadas por R3: Aliado_BI coincide exactamente con DESCRIPCION2 de una regla especifica.
+			ReglasEspecificas = Table.SelectRows(Map_AsignacionPusherFuente, each [TipoRegla] = "Especifica"),
+			ConRegla = Table.NestedJoin(ContextosValidos, {"Aliado"}, ReglasEspecificas, {"Descripcion2"}, "Regla", JoinKind.LeftOuter),
+			ReglaExpandida = Table.ExpandTableColumn(ConRegla, "Regla", {"AliadoKey", "Descripcion"}, {"AliadoKeyEspecifico", "DescripcionEspecifica"}),
+			ConAliadoKey = Table.AddColumn(ReglaExpandida, "AliadoKey", each if [AliadoKeyEspecifico] <> null then [AliadoKeyEspecifico] else [Aliado], type text),
+			ConDescripcion = Table.AddColumn(ConAliadoKey, "Descripcion", each if [DescripcionEspecifica] <> null then [DescripcionEspecifica] else [Aliado], type text),
+			Final = Table.RenameColumns(Table.SelectColumns(ConDescripcion, {"AnioMes", "AliadoKey", "Descripcion", "MetaCall", "MetaAsesor"}), {{"MetaCall", "MetaAltas"}}),
+			ClavesDuplicadas = Table.RowCount(Final) <> Table.RowCount(Table.Distinct(Table.SelectColumns(Final, {"AnioMes", "AliadoKey"})))
+		in
+			if ClavesDuplicadas then error "Metas_Bonos genera claves periodo-aliado duplicadas." else Final
 	lineageTag: fe2344f9-761c-419a-8990-4bbe7561f9c7
 
 expression Map_AsignacionPusherPeriodo =

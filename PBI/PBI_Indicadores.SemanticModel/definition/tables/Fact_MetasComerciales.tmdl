@@ -41,6 +41,12 @@ table Fact_MetasComerciales
 		summarizeBy: sum
 		sourceColumn: MetaAltas
 
+	column MetaAsesor
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: MetaAsesor
+
 	partition Fact_MetasComerciales = m
 		mode: import
 		source =
@@ -60,7 +66,7 @@ table Fact_MetasComerciales
 				    ),
 				    ColumnasFinales = Table.SelectColumns(
 				        ConPeriodoAliadoKey,
-				        {"FechaPeriodo", "AnioMes", "AliadoKey", "PeriodoAliadoKey", "MetaAltas"}
+				        {"FechaPeriodo", "AnioMes", "AliadoKey", "PeriodoAliadoKey", "MetaAltas", "MetaAsesor"}
 				    ),
 				    TiposAplicados = Table.TransformColumnTypes(
 				        ColumnasFinales,
@@ -69,7 +75,8 @@ table Fact_MetasComerciales
 				            {"AnioMes", Int64.Type},
 				            {"AliadoKey", type text},
 				            {"PeriodoAliadoKey", type text},
-				            {"MetaAltas", Int64.Type}
+				            {"MetaAltas", Int64.Type},
+				            {"MetaAsesor", Int64.Type}
 				        }
 				    )
 				in
