@@ -8,6 +8,29 @@
 | Estado | Validación estática y gate Desktop PASS |
 | R6 | No iniciado |
 
+## 0. Hotfix de contrato (vigente, reemplaza lo que se oponga en este documento)
+
+La fuente cambió: `Legalización_Bonos` ya no contiene `Valor gastado`, tiene 30 filas y llega hasta el 26/09/2026. Negocio confirmó el contrato **Recibido → Legalizado → Pendiente**:
+
+- `Valor recibido`: dinero entregado al PUSHER para incentivos.
+- `Valor legalizado`: importe registrado en la columna `Valor legalizado`, sin importar si el estado es ABIERTO o CERRADO.
+- `Pendiente por legalizar/gastar` = Valor recibido − Valor legalizado (medida `Pendiente_Legalizar`, R6).
+
+`Fact_LegalizacionBonos` queda con `Fecha`, `Pusher`, `Concepto`, `TipoIncentivo`, `ValorRecibido` y `ValorLegalizado`. Se retiraron `ValorGastado` y la validación de su columna fuente; `Valor gastado` deja de formar parte del contrato. `ValorLegalizado` vacío en la fuente queda `BLANK`. No se cargan estado, pendiente de la fuente, saldo, aliado, asesor ni soportes.
+
+Conciliación con la fuente actual (refresh real en Desktop):
+
+| Periodo | Filas | Recibido | Legalizado | Pendiente |
+|---|---|---|---|---|
+| Julio | 11 | 3.300.000 | 3.300.000 | 0 |
+| Agosto | 10 | 2.668.800 | 2.668.800 | 0 |
+| Septiembre | 9 | 3.800.000 | 1.603.570 | 2.196.430 |
+| Total | 30 | 9.768.800 | 7.572.370 | 2.196.430 |
+
+PUSHER 1 / 2 / 3: 13 / 15 / 2 filas. Tres filas sin `Valor legalizado` (recibido 1.700.000) cuentan íntegras como pendiente. Pendientes negativos: 0.
+
+Las secciones siguientes documentan el cierre original de R5 (29 filas, con `Valor gastado`) y quedan como histórico.
+
 ## 1. Definiciones funcionales confirmadas por negocio
 
 - `Valor recibido`: dinero que Connect entrega al PUSHER para realizar incentivos.

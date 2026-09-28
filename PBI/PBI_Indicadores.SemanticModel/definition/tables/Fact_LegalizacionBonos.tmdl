@@ -29,11 +29,11 @@ table Fact_LegalizacionBonos
 		summarizeBy: sum
 		sourceColumn: ValorRecibido
 
-	column ValorGastado
+	column ValorLegalizado
 		dataType: int64
 		formatString: #,0
 		summarizeBy: sum
-		sourceColumn: ValorGastado
+		sourceColumn: ValorLegalizado
 
 	partition Fact_LegalizacionBonos = m
 		mode: import
@@ -61,23 +61,23 @@ table Fact_LegalizacionBonos
 						then MapaPusher
 						else error "La equivalencia PUSHER de Asignacion_PUSHER no es univoca.",
 					Encabezados = HojaUnica("Legalización_Bonos"),
-					ColumnasRequeridas = {"Fecha", "Mes", "PUSHER", "Concepto", "Tipo de incentivo", "Valor recibido", "Valor gastado"},
+					ColumnasRequeridas = {"Fecha", "Mes", "PUSHER", "Concepto", "Tipo de incentivo", "Valor recibido", "Valor legalizado"},
 					ColumnasFaltantes = List.Difference(ColumnasRequeridas, Table.ColumnNames(Encabezados)),
 					ConEsquemaValido =
 						if List.IsEmpty(ColumnasFaltantes)
 						then Table.SelectColumns(Encabezados, ColumnasRequeridas)
 						else error "Faltan columnas obligatorias en Legalización_Bonos: " & Text.Combine(ColumnasFaltantes, ", "),
 					FilasConDatos = Table.SelectRows(ConEsquemaValido, each [Fecha] <> null),
-					Renombradas = Table.RenameColumns(FilasConDatos, {{"PUSHER", "PusherOrigen"}, {"Tipo de incentivo", "TipoIncentivo"}, {"Valor recibido", "ValorRecibido"}, {"Valor gastado", "ValorGastado"}}),
+					Renombradas = Table.RenameColumns(FilasConDatos, {{"PUSHER", "PusherOrigen"}, {"Tipo de incentivo", "TipoIncentivo"}, {"Valor recibido", "ValorRecibido"}, {"Valor legalizado", "ValorLegalizado"}}),
 					Normalizadas = Table.TransformColumns(Renombradas, {
 						{"Fecha", each Date.From(_), type date},
 						{"Mes", NormalizarTexto, type nullable text},
 						{"PusherOrigen", NormalizarTexto, type nullable text},
 						{"Concepto", NormalizarTexto, type nullable text},
 						{"TipoIncentivo", NormalizarTexto, type nullable text},
-						// Vacio en la fuente permanece null: no se sabe si es no gastado o no reportado.
+						// Vacio en la fuente permanece null; no se convierte en cero.
 						{"ValorRecibido", each if _ = null or _ = "" then null else Int64.From(_), Int64.Type},
-						{"ValorGastado", each if _ = null or _ = "" then null else Int64.From(_), Int64.Type}
+						{"ValorLegalizado", each if _ = null or _ = "" then null else Int64.From(_), Int64.Type}
 					}),
 					Meses = {"ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"},
 					MesInconsistente = Table.SelectRows(Normalizadas, each [Mes] <> Meses{Date.Month([Fecha]) - 1}),
@@ -85,8 +85,8 @@ table Fact_LegalizacionBonos
 					ConPusher = Table.NestedJoin(ConMesValidado, {"PusherOrigen"}, MapaValidado, {"PusherOrigen"}, "Mapa", JoinKind.LeftOuter),
 					PusherExpandido = Table.ExpandTableColumn(ConPusher, "Mapa", {"Pusher"}, {"Pusher"}),
 					PusherValidado = if Table.IsEmpty(Table.SelectRows(PusherExpandido, each [Pusher] = null)) then PusherExpandido else error "Legalización_Bonos tiene PUSHER sin etiqueta publica.",
-					ColumnasFinales = Table.SelectColumns(PusherValidado, {"Fecha", "Pusher", "Concepto", "TipoIncentivo", "ValorRecibido", "ValorGastado"}),
-					TiposAplicados = Table.TransformColumnTypes(ColumnasFinales, {{"Fecha", type datetime}, {"Pusher", type text}, {"Concepto", type text}, {"TipoIncentivo", type text}, {"ValorRecibido", Int64.Type}, {"ValorGastado", Int64.Type}})
+					ColumnasFinales = Table.SelectColumns(PusherValidado, {"Fecha", "Pusher", "Concepto", "TipoIncentivo", "ValorRecibido", "ValorLegalizado"}),
+					TiposAplicados = Table.TransformColumnTypes(ColumnasFinales, {{"Fecha", type datetime}, {"Pusher", type text}, {"Concepto", type text}, {"TipoIncentivo", type text}, {"ValorRecibido", Int64.Type}, {"ValorLegalizado", Int64.Type}})
 				in
 					TiposAplicados
 

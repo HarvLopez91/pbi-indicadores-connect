@@ -7,6 +7,18 @@
 | Estado | Validación estática y gate Desktop PASS, con observaciones |
 | R7 | No iniciado |
 
+## 0. Hotfix de contrato de incentivos (vigente)
+
+Reemplaza lo que se oponga en este documento sobre incentivos (ver Output 74 §0). Contrato **Recibido → Legalizado → Pendiente**:
+
+- `Valor_Recibido` = SUM(`ValorRecibido`), se mantiene.
+- `Valor_Legalizado` = SUM(`ValorLegalizado`), nueva.
+- `Pendiente_Legalizar`: BLANK si no hay recibido; en otro caso Valor recibido − Valor legalizado, contando el legalizado BLANK como 0 solo en este cálculo. Los negativos no se corrigen: se reportan como QA de la fuente. No usa valor gastado.
+- `Fecha_Corte_Incentivos` se mantiene; con la fuente actual es el 26/09/2026.
+- `Valor_Gastado` se eliminó porque la columna ya no existe; no tenía consumidores PBIR.
+
+Siguen sin crearse saldo, ejecución, porcentaje de ejecución ni ROI. Valores conciliados: julio 3.300.000 / 3.300.000 / 0; agosto 2.668.800 / 2.668.800 / 0; septiembre 3.800.000 / 1.603.570 / 2.196.430; total 9.768.800 / 7.572.370 / 2.196.430 (recibido / legalizado / pendiente). 0 medidas en error; ALTAS, metas y crecimiento de R2-R6 sin cambios.
+
 ## 1. Inventario
 
 **Reutilizadas sin cambios:** `Altas_Total`, `Meta_Asignada`, `Altas_Julio` y todas las medidas históricas de `GestionComercialAltas` (`Altas_Pusher_*`, `Delta_Pusher_*`, `Variacion_Pusher_*`, `Impacto_Observado_Pusher_2_Desde_Julio`, `Altas_Pusher_2_Desde_Gestion`, etc.). Siguen usando `PusherPeriodo` y `Dim_Calendario[Periodo_Gestion]`; no se migraron.

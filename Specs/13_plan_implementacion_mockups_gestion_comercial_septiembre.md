@@ -284,9 +284,9 @@ Medidas realmente nuevas previstas:
 - brecha y faltante;
 - crecimiento desde julio con día comparable;
 - separación entre línea base histórica y gestión atribuible mediante `Fecha_Inicio_Gestion_Pusher_2` (`202607`) y `Fecha_Inicio_Gestion_Pusher_3` (`202608`) para resultados, cumplimiento, crecimiento e impacto; no definir una nueva fecha para `PUSHER 1`;
-- valor recibido, valor gastado y fecha de corte de incentivos (contrato R5, Output 74).
+- valor recibido, valor legalizado, pendiente por legalizar/gastar (recibido − legalizado) y fecha de corte de incentivos (hotfix R5/R6, Outputs 74 y 75).
 
-Actualización R6: las medidas de asesor (meta individual, faltante, avance, estado y conteos) se difieren a R8, porque ni las ventas ni las metas tienen hoy identidad de asesor. No se crean medidas de valor legalizado, pendiente, saldo, ejecución ni ROI, y la diferencia entre recibido y gastado no se expone como métrica. El bono objetivo se omite.
+Actualización R6: las medidas de asesor (meta individual, faltante, avance, estado y conteos) se difieren a R8, porque ni las ventas ni las metas tienen hoy identidad de asesor. No se crean medidas de saldo, ejecución ni ROI. `Valor gastado` salió de la fuente y del contrato. El bono objetivo se omite.
 
 ### Validaciones automáticas
 
@@ -412,8 +412,8 @@ Crear la página de legalización limitada a datos con contrato demostrado.
 - Reusar fact y medidas R5-R6, tema y componentes.
 - Filtros Mes, PUSHER y tipo de incentivo. El PUSHER de incentivos es `Fact_LegalizacionBonos[Pusher]`; no se filtra desde `PusherAsignacion`.
 - Excluir Aliado mientras la fuente no lo informe.
-- Mostrar valor recibido, valor gastado y fecha de corte de incentivos (contrato R5).
-- No mostrar valor legalizado, pendiente, saldo, ejecución ni ROI.
+- Mostrar valor recibido, valor legalizado, pendiente por legalizar/gastar y fecha de corte de incentivos (hotfix R5/R6).
+- No mostrar valor gastado, saldo, ejecución ni ROI.
 
 ### Validaciones automáticas
 
