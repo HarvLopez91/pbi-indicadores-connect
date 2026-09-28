@@ -73,3 +73,6 @@ relationship Rel_Asignacion_Metas
 	fromColumn: Fact_MetasComerciales.PeriodoAliadoKey
 	toColumn: Dim_AsignacionPusherPeriodo.PeriodoAliadoKey
 
+relationship Rel_Calendario_Legalizacion
+	fromColumn: Fact_LegalizacionBonos.Fecha
+	toColumn: Dim_Calendario.Fecha

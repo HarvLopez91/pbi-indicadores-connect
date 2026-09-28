@@ -32,6 +32,7 @@ ref table Fact_AltasTeResuelve
 ref table _Medidas_Altas
 ref table Fact_MetasComerciales
 ref table Dim_AsignacionPusherPeriodo
+ref table Fact_LegalizacionBonos
 
 ref cultureInfo es-ES
 
