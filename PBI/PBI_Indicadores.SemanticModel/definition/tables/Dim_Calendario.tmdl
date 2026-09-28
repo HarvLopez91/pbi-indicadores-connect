@@ -81,26 +81,29 @@ table Dim_Calendario
 		summarizeBy: none
 		sourceColumn: EsFinDeSemana
 
-	column Periodo_Gestion
-		dataType: string
-		summarizeBy: none
-		sourceColumn: Periodo_Gestion
-
-	column Estado_Periodo
-		dataType: string
-		summarizeBy: none
-		sourceColumn: Estado_Periodo
-
-	column Es_Periodo_Comparable
-		dataType: boolean
-		summarizeBy: none
-		sourceColumn: Es_Periodo_Comparable
-
 	column 'Fecha Eje' = FORMAT(DAY(Dim_Calendario[Fecha]), "00") & "/" & FORMAT(MONTH(Dim_Calendario[Fecha]), "00")
 		dataType: string
 		lineageTag: 617bae76-9ae8-4b37-9af8-f1782759e834
 		summarizeBy: none
 		sortByColumn: Fecha
+
+	column Periodo_Gestion
+		dataType: string
+		lineageTag: 256deecf-2d19-46b9-b562-42cc73682e68
+		summarizeBy: none
+		sourceColumn: Periodo_Gestion
+
+	column Estado_Periodo
+		dataType: string
+		lineageTag: 3d725ba8-9d7a-48f2-b9b4-b9411e9b31a1
+		summarizeBy: none
+		sourceColumn: Estado_Periodo
+
+	column Es_Periodo_Comparable
+		dataType: boolean
+		lineageTag: 773b39bc-c47f-4e89-bb8a-3681b480d3a9
+		summarizeBy: none
+		sourceColumn: Es_Periodo_Comparable
 
 	partition Dim_Calendario = m
 		mode: import

@@ -1,19 +1,25 @@
 table Fact_AltasTeResuelve
+	lineageTag: 0f8a7b55-6ce7-4380-9b45-c33b151c881f
 
 	column FechaAlta
 		dataType: dateTime
 		formatString: Short Date
+		lineageTag: 40bd6df5-72de-42d8-af5c-fc904b442137
 		summarizeBy: none
 		sourceColumn: FechaAlta
 
+		annotation UnderlyingDateTimeDataType = Date
+
 	column AliadoKey
 		dataType: string
+		lineageTag: e23b07e1-c353-412c-87c6-3c2a9bd0e324
 		summarizeBy: none
 		sourceColumn: AliadoKey
 
 	column Altas
 		dataType: int64
 		formatString: 0
+		lineageTag: b5053060-3bc1-46fb-a945-6e7085d23bec
 		summarizeBy: sum
 		sourceColumn: Altas
 
@@ -58,3 +64,5 @@ table Fact_AltasTeResuelve
 				    )
 				in
 				    TiposAplicados
+
+	annotation PBI_ResultType = Table

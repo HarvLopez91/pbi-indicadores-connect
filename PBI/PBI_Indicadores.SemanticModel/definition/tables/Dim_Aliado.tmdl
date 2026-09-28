@@ -1,22 +1,27 @@
 table Dim_Aliado
+	lineageTag: 5b34de0e-28ad-4ec0-96a9-70e861522753
 
 	column AliadoKey
 		dataType: string
+		lineageTag: 6986647c-9540-4e03-929f-f12c1bbd8ce5
 		summarizeBy: none
 		sourceColumn: AliadoKey
 
 	column Descripcion
 		dataType: string
+		lineageTag: ce0d408f-707e-4746-b460-e54ddac2f915
 		summarizeBy: none
 		sourceColumn: Descripcion
 
 	column Pusher
 		dataType: string
+		lineageTag: 67713287-b930-45f7-b747-7687f0471a3e
 		summarizeBy: none
 		sourceColumn: Pusher
 
 	column Estado_Clasificacion
 		dataType: string
+		lineageTag: 211f4532-83b8-40fb-8f26-1bc6d6979a58
 		summarizeBy: none
 		sourceColumn: Estado_Clasificacion
 
@@ -36,3 +41,5 @@ table Dim_Aliado
 					Ordenado = Table.Sort(TiposAplicados, {{"Descripcion", Order.Ascending}})
 				in
 					Ordenado
+
+	annotation PBI_ResultType = Table
