@@ -10,7 +10,7 @@
 
 ## 1. Objetivo
 
-Consolidar el impacto técnico y funcional de los tres mockups de septiembre sin modificar todavía Power Query, TMDL, PBIR, Excel ni el modelo publicado. El diseño debe preservar la implementación aprobada de `GestionComercialAltas` hasta que cada sustitución supere su gate.
+Consolidar el impacto técnico y funcional de los tres mockups de septiembre sin modificar todavía Power Query, TMDL, PBIR, Excel ni el modelo publicado. El diseño debe preservar intacta la implementación aprobada de `GestionComercialAltas` mientras se construyen y validan tres páginas nuevas.
 
 Este documento usa las siguientes etiquetas:
 
@@ -27,7 +27,7 @@ Incluye:
 - actualización de la asignación comercial de PUSHER;
 - incorporación gobernada de metas;
 - incorporación mínima de incentivos y legalización;
-- evolución de `GestionComercialAltas` y creación de dos páginas;
+- creación de tres páginas nuevas, una por mockup, sin rediseñar ni sustituir `GestionComercialAltas`;
 - medidas, validaciones, privacidad, documentación y publicación.
 
 No incluye:
@@ -166,8 +166,8 @@ Las relaciones vigentes entre dimensiones y hechos son 1:* y unidireccionales. L
 | `Dim_AsignacionPusherPeriodo` | Confirmado | Reutilizar y alimentar desde asignación autorizada, incluida la tercera categoría |
 | `Fact_MetasComerciales` | Confirmado | Sustituir configuración gobernada por metas `CALL`; incorporar una columna contextual de meta individual si pasa validaciones |
 | `_Medidas_Altas` | Confirmado | Reutilizar medidas actuales y agregar solo cálculos no existentes |
-| `GestionComercialAltas` | Confirmado | Evolucionar la página existente; no crear copia paralela por defecto |
-| Páginas 2 y 3 | Propuesto | Crear páginas nuevas porque no existe equivalente funcional |
+| `GestionComercialAltas` | Confirmado | Mantener intacta durante la construcción y validación de las páginas nuevas |
+| Páginas 1, 2 y 3 | Propuesto | Crear tres páginas nuevas, una por mockup |
 | Legalización | Propuesto | Crear un hecho mínimo independiente por tener proceso y grano propios |
 
 ## 6. Diferencias técnicas relevantes de las fuentes
@@ -207,10 +207,11 @@ La meta `ASESOR` se deduplicará por la clave lógica aprobada; no se sumarán s
 | `Dim_AsignacionPusherPeriodo` | Reutilizable con ajuste | Reemplazar/alimentar reglas desde fuente autorizada |
 | `Fact_MetasComerciales` | Reutilizable con ajuste | Mantener grano periodo-aliado; incorporar meta `CALL` y meta individual contextual |
 | `_Medidas_Altas` | Reutilizable con ajuste | Evitar medidas duplicadas |
-| `GestionComercialAltas` | Reutilizable con ajuste | Evolucionar la página actual |
+| `GestionComercialAltas` | Reutilizable sin cambio | Mantenerla intacta; reutilizar únicamente sus patrones y componentes |
 | Tema, navegación y componentes | Reutilizable sin cambio conceptual | Replicar patrones existentes |
 | Dimensión de asesor | Realmente nueva si Página 2 la requiere | Crear solo para navegación nominal y relación 1:* con ventas |
 | Hecho de legalización | Realmente nuevo | Grano propio; sin relación inventada con aliado/asesor |
+| Página de resumen comercial | Realmente nueva | No existe equivalente con el contrato del mockup 1 |
 | Página de asesores | Realmente nueva | No existe equivalente |
 | Página de legalización | Realmente nueva | No existe equivalente |
 | Dimensión PUSHER paralela | No requerida | Reutilizar asignación actual; no crearla |
@@ -229,14 +230,14 @@ La meta `ASESOR` se deduplicará por la clave lógica aprobada; no se sumarán s
 | Incentivos/legalización | Sí para Página 3 | No existe hecho equivalente | Nueva fact mínima | Solo columnas con contrato confirmado |
 | Bono objetivo | No por ahora | Semántica no confirmada | Omitir/BLANK | Cero lógica arbitraria |
 | Valor recibido/saldo/ejecución | No por ahora | Contrato no confirmado | Omitir/BLANK | Cero derivación |
-| Página 1 nueva | No | `GestionComercialAltas` | Evolucionar página actual | Ajuste incremental |
+| Página 1 nueva | Sí | No existe | Reusar tema, navegación y componentes | Crear una página nueva sin modificar `GestionComercialAltas` |
 | Páginas 2 y 3 | Sí | No existen | Reusar tema y navegación | Dos páginas nuevas |
 
 ## 9. Impacto funcional de los mockups
 
 ### 9.1 Página 1 — Resumen comercial
 
-**PROPUESTO.** Evolucionar `GestionComercialAltas`. Mantener filtros Mes, PUSHER y Aliado; reutilizar volumen, variación, histórico, drivers y ranking. Incorporar Meta, Cumplimiento, Brecha, crecimiento comparable desde julio y valor gastado solo cuando la relación de incentivos sea demostrable.
+**PROPUESTO.** Crear una página nueva de resumen comercial según el mockup 1. Reutilizar los patrones de filtros, navegación, tema, volumen, variación, histórico, drivers y ranking sin modificar `GestionComercialAltas`. Incorporar Meta, Cumplimiento, Brecha, crecimiento comparable desde julio y valor gastado solo cuando la relación de incentivos sea demostrable.
 
 El crecimiento contra julio debe comparar el mismo día de corte: un mes parcial al día N contra julio hasta el día N. Debe manejar meses más cortos, julio seleccionado, meses cerrados, ausencia de datos y filtros activos. Una selección multimes deberá devolver `BLANK` o una indicación no comparable, no una comparación ambigua.
 
@@ -275,7 +276,7 @@ Indicadores inicialmente demostrables: valor gastado, valor legalizado, pendient
 | Reexpresión histórica inesperada | Mayor | Conciliación mensual y controles antes/después |
 | Exposición nominal en Publicar en la Web | Crítico | Gate explícito de privacidad y aprobación funcional antes de publicar Página 2 |
 | Relación inventada en legalización | Mayor | No relacionar con aliado/asesor sin evidencia |
-| Regresión de página publicada | Mayor | Implementación por fases, commits atómicos y gate visual previo a sustitución |
+| Regresión de página publicada | Mayor | Mantener `GestionComercialAltas` intacta; decidir conservarla, ocultarla o retirarla solo después de aprobar las tres páginas nuevas |
 | Artefactos Graphify versionados | Menor | Agregar `graphify-out/` a `.gitignore` en R1 |
 
 ## 11. Deudas funcionales no bloqueantes

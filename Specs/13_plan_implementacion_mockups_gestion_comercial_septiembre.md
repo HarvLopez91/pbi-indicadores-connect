@@ -21,7 +21,7 @@ El análisis de impacto asociado es [Specs/12_analisis_impacto_mockups_gestion_c
 4. No fuzzy matching ni homologaciones implícitas.
 5. Relaciones 1:* y unidireccionales; evitar many-to-many.
 6. No publicar datos personales o fuentes privadas en Git.
-7. Página 1 evoluciona la existente; Páginas 2 y 3 son nuevas.
+7. Los tres mockups se implementan como páginas nuevas; `GestionComercialAltas` permanece intacta durante R7-R9.
 8. Cada fase termina con validación y aprobación antes de la siguiente.
 9. El rollback será selectivo por archivos/commit de fase; nunca masivo sobre el working tree.
 10. La publicación mediante Publicar en la Web exige un gate de privacidad reforzado.
@@ -48,7 +48,7 @@ Legalización_Bonos
 
 Modelo
   → _Medidas_Altas
-  → GestionComercialAltas + Página 2 + Página 3
+  → GestionComercialAltas intacta + Página 1 nueva + Página 2 nueva + Página 3 nueva
 ```
 
 No se crearán otro hecho de ventas, otra dimensión PUSHER ni otra fact de metas salvo evidencia técnica que invalide este diseño.
@@ -315,18 +315,18 @@ Revertir exclusivamente las medidas nuevas de R6; no alterar objetos conciliados
 
 ### Objetivo
 
-Evolucionar `GestionComercialAltas` según el mockup 1, sin reconstruirla ni crear una copia por defecto.
+Crear una página nueva de resumen comercial según el mockup 1, sin modificar `GestionComercialAltas`.
 
 ### Archivos y objetos esperados
 
-- PBIR de `GestionComercialAltas`.
-- `pages.json` solo si cambia el nombre visible o metadato requerido.
+- PBIR de la nueva Página 1.
+- `pages.json` para registrar la página nueva.
 - Output visual R7.
 
 ### Reutilización y cambio mínimo
 
-- Conservar navegación, tema, filtros, histórico, drivers y ranking.
-- Sustituir/adaptar solo KPI y visuales exigidos por el nuevo contrato.
+- Reutilizar patrones de navegación, tema, filtros, histórico, drivers y ranking sin editar la página existente.
+- Crear únicamente los KPI y visuales exigidos por el nuevo contrato.
 - Añadir matriz PUSHER → Aliado con Meta, Altas, Cumplimiento y Crecimiento.
 - No mostrar valor gastado por aliado si R5 no demuestra esa relación.
 
@@ -338,7 +338,7 @@ Evolucionar `GestionComercialAltas` según el mockup 1, sin reconstruirla ni cre
 - cero texto causal;
 - cero campos personales;
 - navegación Home ↔ página válida;
-- página publicada anterior recuperable mediante Git.
+- `GestionComercialAltas` sin cambios.
 
 ### Gate manual
 
@@ -346,11 +346,11 @@ Obligatorio: render, legibilidad, filtros, interacciones, navegación y comparac
 
 ### PASS
 
-Página funcional y visualmente aprobada, sin regresión de cifras ni navegación.
+Página nueva funcional y visualmente aprobada, sin regresión de cifras, navegación ni cambios en `GestionComercialAltas`.
 
 ### Rollback
 
-Revertir el commit PBIR de R7 para recuperar exactamente la página publicada anterior.
+Revertir únicamente la página nueva y su registro; `GestionComercialAltas` debe permanecer intacta.
 
 ## 11. R8 — Página 2: asesores
 
@@ -486,7 +486,7 @@ R1 → R2 → R3 → R4 → R5 → R6 → R7 → R8 → R9 → R10
 - R2 bloquea R3-R9 porque fija cifras y temporalidad.
 - R3 y R4 deben estar conciliadas antes de DAX y páginas.
 - R5 puede cerrarse con alcance reducido si los contratos pendientes siguen sin resolverse.
-- R7 no sustituye la página publicada hasta su aprobación visual.
+- R7 crea una página nueva y no sustituye `GestionComercialAltas`. Solo después de aprobar R7-R9 podrá decidirse si la página anterior se conserva, se oculta o se retira.
 - R8 exige gate de privacidad nominal.
 - R9 no depende de resolver valor recibido.
 - Ninguna fase autoriza automáticamente la siguiente.

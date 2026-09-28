@@ -31,7 +31,7 @@ Consolidar las decisiones R0, el impacto estructural y un plan definitivo R1-R10
 - Meta Página 2: `ASESOR`, una meta contextual deduplicada por aliado/PUSHER/mes.
 - Bono objetivo queda omitido/N/A hasta confirmar la semántica de incentivos.
 - Legalización se limita a gasto, legalizado, pendiente y corte; no se inventan relaciones ni valor recibido.
-- Página 1 evoluciona `GestionComercialAltas`; Páginas 2 y 3 serán nuevas.
+- Los tres mockups se implementarán como páginas nuevas; `GestionComercialAltas` permanecerá intacta durante R7-R9.
 - Los mockups, Excel y `graphify-out/` no se versionan.
 
 ## 4. Conciliaciones registradas
@@ -47,9 +47,9 @@ La solución mínima conserva:
 - un solo hecho de ventas;
 - la fact de metas existente, ampliada con meta individual contextual;
 - la asignación temporal existente;
-- la página comercial existente como base de Página 1.
+- los patrones y componentes de la página comercial existente, sin modificarla.
 
-Solo se consideran realmente nuevos una dimensión mínima de asesor si supera el gate de privacidad, una fact de legalización por su grano distinto y las Páginas 2 y 3.
+Solo se consideran realmente nuevos una dimensión mínima de asesor si supera el gate de privacidad, una fact de legalización por su grano distinto y las tres páginas de los mockups.
 
 ## 6. Fases propuestas
 
@@ -61,7 +61,7 @@ Solo se consideran realmente nuevos una dimensión mínima de asesor si supera e
 | R4 | Metas |
 | R5 | Incentivos y legalización |
 | R6 | Medidas DAX |
-| R7 | Evolución de Página 1 |
+| R7 | Nueva Página 1 de resumen comercial |
 | R8 | Página 2 de asesores |
 | R9 | Página 3 de incentivos/legalización |
 | R10 | QA, documentación, publicación y cierre |
