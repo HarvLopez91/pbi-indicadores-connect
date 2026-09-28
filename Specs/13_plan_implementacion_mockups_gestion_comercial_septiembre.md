@@ -283,6 +283,7 @@ Medidas realmente nuevas previstas:
 - fecha de corte de altas;
 - brecha y faltante;
 - crecimiento desde julio con día comparable;
+- separación entre línea base histórica y gestión atribuible mediante `Fecha_Inicio_Gestion_Pusher_2` (`202607`) y `Fecha_Inicio_Gestion_Pusher_3` (`202608`) para resultados, cumplimiento, crecimiento e impacto; no definir una nueva fecha para `PUSHER 1`;
 - meta individual, faltante, avance y estado de asesor;
 - conteos de asesores con meta/cumplimiento/cercanía;
 - valor gastado, legalizado, pendiente y corte de legalización.

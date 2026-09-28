@@ -36,9 +36,8 @@ table Fact_AltasTeResuelve
 		source =
 				let
 				    FilasValidas = Table.SelectRows(AltasTeResuelve_Limpio, each [EstadoFila] = "Valida"),
-				    ConAliadoKey = Table.AddColumn(FilasValidas, "AliadoKey", each [Descripcion], type text),
 				    ConAnioMesClave = Table.AddColumn(
-				        ConAliadoKey,
+				        FilasValidas,
 				        "AnioMesClave",
 				        each Date.Year(Date.From([FechaAlta])) * 100 + Date.Month(Date.From([FechaAlta])),
 				        Int64.Type

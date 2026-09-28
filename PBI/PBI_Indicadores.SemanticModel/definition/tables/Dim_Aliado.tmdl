@@ -30,9 +30,8 @@ table Dim_Aliado
 		source =
 				let
 					FilasValidas = Table.SelectRows(AltasTeResuelve_Limpio, each [EstadoFila] = "Valida" and [Descripcion] <> null and [Descripcion] <> ""),
-					Descripciones = Table.Distinct(Table.SelectColumns(FilasValidas, {"Descripcion"})),
-					ConAliadoKey = Table.AddColumn(Descripciones, "AliadoKey", each [Descripcion], type text),
-					ConMapa = Table.NestedJoin(ConAliadoKey, {"Descripcion"}, Map_PusherAliado, {"Descripcion"}, "Mapeo", JoinKind.LeftOuter),
+					Descripciones = Table.Distinct(Table.SelectColumns(FilasValidas, {"AliadoKey", "Descripcion"})),
+					ConMapa = Table.NestedJoin(Descripciones, {"Descripcion"}, Map_PusherAliado, {"Descripcion"}, "Mapeo", JoinKind.LeftOuter),
 					ConPusher = Table.ExpandTableColumn(ConMapa, "Mapeo", {"Pusher"}, {"PusherMapeado"}),
 					PusherAsignado = Table.AddColumn(ConPusher, "Pusher", each if [PusherMapeado] = null then "Sin asignar" else [PusherMapeado], type text),
 					ConEstadoClasificacion = Table.AddColumn(PusherAsignado, "Estado_Clasificacion", each if [Pusher] = "Sin asignar" then "Pendiente" else "Clasificado", type text),

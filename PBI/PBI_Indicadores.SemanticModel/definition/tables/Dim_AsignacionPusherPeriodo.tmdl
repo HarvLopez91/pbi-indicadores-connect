@@ -42,6 +42,20 @@ table Dim_AsignacionPusherPeriodo
 		summarizeBy: none
 		sourceColumn: TipoAsignacion
 
+	column PusherAsignacion
+		dataType: string
+		isNullable: false
+		lineageTag: 91eea1f8-84d5-4462-a5be-b99a2947273e
+		summarizeBy: none
+		sourceColumn: PusherAsignacion
+
+	column TipoReglaAsignacion
+		dataType: string
+		isNullable: false
+		lineageTag: a721684f-81aa-4767-a1c0-eda883e35724
+		summarizeBy: none
+		sourceColumn: TipoReglaAsignacion
+
 	partition Dim_AsignacionPusherPeriodo = m
 		mode: import
 		source =
@@ -103,9 +117,35 @@ table Dim_AsignacionPusherPeriodo
 				        each if [PusherOverride] <> null then "Override temporal" else "Clasificacion base",
 				        type text
 				    ),
-				    ColumnasFinales = Table.SelectColumns(
+				    ConAsignacionFuente = Table.NestedJoin(
 				        ConTipoAsignacion,
-				        {"PeriodoAliadoKey", "AnioMes", "AliadoKey", "PusherPeriodo", "TipoAsignacion"}
+				        {"AliadoKey"},
+				        Map_AsignacionPusherFuente,
+				        {"AliadoKey"},
+				        "AsignacionFuente",
+				        JoinKind.LeftOuter
+				    ),
+				    AsignacionFuenteExpandida = Table.ExpandTableColumn(
+				        ConAsignacionFuente,
+				        "AsignacionFuente",
+				        {"Pusher", "TipoRegla"},
+				        {"PusherAsignacionFuente", "TipoReglaAsignacionFuente"}
+				    ),
+				    ConPusherAsignacion = Table.AddColumn(
+				        AsignacionFuenteExpandida,
+				        "PusherAsignacion",
+				        each if [PusherOverride] <> null then [PusherOverride] else if [PusherAsignacionFuente] = null then "Sin asignar" else [PusherAsignacionFuente],
+				        type text
+				    ),
+				    ConTipoReglaAsignacion = Table.AddColumn(
+				        ConPusherAsignacion,
+				        "TipoReglaAsignacion",
+				        each if [PusherOverride] <> null then "Override temporal" else if [TipoReglaAsignacionFuente] = null then "Sin coincidencia" else [TipoReglaAsignacionFuente],
+				        type text
+				    ),
+				    ColumnasFinales = Table.SelectColumns(
+				        ConTipoReglaAsignacion,
+				        {"PeriodoAliadoKey", "AnioMes", "AliadoKey", "PusherPeriodo", "TipoAsignacion", "PusherAsignacion", "TipoReglaAsignacion"}
 				    ),
 				    TiposAplicados = Table.TransformColumnTypes(
 				        ColumnasFinales,
@@ -114,7 +154,9 @@ table Dim_AsignacionPusherPeriodo
 				            {"AnioMes", Int64.Type},
 				            {"AliadoKey", type text},
 				            {"PusherPeriodo", type text},
-				            {"TipoAsignacion", type text}
+				            {"TipoAsignacion", type text},
+				            {"PusherAsignacion", type text},
+				            {"TipoReglaAsignacion", type text}
 				        }
 				    ),
 				    Ordenado = Table.Sort(TiposAplicados, {{"AnioMes", Order.Ascending}, {"AliadoKey", Order.Ascending}})

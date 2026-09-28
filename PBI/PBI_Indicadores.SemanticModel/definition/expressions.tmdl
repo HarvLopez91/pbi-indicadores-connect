@@ -197,14 +197,14 @@ expression AltasTeResuelve_Limpio =
 			ConFechaAlta = Table.AddColumn(ConAltas, "FechaAlta", each ConvertirFecha([FECHA_ALTA]), type date),
 			ConMesFuente = Table.AddColumn(ConFechaAlta, "MesFuente", each ConvertirEntero([MES]), Int64.Type),
 			ConDescripcion = Table.AddColumn(ConMesFuente, "Descripcion", each if [DESCRIPCION] = null then null else Text.Upper(Text.Trim(Text.Clean(Text.From([DESCRIPCION])))), type nullable text),
-			SinColumnasOrigenTipadas = Table.RemoveColumns(ConDescripcion, {"ALTAS", "FECHA_ALTA", "MES", "DESCRIPCION"}),
+			ConDescripcion2 = Table.AddColumn(ConDescripcion, "Descripcion2", each if [DESCRIPCION2] = null then null else Text.Upper(Text.Trim(Text.Clean(Text.From([DESCRIPCION2])))), type nullable text),
+			SinColumnasOrigenTipadas = Table.RemoveColumns(ConDescripcion2, {"ALTAS", "FECHA_ALTA", "MES", "DESCRIPCION", "DESCRIPCION2"}),
 			NombresTecnicos = Table.RenameColumns(SinColumnasOrigenTipadas, {
 				{"FECHA_ALTA - Copy.1", "FechaAltaCopia1"},
 				{"DIVISION", "Division"},
 				{"CANAL", "Canal"},
 				{"CANAL2", "Canal2"},
 				{"TIPO_PAQUETE", "TipoPaquete"},
-				{"DESCRIPCION2", "Descripcion2"},
 				{"TIPO", "Tipo"},
 				{"SUBTIPO", "Subtipo"},
 				{"SERVICIO", "Servicio"},
@@ -221,7 +221,19 @@ expression AltasTeResuelve_Limpio =
 				{"Servicio", type text},
 				{"UnidadNegocio", type text}
 			}, "es-CO"),
-			ConMes = Table.AddColumn(TiposTexto, "Mes", each if [FechaAlta] = null then null else Date.Year([FechaAlta]) * 100 + Date.Month([FechaAlta]), Int64.Type),
+			ReglasEspecificas = Table.SelectRows(Map_AsignacionPusherFuente, each [TipoRegla] = "Especifica"),
+			ConReglaEspecifica = Table.NestedJoin(
+				TiposTexto,
+				{"Descripcion", "Descripcion2"},
+				ReglasEspecificas,
+				{"Descripcion", "Descripcion2"},
+				"ReglaEspecifica",
+				JoinKind.LeftOuter
+			),
+			ConAliadoKeyEspecifico = Table.ExpandTableColumn(ConReglaEspecifica, "ReglaEspecifica", {"AliadoKey"}, {"AliadoKeyEspecifico"}),
+			ConAliadoKey = Table.AddColumn(ConAliadoKeyEspecifico, "AliadoKey", each if [AliadoKeyEspecifico] <> null then [AliadoKeyEspecifico] else [Descripcion], type nullable text),
+			SinClaveAuxiliar = Table.RemoveColumns(ConAliadoKey, {"AliadoKeyEspecifico"}),
+			ConMes = Table.AddColumn(SinClaveAuxiliar, "Mes", each if [FechaAlta] = null then null else Date.Year([FechaAlta]) * 100 + Date.Month([FechaAlta]), Int64.Type),
 			ConMesCoincideFecha = Table.AddColumn(ConMes, "MesCoincideFecha", each [MesFuente] <> null and [Mes] <> null and [MesFuente] = [Mes], type logical),
 			PeriodosValidos = List.RemoveNulls(Table.Column(ConMesCoincideFecha, "Mes")),
 			MaximoPeriodoFuente = if List.IsEmpty(PeriodosValidos) then null else List.Max(PeriodosValidos),
@@ -283,8 +295,8 @@ expression Map_PusherAliado =
 expression Control_Aliados_Sin_Clasificar =
 		let
 			FilasValidas = Table.SelectRows(AltasTeResuelve_Limpio, each [EstadoFila] = "Valida"),
-			AltasPorAliado = Table.Group(FilasValidas, {"Descripcion"}, {{"CantidadAltas", each List.Sum([Altas]), Int64.Type}}),
-			ConMapa = Table.NestedJoin(AltasPorAliado, {"Descripcion"}, Map_PusherAliado, {"Descripcion"}, "Mapeo", JoinKind.LeftOuter),
+			AltasPorAliado = Table.Group(FilasValidas, {"AliadoKey", "Descripcion"}, {{"CantidadAltas", each List.Sum([Altas]), Int64.Type}}),
+			ConMapa = Table.NestedJoin(AltasPorAliado, {"AliadoKey"}, Map_AsignacionPusherFuente, {"AliadoKey"}, "Mapeo", JoinKind.LeftOuter),
 			SinClasificar = Table.SelectRows(ConMapa, each Table.IsEmpty([Mapeo])),
 			SinMapeoAnidado = Table.RemoveColumns(SinClasificar, {"Mapeo"}),
 			ConEstadoClasificacion = Table.AddColumn(SinMapeoAnidado, "Estado_Clasificacion", each "Pendiente", type text),
@@ -325,4 +337,79 @@ expression Map_AsignacionPusherPeriodo =
 		    }
 		)
 	lineageTag: f079fd8e-b23e-4e92-8912-bd1758a0db0a
+
+expression Fecha_Inicio_Gestion_Pusher_3 = #date(2026, 8, 1) meta [IsParameterQuery=true, Type="Date", IsParameterQueryRequired=true]
+	lineageTag: 4d063e7b-40ed-45f4-96c5-8534528c3e7a
+
+expression Map_AsignacionPusherFuente =
+		let
+			RutaFuente = RutaCarpetaData & "\BI - NUEVO.xlsx",
+			Libro = Excel.Workbook(File.Contents(RutaFuente), null, true),
+			Coincidencias = Table.SelectRows(Libro, each [Item] = "Asignacion_PUSHER" and [Kind] = "Sheet"),
+			Origen =
+				if Table.RowCount(Coincidencias) = 1
+				then Coincidencias{0}[Data]
+				else error "No se encontro una unica hoja Asignacion_PUSHER.",
+			Encabezados = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+			ColumnasRequeridas = {"PUSHER", "DESCRIPCION_ALTAS", "DESCRIPCION2_ALTAS"},
+			ColumnasFaltantes = List.Difference(ColumnasRequeridas, Table.ColumnNames(Encabezados)),
+			ConEsquemaValido =
+				if List.IsEmpty(ColumnasFaltantes)
+				then Table.SelectColumns(Encabezados, ColumnasRequeridas)
+				else error "Faltan columnas obligatorias en Asignacion_PUSHER: " & Text.Combine(ColumnasFaltantes, ", "),
+			Renombradas = Table.RenameColumns(ConEsquemaValido, {
+				{"PUSHER", "PusherOrigen"},
+				{"DESCRIPCION_ALTAS", "Descripcion"},
+				{"DESCRIPCION2_ALTAS", "Descripcion2"}
+			}),
+			NormalizarTexto = (Valor as any) as nullable text =>
+				if Valor = null then null
+				else
+					let Texto = Text.Upper(Text.Trim(Text.Clean(Text.From(Valor))))
+					in if Texto = "" then null else Texto,
+			Normalizadas = Table.TransformColumns(Renombradas, {
+				{"PusherOrigen", NormalizarTexto, type nullable text},
+				{"Descripcion", NormalizarTexto, type nullable text},
+				{"Descripcion2", NormalizarTexto, type nullable text}
+			}),
+			FilasValidas = Table.SelectRows(Normalizadas, each [PusherOrigen] <> null and [Descripcion] <> null),
+			AnclasPublicas = #table(
+				type table [Descripcion = text, Pusher = text],
+				{
+					{"COS", "PUSHER 1"},
+					{"ONE CONTACT", "PUSHER 2"},
+					{"CONTACTMASTER BPO", "PUSHER 3"}
+				}
+			),
+			ConAncla = Table.NestedJoin(FilasValidas, {"Descripcion"}, AnclasPublicas, {"Descripcion"}, "Ancla", JoinKind.LeftOuter),
+			AnclaExpandida = Table.ExpandTableColumn(ConAncla, "Ancla", {"Pusher"}, {"PusherAncla"}),
+			Grupos = Table.Group(AnclaExpandida, {"PusherOrigen"}, {{"Etiquetas", each List.Distinct(List.RemoveNulls([PusherAncla])), type list}}),
+			GruposInvalidos = Table.SelectRows(Grupos, each List.Count([Etiquetas]) <> 1),
+			MapaGrupos =
+				if Table.RowCount(Grupos) = 3 and Table.IsEmpty(GruposInvalidos)
+				then Table.AddColumn(Grupos, "Pusher", each [Etiquetas]{0}, type text)
+				else error "La asignacion de grupos PUSHER no es univoca.",
+			EtiquetasObtenidas = List.Sort(List.Distinct(Table.Column(MapaGrupos, "Pusher"))),
+			MapaGruposValidado =
+				if EtiquetasObtenidas = {"PUSHER 1", "PUSHER 2", "PUSHER 3"}
+				then Table.SelectColumns(MapaGrupos, {"PusherOrigen", "Pusher"})
+				else error "Asignacion_PUSHER no contiene las tres etiquetas publicas esperadas.",
+			ConPusherPublico = Table.NestedJoin(FilasValidas, {"PusherOrigen"}, MapaGruposValidado, {"PusherOrigen"}, "MapaPusher", JoinKind.LeftOuter),
+			PusherExpandido = Table.ExpandTableColumn(ConPusherPublico, "MapaPusher", {"Pusher"}, {"Pusher"}),
+			SinPusherOrigen = Table.RemoveColumns(PusherExpandido, {"PusherOrigen"}),
+			SinDuplicados = Table.Distinct(SinPusherOrigen),
+			ConTipoRegla = Table.AddColumn(SinDuplicados, "TipoRegla", each if [Descripcion2] = null then "General" else "Especifica", type text),
+			ConAliadoKey = Table.AddColumn(ConTipoRegla, "AliadoKey", each if [TipoRegla] = "Especifica" then [Descripcion] & "|" & [Descripcion2] else [Descripcion], type text),
+			ReglasAgrupadas = Table.Group(ConAliadoKey, {"TipoRegla", "Descripcion", "Descripcion2"}, {{"CantidadPusher", each List.Count(List.Distinct([Pusher])), Int64.Type}}),
+			Colisiones = Table.SelectRows(ReglasAgrupadas, each [CantidadPusher] <> 1),
+			MapaValidado =
+				if Table.IsEmpty(Colisiones)
+				then Table.SelectColumns(ConAliadoKey, {"AliadoKey", "Descripcion", "Descripcion2", "Pusher", "TipoRegla"})
+				else error "Existen reglas de asignacion PUSHER con clasificaciones diferentes.",
+			Ordenado = Table.Sort(MapaValidado, {{"TipoRegla", Order.Ascending}, {"Descripcion", Order.Ascending}, {"Descripcion2", Order.Ascending}})
+		in
+			Ordenado
+	lineageTag: ee4df56f-6f79-4701-976b-fac3ce43fdf9
+
+	annotation PBI_ResultType = Table
 

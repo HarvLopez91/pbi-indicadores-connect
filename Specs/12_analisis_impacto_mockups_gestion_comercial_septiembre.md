@@ -85,6 +85,8 @@ Se aplicarán `Trim`, `Clean` y normalización consistente. `ESPECIALISTA` no se
 
 Las etiquetas públicas serán exclusivamente `PUSHER 1`, `PUSHER 2` y `PUSHER 3`. Las equivalencias nominales internas no se versionan.
 
+La clasificación histórica del portafolio se conserva separada de la atribución de gestión: `PUSHER 2` inicia en `202607` y `PUSHER 3` en `202608`. Los periodos anteriores son línea base histórica, permanecen clasificados y no deben atribuirse como resultado, cumplimiento, crecimiento o impacto de la gestión. No se define una nueva fecha para `PUSHER 1`.
+
 ### 3.4 Metas
 
 **CONFIRMADO.** La fuente autorizada es `BI - NUEVO.xlsx`, hoja `Metas_Bonos`. `Tipo_Meta` contiene `META PARA BONO`; el nivel funcional se identifica mediante `Asesor_Equipo`: `CALL`, `ESPECIALISTA` o `ASESOR`.
