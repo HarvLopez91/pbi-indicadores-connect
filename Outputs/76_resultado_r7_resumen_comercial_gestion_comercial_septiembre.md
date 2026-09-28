@@ -4,22 +4,46 @@
 |---|---|
 | Fase | R7 — Página 1 / Resumen Comercial |
 | Baseline | `d926486a55d0ebf6de90feedcf63d636991fa892` (hotfix R5/R6) |
+| Commit R7 | `8e98dffcbf608eef1ac8f3f4100c051f2cf27ee3` |
 | Página | `ResumenComercial` (“Resumen Comercial”), 1280 × 720, FitToPage |
-| Estado | Gate técnico y visual PASS, con observaciones |
+| Implementación local / Git | **PASS** |
+| Power BI Desktop | **PASS** (técnico y visual) |
+| Power BI Service — workspace | **PASS** |
+| Publicar en web | **PASS** |
+| Estado final | **R7 — CERRADO / PASS** |
 | R8 | No iniciado |
 
 ## 1. Alcance
 
-Página nueva basada en `mockup-pagina-1.jpeg`. `GestionComercialAltas` no se modificó. Los números del mockup son ilustrativos y no se copiaron.
+Página nueva basada en `mockup-pagina-1.jpeg`. Los números del mockup son ilustrativos y no se copiaron. `GestionComercialAltas` no se modificó.
 
 Cambios:
 - `pages/ResumenComercial/` (page.json y 32 visuales).
 - `pages/pages.json`: la página se inserta después de `GestionComercialAltas`; la página activa no cambia.
+- `expressions.tmdl`: `Map_AsignacionPusherFuente` conserva el nombre de `Asignacion_PUSHER` como `PusherNombre`.
+- `Dim_AsignacionPusherPeriodo.tmdl`: columna `PusherNombre`; `PusherAsignacion` sin el override temporal.
 - `_Medidas_Altas.tmdl`: medida auxiliar `Valor_Legalizado_Filtro_Pusher`.
 
 Sin relaciones, dimensiones, facts ni many-to-many nuevos.
 
-## 2. KPI
+## 2. PUSHER: clasificación técnica y etiqueta visible
+
+| Clasificación técnica (`PusherAsignacion`) | Etiqueta visible (`PusherNombre`) |
+|---|---|
+| PUSHER 1 | LEONARDO |
+| PUSHER 2 | JEISY |
+| PUSHER 3 | ERIKA |
+| Sin asignar | Sin asignar |
+
+- `PusherNombre` se deriva de `Asignacion_PUSHER` en cada refresh y se ordena por `PusherAsignacion` (`sortByColumn`).
+- `PusherAsignacion` sigue siendo la clave técnica de medidas y cálculos.
+- `ResumenComercial` muestra `PusherNombre` en el slicer PUSHER, en los gráficos de cumplimiento y crecimiento y en la matriz.
+
+**UNO 27:**
+- `PusherAsignacion`: UNO 27 pertenece a ERIKA / PUSHER 3 en todos los periodos, incluido julio de 2026, alineado con `Asignacion_PUSHER`.
+- `PusherPeriodo`: conserva el override histórico de julio en PUSHER 1 solo para no alterar `GestionComercialAltas` (julio: 1.582 / 2.429 / 508).
+
+## 3. KPI
 
 | KPI | Medida |
 |---|---|
@@ -32,31 +56,41 @@ Sin relaciones, dimensiones, facts ni many-to-many nuevos.
 
 No se muestran valor recibido, pendiente, valor gastado, ejecución ni ROI (recibido y pendiente quedan para R9).
 
-Fecha de corte principal: `[Fecha_Corte_Altas]` (corte comercial de ALTAS). `[Fecha_Corte_Incentivos]` aparece solo en el pie, rotulada como fecha de información de incentivos.
+Fecha de corte principal: `[Fecha_Corte_Altas]`. `[Fecha_Corte_Incentivos]` aparece solo en el pie, rotulada como fecha de información de incentivos.
 
-## 3. Valor legalizado y filtros (diferencia de granularidad)
+## 4. Valor legalizado y filtros
 
-`Fact_LegalizacionBonos` tiene `Pusher` como atributo propio y no tiene aliado ni relación con `Dim_AsignacionPusherPeriodo`. Sin la medida auxiliar el KPI ignoraba el slicer PUSHER.
+`Fact_LegalizacionBonos` tiene `Pusher` como atributo propio, sin aliado y sin relación con `Dim_AsignacionPusherPeriodo`.
 
-`Valor_Legalizado_Filtro_Pusher` aplica `TREATAS(VALUES(PusherAsignacion), Fact_LegalizacionBonos[Pusher])` solo cuando `ISFILTERED(Dim_AsignacionPusherPeriodo[PusherAsignacion])`; en otro caso devuelve `[Valor_Legalizado]`. Como `Dim_Aliado` no filtra a `Dim_AsignacionPusherPeriodo`, un filtro de Aliado no se transmite al KPI.
+`Valor_Legalizado_Filtro_Pusher` aplica `TREATAS(VALUES(PusherAsignacion), Fact_LegalizacionBonos[Pusher])` cuando `PusherAsignacion` o `PusherNombre` están filtrados directamente; en otro caso devuelve `[Valor_Legalizado]`. La transferencia se hace siempre contra la clasificación técnica. Como `Dim_Aliado` no filtra a `Dim_AsignacionPusherPeriodo`, un filtro de Aliado por sí solo no afecta al KPI. No se simula ninguna relación Aliado → legalización; la tarjeta lo indica con la nota “Responde a Mes y PUSHER; no a Aliado”.
 
-- Sin PUSHER: total del mes. PUSHER 1 / 2 / 3: su legalizado. Varios: suma. Sin asignar: BLANK.
-- Aliado: no afecta el KPI. La tarjeta lo indica con la nota “Responde a Mes y PUSHER; no a Aliado”.
-- No se simula ninguna relación Aliado → legalización.
+| Septiembre | Valor legalizado |
+|---|---|
+| Sin filtro PUSHER | 1.603.570 |
+| LEONARDO | 595.000 |
+| JEISY | 1.008.570 |
+| ERIKA | BLANK (sin legalizado en la fuente) |
+| LEONARDO + JEISY | 1.603.570 |
+| Sin asignar | BLANK |
+| AIB seleccionado, sin PUSHER | 1.603.570 |
 
-## 4. Visuales e interacciones
+## 5. Visuales e interacciones
 
 | Visual | Contenido |
 |---|---|
-| Slicers | Mes (`Dim_Calendario[AnioMes]`, selección única, septiembre 2026 por defecto con filtro nativo del slicer), PUSHER (`PusherAsignacion`), Aliado (`Dim_Aliado[Descripcion]`) |
-| Altas vs Meta por PUSHER | Columnas agrupadas `PusherAsignacion` × Altas, Meta |
-| Evolución mensual de altas | Líneas Altas y Meta por mes; el slicer Mes no filtra este visual (interacción `NoFilter`), PUSHER y Aliado sí |
-| Crecimiento por PUSHER desde julio | `[Crecimiento_Desde_Julio_Atribuible]`, con `%` en tooltip |
-| Detalle por PUSHER > Aliado | Matriz Meta, Altas, % Cumpl., Faltante, Crec. julio (`PusherAsignacion`, no `PusherPeriodo`) |
+| Slicers | Mes (`Dim_Calendario[AnioMes]`, selección única, septiembre 2026 por defecto con filtro nativo del slicer), PUSHER (`PusherNombre`), Aliado (`Dim_Aliado[Descripcion]`) |
+| Cumplimiento de meta por PUSHER (%) | Una serie `[Cumplimiento_Meta_Pct]` por `PusherNombre`; sin línea de referencia al 100 % |
+| Evolución mensual de altas | Líneas Altas y Meta por mes; el slicer Mes no filtra este visual (`NoFilter`), PUSHER y Aliado sí |
+| Crecimiento por PUSHER desde julio | `[Crecimiento_Desde_Julio_Atribuible]` por `PusherNombre`, con `%` en tooltip |
+| Detalle por PUSHER > Aliado | Matriz `PusherNombre` > Aliado con Meta, Altas, % Cumpl., Faltante, Crec. julio |
 | Aliados con mayor crecimiento desde julio | Barras Top 10 por `[Crecimiento_Desde_Julio]` (sustituye “Asesores cerca de cumplir”) |
-| Navegación | Botón “Volver a Home” (mismo enlace que la página existente). “Asesores Septiembre” e “Incentivos y Legalización” aparecen como pestañas inactivas “· próximamente”, sin enlace |
+| Navegación | Botón “Volver a Home”; “Asesores Septiembre” e “Incentivos y Legalización” como pestañas inactivas “· próximamente”, sin enlace |
 
-## 5. Gate técnico (refresh real y DAX)
+Los visuales por PUSHER muestran `PusherNombre`; los cálculos siguen basados en `PusherAsignacion`. Etiquetas y ejes con unidades “Ninguna”: valores completos con separador de miles, sin abreviaturas “mil”.
+
+Cumplimiento septiembre: LEONARDO 34,10 %, JEISY 66,67 %, ERIKA 90,14 %, Sin asignar 25,62 %.
+
+## 6. Gate técnico (refresh real y DAX)
 
 | Control | Julio | Agosto | Septiembre |
 |---|---|---|---|
@@ -68,100 +102,59 @@ Fecha de corte principal: `[Fecha_Corte_Altas]` (corte comercial de ALTAS). `[Fe
 | Corte altas | 31/07 | 31/08 | 23/09/2026 |
 | Valor legalizado | 3.300.000 | 2.668.800 | 1.603.570 |
 
-Valor legalizado en septiembre por slicer: sin PUSHER 1.603.570; PUSHER 1 595.000; PUSHER 2 1.008.570; PUSHER 3 BLANK (sin legalizado en la fuente); PUSHER 1+2 1.603.570; Sin asignar BLANK; con el aliado de mayor venta 1.603.570 (sin cambio); aliado + PUSHER 2 1.008.570. Coincide con la suma directa de la fact.
+Crecimiento atribuible septiembre: LEONARDO +529, JEISY +1.606, ERIKA +505. Matriz septiembre: suma 5.628 altas y 11.080 de meta, igual al total. Histórico enero-septiembre presente.
 
-Matriz septiembre: 93 filas PUSHER > Aliado suman 5.628 altas y 11.080 de meta, igual al total. Histórico sin filtro de mes: enero-septiembre presentes. Medidas en error 0; relaciones 18; many-to-many 0.
+## 7. Gate Desktop — PASS técnico y visual
 
-## 6. Gate visual
+- Refresh completo PASS; 0 medidas con error; 18 relaciones; 0 many-to-many.
+- Página sin visuales rotos; Mes septiembre por defecto; nombres visibles correctos.
+- Vistas validadas: septiembre sin filtros; JEISY (3.187 / 4.780 / 66,67 %; valor legalizado 1.008.570); AIB (98 / 250 / 39,20 %; valor legalizado sin cambio, 1.603.570).
+- `GestionComercialAltas` intacta.
 
-Ejecutado en Power BI Desktop (instancia propia, cerrada sin guardar):
+## 8. Gate Power BI Service y Publicar en web — PASS
 
-- Septiembre: KPI, fecha de corte 23/09/2026, gráficos, matriz, Top 10 y pie renderizados sin errores.
-- PUSHER 2: Altas 3.187, Meta 4.780, 66,67 %, Faltante 1.593, +101,58 %, Valor legalizado $1.008.570.
-- Aliado seleccionado: KPI comerciales cambian (98 / 250 / 39,20 %) y Valor legalizado se mantiene en $1.603.570.
-- Evolución mensual mantiene enero-septiembre con el slicer Mes en septiembre.
-- Etiquetas y ejes con unidades "Ninguna": valores completos con separador de miles (por ejemplo 5.628, 11.080, +1.606), sin abreviaturas "mil".
-- `GestionComercialAltas` renderiza igual que antes (julio 4.519, 71,31 %).
+**Workspace de Power BI Service: PASS.** Tras la publicación manual desde Desktop, el usuario abrió el informe dentro del workspace y confirmó que funcionan el slicer PUSHER, Cumplimiento por PUSHER, Crecimiento por PUSHER y la matriz PUSHER > Aliado, que LEONARDO / JEISY / ERIKA cargan correctamente y que el resto de visuales también carga.
 
-Primer intento fallido documentado: `filterConfig` quedó dentro de `visual` y Desktop rechazó el informe; se movió a la raíz del contenedor.
+**Publicar en web: PASS.** Justo después de publicar, el enlace público mostraba errores en los visuales por PUSHER. Pasado el tiempo de actualización del enlace, el usuario confirmó que el informe carga correctamente.
 
-## 7. Capturas
+- El fallo del enlace público fue transitorio.
+- El modelo publicado en el workspace estaba correcto.
+- No se requirió ningún cambio técnico adicional.
+- El comportamiento es compatible con la actualización diferida o caché de “Publicar en web”; la evidencia no permite afirmar una causa interna más específica.
 
-Locales, no versionadas y sin datos de cuenta: página en septiembre, con PUSHER 2, con un aliado seleccionado y `GestionComercialAltas`.
+Los cambios automáticos que Desktop dejó tras publicar (fin de línea, `lineageTag`, anotaciones, cultura Q&A, `PBI_QueryOrder`) se diagnosticaron como no necesarios para el funcionamiento y se descartaron; no se versionaron.
 
-## 8. Diferencias frente al mockup
+## 9. Privacidad
+
+- LEONARDO, JEISY y ERIKA están expresamente autorizados para mostrarse en el informe público.
+- Los nombres visibles se derivan de `Asignacion_PUSHER` durante el refresh; no se escriben en PBIR ni TMDL.
+- No se exponen apellidos, correos, asesores, especialistas ni otra información personal. Los aliados son empresas.
+- Excel, mockups y capturas permanecen fuera de Git.
+
+## 10. Diferencias frente al mockup
 
 - “Brecha” pasa a “Faltante” y “Valor gastado” a “Valor legalizado” por decisión de negocio.
+- “Altas vs Meta por PUSHER” se sustituye por “Cumplimiento de meta por PUSHER (%)”.
 - “Asesores cerca de cumplir” se sustituye por Top 10 de aliados (asesor diferido a R8).
 - Pestañas de R8/R9 inactivas; sin iconos decorativos ni lema manuscrito.
 - El Mes muestra `2026-09` en lugar de “Septiembre 2026”.
 - La matriz se abre colapsada por PUSHER; los aliados se expanden con +.
 
-## 9. Privacidad
+## 11. Historial de ajustes durante R7
 
-Solo etiquetas PUSHER 1/2/3 y Sin asignar; aliados son empresas. Sin nombres personales ni equivalencias en PBIR. Mockups, Excel y capturas no se versionan.
+- **Caché local:** una sesión de Desktop guardó la caché de datos (`.pbi/cache.abf`, no versionada) sin refrescar y los visuales con objetos R3-R7 fallaban localmente. Se resolvió con refresh completo; tras cambios de modelo hay que Actualizar antes de guardar o publicar.
+- **UNO 27:** se retiró el override de `PusherAsignacion` (ver §2). Impacto en `PusherAsignacion`: julio PUSHER 1 / PUSHER 3 1.523 / 2 → 1.299 / 226; cumplimiento julio PUSHER 1 57,82 % → 49,32 %; crecimiento agosto −504 / +633 → −280 / +409 y septiembre +377 / +657 → +529 / +505; altas atribuibles julio 3.950 → 3.726. Totales sin cambios.
+- **Gráfico:** “Altas vs Meta por PUSHER” se reemplazó por “Cumplimiento de meta por PUSHER (%)”, sin línea de referencia al 100 % por decisión de negocio.
+- **`PusherNombre`:** se incorporó como etiqueta de presentación derivada de la fuente.
+- **PBIR:** un primer intento dejó `filterConfig` dentro de `visual`; se movió a la raíz del contenedor.
 
-## 10. Limitaciones
+## 12. Limitaciones y riesgos
 
-- Crecimiento porcentual de PUSHER 3 extremo por su base mínima de julio; la página muestra el valor absoluto.
-- La Home no tiene aún una tarjeta hacia esta página (no se modificó Home); se accede por la pestaña.
-- Desktop añadirá `lineageTag` y ajustes de serialización la próxima vez que guarde.
-- La navegación “Volver a Home” reutiliza la configuración existente; en Desktop requiere Ctrl+clic.
-
-## 11. Rollback
-
-Eliminar `pages/ResumenComercial/`, quitar `ResumenComercial` de `pages.json` y retirar `Valor_Legalizado_Filtro_Pusher` de `_Medidas_Altas.tmdl`. No revertir R2-R6.
-
-## 12. Ajustes posteriores de R7
-
-### Pantalla con errores de campos
-
-Causa: la caché de datos local (`.pbi/cache.abf`, no versionada) se guardó sin refrescar. Al abrir, Desktop avisaba "Algunas de las tablas tienen datos incompletos o no tienen datos" y todos los visuales que usan objetos de R3-R7 (`PusherAsignacion`, medidas R6, `Fact_LegalizacionBonos`) fallaban, mientras los objetos anteriores funcionaban. El PBIR y las medidas eran correctos. Corrección: refresh completo y guardado desde Desktop; la página renderiza sin errores. Si el aviso reaparece tras un cambio de modelo, basta con Actualizar.
-
-### UNO 27 en julio de 2026
-
-`PusherAsignacion` deja de aplicar el override temporal y sigue solo a `Asignacion_PUSHER` (UNO 27 → PUSHER 3 en todos los periodos). `PusherPeriodo` conserva el override, por lo que `GestionComercialAltas` no cambia (julio: 1.582 / 2.429 / 508).
-
-| Métrica (`PusherAsignacion`) | Antes | Después |
-|---|---|---|
-| Altas julio PUSHER 1 / PUSHER 3 | 1.523 / 2 | 1.299 / 226 |
-| Cumplimiento julio PUSHER 1 | 57,82 % | 49,32 % |
-| Crecimiento agosto PUSHER 1 / PUSHER 3 | −504 / +633 | −280 / +409 |
-| Crecimiento septiembre PUSHER 1 / PUSHER 3 | +377 / +657 | +529 / +505 |
-| Altas atribuibles julio (total) | 3.950 | 3.726 |
-
-Totales mensuales, metas y crecimiento total sin cambios. Julio de PUSHER 3 sigue sin ser atribuible.
-
-### Visual de cumplimiento
-
-`Altas vs Meta por PUSHER` se reemplazó por `Cumplimiento de meta por PUSHER (%)`: una serie `[Cumplimiento_Meta_Pct]` por `PusherAsignacion`. Septiembre: PUSHER 1 34,10 %, PUSHER 2 66,67 %, PUSHER 3 90,14 %, Sin asignar 25,62 %. Sin línea de referencia al 100 %.
-
-### Nombres visibles de PUSHER
-
-Correspondencia aprobada y autorizada para el informe publicado: PUSHER 1 = LEONARDO, PUSHER 2 = JEISY, PUSHER 3 = ERIKA.
-
-- `Map_AsignacionPusherFuente` conserva el nombre de `Asignacion_PUSHER` como `PusherNombre` (antes se descartaba).
-- `Dim_AsignacionPusherPeriodo[PusherNombre]`: etiqueta de presentación ordenada por `PusherAsignacion` (`sortByColumn`); "Sin asignar" cuando no hay regla. `PusherAsignacion` sigue siendo la clave técnica.
-- Los nombres no se escriben en TMDL ni PBIR: salen de la fuente al refrescar.
-- `ResumenComercial` usa `PusherNombre` en el slicer PUSHER, Cumplimiento por PUSHER, Crecimiento por PUSHER y la matriz. `GestionComercialAltas` no cambia.
-- `Valor_Legalizado_Filtro_Pusher` transfiere el filtro si `PusherAsignacion` o `PusherNombre` están filtrados directamente. Septiembre: sin filtro 1.603.570; LEONARDO 595.000; JEISY 1.008.570; ERIKA BLANK; LEONARDO+JEISY 1.603.570; Sin asignar BLANK; aliado AIB 1.603.570 (sin cambio).
-
-No se añadió línea de referencia al 100 % (decisión de negocio).
-
-## 13. Gate Desktop y gate Power BI Service
-
-**Gate Desktop (local): PASS técnico.** Refresh completo sin errores; 0 medidas en error; 18 relaciones; 0 many-to-many; equivalencia `PusherNombre` ↔ `PusherAsignacion` exacta; UNO 27 → ERIKA en julio-septiembre en `PusherAsignacion` y PUSHER 1 en `PusherPeriodo` (julio `GestionComercialAltas` PUSHER 1 = 1.582). Gate visual PASS con nombres: septiembre sin filtros (LEONARDO 34,10 %, JEISY 66,67 %, ERIKA 90,14 %, Sin asignar 25,62 %; Valor legalizado $1.603.570), JEISY (3.187 / 4.780 / 66,67 %; Valor legalizado $1.008.570) y AIB (98 / 250 / 39,20 %; Valor legalizado sin cambio, $1.603.570). Sin visuales rotos; Mes en septiembre por defecto.
-
-**Gate Power BI Service: NO validado.** No hay acceso al servicio desde este entorno y no se publicó nada. La vista publicada con visuales rotos coincide con el patrón observado localmente: los visuales que dependen de objetos R3-R7 fallan y los anteriores funcionan. Causa probable: se publicó un modelo cuyos datos (caché importada) no estaban refrescados para esos objetos, o un modelo publicado anterior a esos cambios. El servicio no puede refrescar por sí mismo porque las fuentes son archivos locales sin gateway.
-
-Acción manual para el enlace público: abrir el PBIP, Actualizar (refresh completo), confirmar que no aparece el aviso de datos incompletos y que `ResumenComercial` renderiza, publicar reemplazando el modelo semántico existente y revisar el informe en el servicio; el enlace de "Publicar en web" se actualiza con el mismo código, con un retraso de caché que puede ser de hasta una hora.
-
-## 14. Riesgos
-
-- Los nombres reales quedan visibles en el informe público (autorizado).
+- Crecimiento porcentual de ERIKA extremo por su base mínima de julio; la página muestra el valor absoluto.
 - Si la fuente cambia el nombre de un PUSHER o de un ancla, la etiqueta cambia o el refresh falla por las validaciones existentes.
-- Cualquier cambio de modelo requiere refresh antes de guardar o publicar; si no, la caché deja visuales rotos.
+- La Home no tiene aún una tarjeta hacia esta página; se accede por la pestaña. “Volver a Home” requiere Ctrl+clic en Desktop.
+- Desktop añadirá `lineageTag` y ajustes de serialización la próxima vez que guarde.
 
-## 15. Rollback (actualizado)
+## 13. Rollback
 
-Eliminar `pages/ResumenComercial/` y su entrada en `pages.json`; retirar `Valor_Legalizado_Filtro_Pusher`; revertir `PusherNombre` en `Map_AsignacionPusherFuente` y `Dim_AsignacionPusherPeriodo`, y restaurar el override en `PusherAsignacion`, todo contra `d926486`. No revertir R2-R6.
+Contra `d926486`: eliminar `pages/ResumenComercial/` y su entrada en `pages.json`; retirar `Valor_Legalizado_Filtro_Pusher`; revertir `PusherNombre` en `Map_AsignacionPusherFuente` y `Dim_AsignacionPusherPeriodo`, y restaurar el override en `PusherAsignacion`. No revertir R2-R6.
