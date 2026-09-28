@@ -320,9 +320,111 @@ table _Medidas_Altas
 		formatString: #,0
 		lineageTag: 61e6cb10-e51e-4f99-a000-102a4e556040
 
-	measure Cumplimiento_Meta_Pct = DIVIDE([Altas_Total], [Meta_Asignada], BLANK())
+	measure Cumplimiento_Meta_Pct =
+			VAR Meta = [Meta_Asignada]
+			RETURN IF(ISBLANK(Meta), BLANK(), DIVIDE(COALESCE([Altas_Total], 0), Meta, BLANK()))
 		formatString: 0.00%
 		lineageTag: 6d880a6d-539d-4517-8905-1d39d2380db9
+
+	measure Brecha_Meta =
+			VAR Meta = [Meta_Asignada]
+			RETURN IF(ISBLANK(Meta), BLANK(), COALESCE([Altas_Total], 0) - Meta)
+		formatString: +#,0;-#,0;0
+
+	measure Faltante_Meta =
+			VAR Meta = [Meta_Asignada]
+			RETURN IF(ISBLANK(Meta), BLANK(), MAX(Meta - COALESCE([Altas_Total], 0), 0))
+		formatString: #,0
+
+	/// Ultimo dia con ALTAS del mes seleccionado, sin filtros de PUSHER, aliado u otros contextos. BLANK si no hay exactamente un mes.
+	measure Fecha_Corte_Altas =
+			IF(
+				HASONEVALUE(Dim_Calendario[AnioMes]),
+				CALCULATE(MAX(Fact_AltasTeResuelve[FechaAlta]), REMOVEFILTERS(), VALUES(Dim_Calendario[AnioMes]))
+			)
+		formatString: Short Date
+
+	/// ALTAS de julio 2026 hasta el dia del corte global del mes seleccionado (julio completo si el mes esta cerrado). Conserva filtros de PUSHER y aliado.
+	measure Altas_Julio_Dia_Comparable =
+			VAR Periodo = IF(HASONEVALUE(Dim_Calendario[AnioMes]), SELECTEDVALUE(Dim_Calendario[Anio]) * 100 + SELECTEDVALUE(Dim_Calendario[MesNumero]))
+			VAR Corte = [Fecha_Corte_Altas]
+			VAR MesCerrado = SELECTEDVALUE(Dim_Calendario[Es_Periodo_Comparable], FALSE())
+			VAR DiaLimite = IF(MesCerrado, 31, DAY(Corte))
+			RETURN
+				IF(
+					ISBLANK(Periodo) || Periodo <= 202607 || ISBLANK(Corte),
+					BLANK(),
+					CALCULATE(
+						[Altas_Total],
+						REMOVEFILTERS(Dim_Calendario),
+						Dim_Calendario[Anio] = 2026,
+						Dim_Calendario[MesNumero] = 7,
+						Dim_Calendario[DiaMes] <= DiaLimite
+					)
+				)
+		formatString: #,0
+
+	measure Crecimiento_Desde_Julio =
+			VAR Base = [Altas_Julio_Dia_Comparable]
+			RETURN IF(ISBLANK(Base), BLANK(), COALESCE([Altas_Total], 0) - Base)
+		formatString: +#,0;-#,0;0
+
+	measure Crecimiento_Desde_Julio_Pct = DIVIDE([Crecimiento_Desde_Julio], [Altas_Julio_Dia_Comparable], BLANK())
+		formatString: +0.00%;-0.00%;0.00%
+
+	/// ALTAS de contextos con gestion atribuible (Dim_AsignacionPusherPeriodo[EsGestionAtribuible]).
+	measure Altas_Gestion_Atribuible =
+			CALCULATE([Altas_Total], KEEPFILTERS(Dim_AsignacionPusherPeriodo[EsGestionAtribuible] = TRUE()))
+		formatString: #,0
+
+	measure Meta_Gestion_Atribuible =
+			CALCULATE([Meta_Asignada], KEEPFILTERS(Dim_AsignacionPusherPeriodo[EsGestionAtribuible] = TRUE()))
+		formatString: #,0
+
+	measure Cumplimiento_Gestion_Atribuible_Pct =
+			VAR Meta = [Meta_Gestion_Atribuible]
+			RETURN IF(ISBLANK(Meta), BLANK(), DIVIDE(COALESCE([Altas_Gestion_Atribuible], 0), Meta, BLANK()))
+		formatString: 0.00%
+
+	/// Crecimiento desde julio limitado a los PUSHER con gestion atribuible en el mes seleccionado. Julio actua como linea base.
+	measure Crecimiento_Desde_Julio_Atribuible =
+			VAR PusherAtribuibles =
+				CALCULATETABLE(
+					VALUES(Dim_AsignacionPusherPeriodo[PusherAsignacion]),
+					KEEPFILTERS(Dim_AsignacionPusherPeriodo[EsGestionAtribuible] = TRUE())
+				)
+			RETURN
+				IF(
+					ISEMPTY(PusherAtribuibles),
+					BLANK(),
+					CALCULATE([Crecimiento_Desde_Julio], KEEPFILTERS(TREATAS(PusherAtribuibles, Dim_AsignacionPusherPeriodo[PusherAsignacion])))
+				)
+		formatString: +#,0;-#,0;0
+
+	measure Crecimiento_Desde_Julio_Atribuible_Pct =
+			VAR PusherAtribuibles =
+				CALCULATETABLE(
+					VALUES(Dim_AsignacionPusherPeriodo[PusherAsignacion]),
+					KEEPFILTERS(Dim_AsignacionPusherPeriodo[EsGestionAtribuible] = TRUE())
+				)
+			RETURN
+				IF(
+					ISEMPTY(PusherAtribuibles),
+					BLANK(),
+					CALCULATE([Crecimiento_Desde_Julio_Pct], KEEPFILTERS(TREATAS(PusherAtribuibles, Dim_AsignacionPusherPeriodo[PusherAsignacion])))
+				)
+		formatString: +0.00%;-0.00%;0.00%
+
+	/// Dinero entregado por Connect al PUSHER para incentivos.
+	measure Valor_Recibido = SUM(Fact_LegalizacionBonos[ValorRecibido])
+		formatString: #,0
+
+	/// Dinero efectivamente utilizado y reportado con soportes. Los vacios de la fuente no suman como cero.
+	measure Valor_Gastado = SUM(Fact_LegalizacionBonos[ValorGastado])
+		formatString: #,0
+
+	measure Fecha_Corte_Incentivos = MAX(Fact_LegalizacionBonos[Fecha])
+		formatString: Short Date
 
 	column Columna1
 		dataType: int64

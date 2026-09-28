@@ -56,6 +56,11 @@ table Dim_AsignacionPusherPeriodo
 		summarizeBy: none
 		sourceColumn: TipoReglaAsignacion
 
+	column EsGestionAtribuible
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: EsGestionAtribuible
+
 	partition Dim_AsignacionPusherPeriodo = m
 		mode: import
 		source =
@@ -143,9 +148,21 @@ table Dim_AsignacionPusherPeriodo
 				        each if [PusherOverride] <> null then "Override temporal" else if [TipoReglaAsignacionFuente] = null then "Sin coincidencia" else [TipoReglaAsignacionFuente],
 				        type text
 				    ),
-				    ColumnasFinales = Table.SelectColumns(
+				    // Gestion atribuible: PUSHER 2 y 3 solo desde su fecha de inicio; PUSHER 1 sin fecha de inicio; Sin asignar nunca.
+				    ConGestionAtribuible = Table.AddColumn(
 				        ConTipoReglaAsignacion,
-				        {"PeriodoAliadoKey", "AnioMes", "AliadoKey", "PusherPeriodo", "TipoAsignacion", "PusherAsignacion", "TipoReglaAsignacion"}
+				        "EsGestionAtribuible",
+				        each
+				            let InicioMes = #date(Number.IntegerDivide([AnioMes], 100), Number.Mod([AnioMes], 100), 1)
+				            in if [PusherAsignacion] = "PUSHER 1" then true
+				            else if [PusherAsignacion] = "PUSHER 2" then InicioMes >= Fecha_Inicio_Gestion_Pusher_2
+				            else if [PusherAsignacion] = "PUSHER 3" then InicioMes >= Fecha_Inicio_Gestion_Pusher_3
+				            else false,
+				        type logical
+				    ),
+				    ColumnasFinales = Table.SelectColumns(
+				        ConGestionAtribuible,
+				        {"PeriodoAliadoKey", "AnioMes", "AliadoKey", "PusherPeriodo", "TipoAsignacion", "PusherAsignacion", "TipoReglaAsignacion", "EsGestionAtribuible"}
 				    ),
 				    TiposAplicados = Table.TransformColumnTypes(
 				        ColumnasFinales,
@@ -156,7 +173,8 @@ table Dim_AsignacionPusherPeriodo
 				            {"PusherPeriodo", type text},
 				            {"TipoAsignacion", type text},
 				            {"PusherAsignacion", type text},
-				            {"TipoReglaAsignacion", type text}
+				            {"TipoReglaAsignacion", type text},
+				            {"EsGestionAtribuible", type logical}
 				        }
 				    ),
 				    Ordenado = Table.Sort(TiposAplicados, {{"AnioMes", Order.Ascending}, {"AliadoKey", Order.Ascending}})
