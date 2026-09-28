@@ -15,3 +15,9 @@ desktop.ini
 # se repiten aquí por si en el futuro se agregan artefactos PBIP fuera de PBI/)
 **/.pbi/localSettings.json
 **/.pbi/cache.abf
+
+# Artefactos locales de análisis estructural (Graphify)
+graphify-out/
+
+# Mockups locales de septiembre con posible información personal
+Assets/mockups/2026/09_Septiembre/
