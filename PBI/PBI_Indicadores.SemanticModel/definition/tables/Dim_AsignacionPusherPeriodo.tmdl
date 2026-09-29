@@ -143,26 +143,45 @@ table Dim_AsignacionPusherPeriodo
 				        {"Pusher", "PusherNombre", "TipoRegla"},
 				        {"PusherAsignacionFuente", "PusherNombreFuente", "TipoReglaAsignacionFuente"}
 				    ),
+				    // Catalogo codigo PUSHER -> nombre visible derivado de Asignacion_PUSHER; cada codigo debe tener un unico nombre.
+				    CatalogoPusher = Table.Group(
+				        Map_AsignacionPusherFuente,
+				        {"Pusher"},
+				        {{"Nombres", each List.Distinct(List.RemoveNulls([PusherNombre])), type list}}
+				    ),
+				    CatalogoPusherValidado =
+				        if Table.IsEmpty(Table.SelectRows(CatalogoPusher, each List.Count([Nombres]) <> 1))
+				        then Table.AddColumn(CatalogoPusher, "Nombre", each [Nombres]{0}, type text)
+				        else error "Asignacion_PUSHER: un codigo PUSHER tiene cero o varios nombres visibles.",
+				    NombrePorPusher = Record.FromList(Table.Column(CatalogoPusherValidado, "Nombre"), Table.Column(CatalogoPusherValidado, "Pusher")),
+				    // Clasificacion efectiva: override temporal > Asignacion_PUSHER > Sin asignar (codigo, nombre y regla siempre coherentes).
 				    ConPusherAsignacion = Table.AddColumn(
 				        AsignacionFuenteExpandida,
 				        "PusherAsignacion",
-				        // La clasificacion gobernada sigue solo a Asignacion_PUSHER; el override temporal aplica unicamente a PusherPeriodo.
-				        each if [PusherAsignacionFuente] = null then "Sin asignar" else [PusherAsignacionFuente],
+				        each if [PusherOverride] <> null then [PusherOverride]
+				            else if [PusherAsignacionFuente] = null then "Sin asignar"
+				            else [PusherAsignacionFuente],
 				        type text
 				    ),
 				    ConTipoReglaAsignacion = Table.AddColumn(
 				        ConPusherAsignacion,
 				        "TipoReglaAsignacion",
-				        each if [TipoReglaAsignacionFuente] = null then "Sin coincidencia" else [TipoReglaAsignacionFuente],
+				        each if [PusherOverride] <> null then "Override temporal"
+				            else if [TipoReglaAsignacionFuente] = null then "Sin coincidencia"
+				            else [TipoReglaAsignacionFuente],
 				        type text
 				    ),
-				    // Gestion atribuible: PUSHER 2 y 3 solo desde su fecha de inicio; PUSHER 1 sin fecha de inicio; Sin asignar nunca.
 				    ConPusherNombre = Table.AddColumn(
 				        ConTipoReglaAsignacion,
 				        "PusherNombre",
-				        each if [PusherNombreFuente] = null then "Sin asignar" else [PusherNombreFuente],
+				        each if [PusherOverride] <> null then
+				                (if Record.HasFields(NombrePorPusher, [PusherOverride]) then Record.Field(NombrePorPusher, [PusherOverride])
+				                else error "Map_AsignacionPusherPeriodo: override sin nombre visible en Asignacion_PUSHER: " & [PusherOverride])
+				            else if [PusherNombreFuente] = null then "Sin asignar"
+				            else [PusherNombreFuente],
 				        type text
 				    ),
+				    // Gestion atribuible sobre la clasificacion efectiva: PUSHER 2 y 3 solo desde su fecha de inicio; PUSHER 1 sin fecha de inicio; Sin asignar nunca.
 				    ConGestionAtribuible = Table.AddColumn(
 				        ConPusherNombre,
 				        "EsGestionAtribuible",
