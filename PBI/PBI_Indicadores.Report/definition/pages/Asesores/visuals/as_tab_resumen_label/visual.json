@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "rc_tab_asesores_label",
+  "name": "as_tab_resumen_label",
   "position": {
-    "x": 480,
+    "x": 222,
     "y": 77,
-    "z": 1200,
+    "z": 1000,
     "height": 24,
     "width": 250,
-    "tabOrder": 1200
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "textbox",
@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Asesores",
+                    "value": "Resumen Comercial",
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "12px",

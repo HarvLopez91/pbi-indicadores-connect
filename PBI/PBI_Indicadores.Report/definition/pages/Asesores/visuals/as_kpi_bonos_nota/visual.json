@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "rc_tab_asesores_label",
+  "name": "as_kpi_bonos_nota",
   "position": {
-    "x": 480,
-    "y": 77,
-    "z": 1200,
-    "height": 24,
-    "width": 250,
-    "tabOrder": 1200
+    "x": 860,
+    "y": 251,
+    "z": 2900,
+    "height": 16,
+    "width": 203,
+    "tabOrder": 2900
   },
   "visual": {
     "visualType": "textbox",
@@ -19,12 +19,11 @@
               {
                 "textRuns": [
                   {
-                    "value": "Asesores",
+                    "value": "Pagos reales (Cumplimiento_Meta = SI)",
                     "textStyle": {
-                      "fontFamily": "Segoe UI Semibold",
-                      "fontSize": "12px",
-                      "color": "#002733",
-                      "fontWeight": "bold"
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "8px",
+                      "color": "#6B6B6B"
                     }
                   }
                 ],

@@ -1,0 +1,226 @@
+table Config_IncentivoAsesor
+	isHidden
+
+	column AnioMes
+		dataType: int64
+		isHidden
+		isNullable: false
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: AnioMes
+
+	column AliadoKey
+		dataType: string
+		isHidden
+		isNullable: false
+		summarizeBy: none
+		sourceColumn: AliadoKey
+
+	column Ranking
+		dataType: int64
+		isHidden
+		isNullable: false
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: Ranking
+
+	column MetaVentas
+		dataType: int64
+		isHidden
+		isNullable: false
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: MetaVentas
+
+	column ValorIncentivo
+		dataType: int64
+		isHidden
+		isNullable: false
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: ValorIncentivo
+
+	column GanadorPotencial
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: GanadorPotencial
+
+	column AltasGanador
+		dataType: int64
+		isHidden
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: AltasGanador
+
+	column AsesorDedicado
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: AsesorDedicado
+
+	column MetaAplicada
+		dataType: int64
+		isHidden
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: MetaAplicada
+
+	column EstadoAsignacion
+		dataType: string
+		isHidden
+		isNullable: false
+		summarizeBy: none
+		sourceColumn: EstadoAsignacion
+
+	column Pagado
+		dataType: boolean
+		isHidden
+		isNullable: false
+		summarizeBy: none
+		sourceColumn: Pagado
+
+	column ValorPagado
+		dataType: int64
+		isHidden
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: ValorPagado
+
+	column EstadoConciliacion
+		dataType: string
+		isHidden
+		isNullable: false
+		summarizeBy: none
+		sourceColumn: EstadoConciliacion
+
+	partition Config_IncentivoAsesor = m
+		mode: import
+		source =
+				let
+					// Niveles de premio ASESOR (Metas_Bonos): periodo + aliado + ranking con su meta y valor; ganador potencial por asignacion secuencial y evidencia de pago.
+					RutaFuente = RutaCarpetaData & "\BI - NUEVO.xlsx",
+					Libro = Excel.Workbook(File.Contents(RutaFuente), null, true),
+					Coincidencias = Table.SelectRows(Libro, each [Item] = "Metas_Bonos" and [Kind] = "Sheet"),
+					Origen = if Table.RowCount(Coincidencias) = 1 then Coincidencias{0}[Data] else error "No se encontro una unica hoja Metas_Bonos.",
+					Encabezados = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+					ColumnasRequeridas = {"Año", "Mes", "Aliado_BI", "Asesor_Equipo", "Tipo_Meta", "Meta_Ventas", "Valor_Incentivo", "Ranking_Valor_Incentivo", "Cumplimiento_Meta"},
+					ColumnasFaltantes = List.Difference(ColumnasRequeridas, Table.ColumnNames(Encabezados)),
+					ConEsquemaValido =
+						if List.IsEmpty(ColumnasFaltantes)
+						then Table.SelectColumns(Encabezados, ColumnasRequeridas & {"Asesor_Dedicado"}, MissingField.UseNull)
+						else error "Faltan columnas obligatorias en Metas_Bonos: " & Text.Combine(ColumnasFaltantes, ", "),
+					// Asesor_Dedicado (opcional): nivel reservado a un asesor concreto, identificado por coincidencia exacta con Insumo2[ASESOR] (Trim/Clean, sin fuzzy matching).
+					LimpiarNombre = (Valor as any) as nullable text =>
+						if Valor = null then null
+						else let Texto = Text.Trim(Text.Clean(Text.From(Valor))) in if Texto = "" then null else Texto,
+					NormalizarTexto = (Valor as any) as nullable text =>
+						if Valor = null then null
+						else
+							let Texto = Text.Upper(Text.Trim(Text.Clean(Text.From(Valor))))
+							in if Texto = "" then null else Texto,
+					Normalizadas = Table.TransformColumns(ConEsquemaValido, {
+						{"Año", each try Int64.From(_) otherwise null, Int64.Type},
+						{"Mes", NormalizarTexto, type nullable text},
+						{"Aliado_BI", NormalizarTexto, type nullable text},
+						{"Asesor_Equipo", NormalizarTexto, type nullable text},
+						{"Tipo_Meta", NormalizarTexto, type nullable text},
+						{"Meta_Ventas", each try Int64.From(_) otherwise null, Int64.Type},
+						{"Valor_Incentivo", each try Int64.From(_) otherwise null, Int64.Type},
+						{"Ranking_Valor_Incentivo", each try Number.From(_) otherwise null, type nullable number},
+						{"Cumplimiento_Meta", NormalizarTexto, type nullable text},
+						{"Asesor_Dedicado", LimpiarNombre, type nullable text}
+					}),
+					FilasAsesor = Table.SelectRows(Normalizadas, each [Año] <> null and [Mes] <> null and [Aliado_BI] <> null and [Asesor_Equipo] = "ASESOR" and [Tipo_Meta] = "META PARA BONO"),
+					FilasInvalidas = Table.SelectRows(FilasAsesor, each [Ranking_Valor_Incentivo] = null or [Ranking_Valor_Incentivo] <= 0 or Number.Mod([Ranking_Valor_Incentivo], 1) <> 0 or [Valor_Incentivo] = null or [Meta_Ventas] = null),
+					FilasValidadas = if Table.IsEmpty(FilasInvalidas) then FilasAsesor else error "Metas_Bonos: filas ASESOR con ranking, meta o valor invalido.",
+					Meses = [ENERO = 1, FEBRERO = 2, MARZO = 3, ABRIL = 4, MAYO = 5, JUNIO = 6, JULIO = 7, AGOSTO = 8, SEPTIEMBRE = 9, OCTUBRE = 10, NOVIEMBRE = 11, DICIEMBRE = 12],
+					ConAnioMes = Table.AddColumn(FilasValidadas, "AnioMes", each
+						let MesNumero = Record.FieldOrDefault(Meses, [Mes], null)
+						in if MesNumero = null then error "Mes no reconocido en Metas_Bonos: " & [Mes] else [Año] * 100 + MesNumero, Int64.Type),
+					Agrupadas = Table.Group(ConAnioMes, {"AnioMes", "Aliado_BI", "Ranking_Valor_Incentivo"}, {
+						{"Metas", each List.Distinct([Meta_Ventas]), type list},
+						{"Valores", each List.Distinct([Valor_Incentivo]), type list},
+						{"Pagado", each List.Contains([Cumplimiento_Meta], "SI"), type logical},
+						{"Dedicados", each List.Distinct(List.RemoveNulls([Asesor_Dedicado])), type list}
+					}),
+					Conflictos = Table.SelectRows(Agrupadas, each List.Count([Metas]) <> 1 or List.Count([Valores]) <> 1 or List.Count([Dedicados]) > 1),
+					Niveles =
+						if Table.IsEmpty(Conflictos)
+						then Table.AddColumn(Table.AddColumn(Table.AddColumn(Agrupadas, "MetaVentas", each [Metas]{0}, Int64.Type), "ValorIncentivo", each [Valores]{0}, Int64.Type), "AsesorDedicado", each List.First([Dedicados]), type nullable text)
+						else error "Metas_Bonos: un nivel de premio ASESOR tiene mas de una Meta_Ventas, Valor_Incentivo o Asesor_Dedicado.",
+					// Misma equivalencia de suboperaciones que Config_MetasComerciales (R3/R4).
+					ReglasEspecificas = Table.SelectRows(Map_AsignacionPusherFuente, each [TipoRegla] = "Especifica"),
+					ConRegla = Table.NestedJoin(Niveles, {"Aliado_BI"}, ReglasEspecificas, {"Descripcion2"}, "Regla", JoinKind.LeftOuter),
+					ReglaExpandida = Table.ExpandTableColumn(ConRegla, "Regla", {"AliadoKey"}, {"AliadoKeyEspecifico"}),
+					ConAliadoKey = Table.AddColumn(ReglaExpandida, "AliadoKey", each if [AliadoKeyEspecifico] <> null then [AliadoKeyEspecifico] else [Aliado_BI], type text),
+					NivelesFinales = Table.SelectColumns(Table.AddColumn(ConAliadoKey, "Ranking", each Int64.From([Ranking_Valor_Incentivo]), Int64.Type), {"AnioMes", "AliadoKey", "Ranking", "MetaVentas", "ValorIncentivo", "Pagado", "AsesorDedicado"}),
+					Duplicadas = Table.RowCount(NivelesFinales) <> Table.RowCount(Table.Distinct(Table.SelectColumns(NivelesFinales, {"AnioMes", "AliadoKey", "Ranking"}))),
+					NivelesValidados = if Duplicadas then error "Config_IncentivoAsesor genera claves periodo-aliado-ranking duplicadas." else NivelesFinales,
+					// Ventas por asesor desde las mismas filas validas de la fact de ventas.
+					VentasValidas = Table.SelectRows(AltasTeResuelve_Limpio, each [EstadoFila] = "Valida" and [Asesor] <> null),
+					VentasConMes = Table.AddColumn(VentasValidas, "AnioMes", each Date.Year([FechaAlta]) * 100 + Date.Month([FechaAlta]), Int64.Type),
+					VentasAsesor = Table.Buffer(Table.Group(VentasConMes, {"AnioMes", "AliadoKey", "Asesor"}, {{"Altas", each List.Sum([Altas]), Int64.Type}})),
+					// Asignacion secuencial: ranking ascendente; en cada nivel gana el asesor con mas altas que cumple su meta y no gano antes. Empate en el primer lugar = QA sin ganador.
+					// Asignacion secuencial: ranking ascendente; en cada nivel gana el asesor con mas altas que cumple la meta aplicada y no gano antes. Empate en el primer lugar = QA sin ganador.
+					// Nivel con asesor dedicado: si el dedicado alcanza su meta, el nivel es suyo; si no, el dedicado queda excluido del mes y el nivel se compite con la meta general (menor meta de los niveles sin dedicado).
+					Asignar = (niveles as table, ventas as list) as table =>
+						let
+							Ordenados = Table.ToRecords(Table.Sort(niveles, {{"Ranking", Order.Ascending}})),
+							Dedicados = List.Distinct(List.RemoveNulls(List.Transform(Ordenados, each [AsesorDedicado]))),
+							MetasGenerales = List.Transform(List.Select(Ordenados, each [AsesorDedicado] = null), each [MetaVentas]),
+							MetaGeneral = if List.IsEmpty(MetasGenerales) then null else List.Min(MetasGenerales),
+							AltasDe = (Asesor as text) as number => List.Sum(List.Transform(List.Select(ventas, each [Asesor] = Asesor), each [Altas])) ?? 0,
+							Resultado = List.Accumulate(Ordenados, [Usados = {}, Salida = {}], (Estado, Nivel) =>
+								let
+									Dedicado = Nivel[AsesorDedicado],
+									DedicadoCumple = Dedicado <> null and AltasDe(Dedicado) >= Nivel[MetaVentas],
+									MetaAplicada = if Dedicado <> null and not DedicadoCumple then MetaGeneral else Nivel[MetaVentas],
+									Candidatos =
+										if DedicadoCumple then {[Asesor = Dedicado, Altas = AltasDe(Dedicado)]}
+										else if MetaAplicada = null then {}
+										else List.Sort(List.Select(ventas, each not List.Contains(Estado[Usados], [Asesor]) and not List.Contains(Dedicados, [Asesor]) and [Altas] >= MetaAplicada), {each [Altas], Order.Descending}),
+									Primero = if List.IsEmpty(Candidatos) then null else Candidatos{0},
+									Empate = not DedicadoCumple and Primero <> null and List.Count(Candidatos) > 1 and Candidatos{1}[Altas] = Primero[Altas],
+									Ganador = if Primero = null or Empate then null else Primero[Asesor]
+								in
+									[
+										Usados = if Ganador = null then Estado[Usados] else Estado[Usados] & {Ganador},
+										Salida = Estado[Salida] & {Nivel & [
+											MetaAplicada = MetaAplicada,
+											GanadorPotencial = Ganador,
+											AltasGanador = if Ganador = null then null else Primero[Altas],
+											EstadoAsignacion = if Primero = null then "Desierto" else if Empate then "Empate (QA)" else "Asignado"
+										]}
+									]
+							)
+						in
+							Table.FromRecords(Resultado[Salida]),
+					// Control fail-fast: cada Asesor_Dedicado debe resolver a exactamente una identidad de Insumo2[ASESOR] en su mismo periodo y aliado (Trim/Clean/mayusculas, sin fuzzy matching). Sin coincidencia o con ambiguedad, el refresh se detiene; no hay fallback a la logica general.
+					NormalizarNombre = (Texto as text) as text => Text.Upper(Text.Trim(Text.Clean(Texto))),
+					NivelesResueltos = Table.AddColumn(NivelesValidados, "DedicadoResuelto", (Nivel) =>
+						if Nivel[AsesorDedicado] = null then null
+						else
+							let
+								Coincidencias = List.Distinct(Table.SelectRows(VentasAsesor, each [AnioMes] = Nivel[AnioMes] and [AliadoKey] = Nivel[AliadoKey] and NormalizarNombre([Asesor]) = NormalizarNombre(Nivel[AsesorDedicado]))[Asesor])
+							in
+								if List.Count(Coincidencias) = 1 then Coincidencias{0}
+								else error "Metas_Bonos: Asesor_Dedicado sin coincidencia exacta unica con Insumo2[ASESOR] en " & Text.From(Nivel[AnioMes]) & " | " & Nivel[AliadoKey] & " | ranking " & Text.From(Nivel[Ranking]) & " (" & Text.From(List.Count(Coincidencias)) & " coincidencias).",
+						type nullable text),
+					NivelesConIdentidad = Table.RenameColumns(Table.RemoveColumns(NivelesResueltos, {"AsesorDedicado"}), {{"DedicadoResuelto", "AsesorDedicado"}}),
+					Contextos = Table.Group(Table.Buffer(NivelesConIdentidad), {"AnioMes", "AliadoKey"}, {{"Niveles", each _, type table}}),
+					ConVentas = Table.NestedJoin(Contextos, {"AnioMes", "AliadoKey"}, VentasAsesor, {"AnioMes", "AliadoKey"}, "Ventas", JoinKind.LeftOuter),
+					Asignados = Table.AddColumn(ConVentas, "Asignacion", each Asignar([Niveles], Table.ToRecords(Table.SelectColumns([Ventas], {"Asesor", "Altas"})))),
+					Expandidos = Table.Combine(Asignados[Asignacion]),
+					ConPago = Table.AddColumn(Expandidos, "ValorPagado", each if [Pagado] then [ValorIncentivo] else null, Int64.Type),
+					ConConciliacion = Table.AddColumn(ConPago, "EstadoConciliacion", each
+						if [GanadorPotencial] <> null and [Pagado] then "Potencial y pagado"
+						else if [GanadorPotencial] <> null then "Potencial no pagado"
+						else if [Pagado] then "Pagado sin potencial (QA)"
+						else [EstadoAsignacion], type text),
+					Final = Table.SelectColumns(ConConciliacion, {"AnioMes", "AliadoKey", "Ranking", "MetaVentas", "ValorIncentivo", "AsesorDedicado", "MetaAplicada", "GanadorPotencial", "AltasGanador", "EstadoAsignacion", "Pagado", "ValorPagado", "EstadoConciliacion"}),
+					Tipado = Table.TransformColumnTypes(Final, {{"AnioMes", Int64.Type}, {"AliadoKey", type text}, {"Ranking", Int64.Type}, {"MetaVentas", Int64.Type}, {"ValorIncentivo", Int64.Type}, {"AsesorDedicado", type text}, {"MetaAplicada", Int64.Type}, {"GanadorPotencial", type text}, {"AltasGanador", Int64.Type}, {"EstadoAsignacion", type text}, {"Pagado", type logical}, {"ValorPagado", Int64.Type}, {"EstadoConciliacion", type text}})
+				in
+					Tipado
+
+	annotation PBI_ResultType = Table

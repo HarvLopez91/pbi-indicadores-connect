@@ -1,36 +1,29 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "rc_tab_asesores_label",
+  "name": "as_logo_connect",
   "position": {
-    "x": 480,
-    "y": 77,
-    "z": 1200,
-    "height": 24,
-    "width": 250,
-    "tabOrder": 1200
+    "x": 16,
+    "y": 14,
+    "z": 200,
+    "height": 44,
+    "width": 190,
+    "tabOrder": 200
   },
   "visual": {
-    "visualType": "textbox",
+    "visualType": "image",
     "objects": {
       "general": [
         {
           "properties": {
-            "paragraphs": [
-              {
-                "textRuns": [
-                  {
-                    "value": "Asesores",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI Semibold",
-                      "fontSize": "12px",
-                      "color": "#002733",
-                      "fontWeight": "bold"
-                    }
-                  }
-                ],
-                "horizontalTextAlignment": "center"
+            "imageUrl": {
+              "expr": {
+                "ResourcePackageItem": {
+                  "PackageName": "RegisteredResources",
+                  "PackageType": 1,
+                  "ItemName": "logo_connect_naranja_20260708.png"
+                }
               }
-            ]
+            }
           }
         }
       ]

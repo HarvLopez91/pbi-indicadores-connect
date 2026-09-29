@@ -441,6 +441,150 @@ table _Medidas_Altas
 	measure Fecha_Corte_Incentivos = MAX(Fact_LegalizacionBonos[Fecha])
 		formatString: Short Date
 
+	/// Meta de referencia del asesor: la meta de su nivel dedicado (Asesor_Dedicado en Metas_Bonos) si lo tiene; si no, la meta minima del contexto periodo + aliado. Solo con una entidad asesor en contexto.
+	measure Meta_Asesor =
+			VAR Entidades = SUMMARIZE(Fact_AltasTeResuelve, Dim_Calendario[AnioMes], Dim_Aliado[AliadoKey], Fact_AltasTeResuelve[Asesor])
+			VAR Asesor = MAXX(Entidades, Fact_AltasTeResuelve[Asesor])
+			VAR Mes = VALUE(SUBSTITUTE(MAXX(Entidades, Dim_Calendario[AnioMes]), "-", ""))
+			VAR Aliado = MAXX(Entidades, Dim_Aliado[AliadoKey])
+			VAR MetaDedicada =
+				CALCULATE(
+					MAX(Config_IncentivoAsesor[MetaVentas]),
+					REMOVEFILTERS(Config_IncentivoAsesor),
+					Config_IncentivoAsesor[AnioMes] = Mes, Config_IncentivoAsesor[AliadoKey] = Aliado, Config_IncentivoAsesor[AsesorDedicado] = Asesor
+				)
+			RETURN IF(COUNTROWS(Entidades) = 1, COALESCE(MetaDedicada, CALCULATE(MAX(Fact_MetasComerciales[MetaAsesor]), Entidades)))
+		formatString: #,0
+
+	measure Faltante_Asesor =
+			VAR Meta = [Meta_Asesor]
+			RETURN IF(Meta > 0, MAX(Meta - COALESCE([Altas_Total], 0), 0))
+		formatString: #,0
+
+	measure Avance_Asesor_Pct =
+			VAR Meta = [Meta_Asesor]
+			RETURN IF(Meta > 0, DIVIDE(COALESCE([Altas_Total], 0), Meta))
+		formatString: 0.0%
+
+	/// Cumplio >= 100 %; Cerca de cumplir 75-100 %; En progreso 50-75 %; Rezago < 50 %; Sin meta sin MetaAsesor; Meta 0 como QA.
+	measure Estado_Asesor =
+			VAR Entidades = SUMMARIZE(Fact_AltasTeResuelve, Dim_Calendario[AnioMes], Dim_Aliado[AliadoKey], Fact_AltasTeResuelve[Asesor])
+			VAR Meta = [Meta_Asesor]
+			VAR Avance = [Avance_Asesor_Pct]
+			RETURN
+				IF(
+					COUNTROWS(Entidades) = 1,
+					SWITCH(
+						TRUE(),
+						ISBLANK(Meta), "Sin meta",
+						Meta <= 0, "Meta invalida (QA)",
+						Avance >= 1, "Cumplió",
+						Avance >= 0.75, "Cerca de cumplir",
+						Avance >= 0.5, "En progreso",
+						"Rezago"
+					)
+				)
+
+	/// Nivel de premio asignado al asesor por la asignacion secuencial (Config_IncentivoAsesor). BLANK si no gano ningun nivel.
+	measure Ranking_Incentivo_Asignado =
+			VAR Entidades = SUMMARIZE(Fact_AltasTeResuelve, Dim_Calendario[AnioMes], Dim_Aliado[AliadoKey], Fact_AltasTeResuelve[Asesor])
+			VAR Asesor = MAXX(Entidades, Fact_AltasTeResuelve[Asesor])
+			VAR Mes = VALUE(SUBSTITUTE(MAXX(Entidades, Dim_Calendario[AnioMes]), "-", ""))
+			VAR Aliado = MAXX(Entidades, Dim_Aliado[AliadoKey])
+			RETURN
+				IF(
+					COUNTROWS(Entidades) = 1,
+					CALCULATE(
+						MAX(Config_IncentivoAsesor[Ranking]),
+						REMOVEFILTERS(Config_IncentivoAsesor),
+						Config_IncentivoAsesor[AnioMes] = Mes, Config_IncentivoAsesor[AliadoKey] = Aliado, Config_IncentivoAsesor[GanadorPotencial] = Asesor
+					)
+				)
+		formatString: 0
+
+	/// Incentivo potencial (premio objetivo) del nivel ganado por el asesor. No representa pago.
+	measure Incentivo_Potencial_Asesor =
+			VAR Entidades = SUMMARIZE(Fact_AltasTeResuelve, Dim_Calendario[AnioMes], Dim_Aliado[AliadoKey], Fact_AltasTeResuelve[Asesor])
+			VAR Asesor = MAXX(Entidades, Fact_AltasTeResuelve[Asesor])
+			VAR Mes = VALUE(SUBSTITUTE(MAXX(Entidades, Dim_Calendario[AnioMes]), "-", ""))
+			VAR Aliado = MAXX(Entidades, Dim_Aliado[AliadoKey])
+			RETURN
+				IF(
+					COUNTROWS(Entidades) = 1,
+					CALCULATE(
+						SUM(Config_IncentivoAsesor[ValorIncentivo]),
+						REMOVEFILTERS(Config_IncentivoAsesor),
+						Config_IncentivoAsesor[AnioMes] = Mes, Config_IncentivoAsesor[AliadoKey] = Aliado, Config_IncentivoAsesor[GanadorPotencial] = Asesor
+					)
+				)
+		formatString: $#,0
+
+	/// Suma de incentivos potenciales asignados en los contextos periodo + aliado visibles.
+	measure Incentivo_Potencial_Total = CALCULATE(SUM(Config_IncentivoAsesor[ValorIncentivo]), REMOVEFILTERS(Config_IncentivoAsesor), TREATAS(SUMMARIZE(Fact_MetasComerciales, Fact_MetasComerciales[AnioMes], Fact_MetasComerciales[AliadoKey]), Config_IncentivoAsesor[AnioMes], Config_IncentivoAsesor[AliadoKey]), NOT ISBLANK(Config_IncentivoAsesor[GanadorPotencial]))
+		formatString: $#,0
+
+	/// Bonos realmente pagados (Cumplimiento_Meta = SI) en los contextos visibles; conciliados por periodo + aliado + ranking, sin atribuirlos a un asesor sin coincidencia exacta de nombre.
+	measure Bonos_Entregados = VAR Pagado = CALCULATE(SUM(Config_IncentivoAsesor[ValorPagado]), REMOVEFILTERS(Config_IncentivoAsesor), TREATAS(SUMMARIZE(Fact_MetasComerciales, Fact_MetasComerciales[AnioMes], Fact_MetasComerciales[AliadoKey]), Config_IncentivoAsesor[AnioMes], Config_IncentivoAsesor[AliadoKey])) RETURN IF([Incentivos_Configurados] > 0, COALESCE(Pagado, 0))
+		formatString: $#,0
+
+	/// Incentivo potencial asignado sin evidencia de pago en el mismo nivel. No es deuda contable.
+	measure Potencial_Pendiente = CALCULATE(SUM(Config_IncentivoAsesor[ValorIncentivo]), REMOVEFILTERS(Config_IncentivoAsesor), TREATAS(SUMMARIZE(Fact_MetasComerciales, Fact_MetasComerciales[AnioMes], Fact_MetasComerciales[AliadoKey]), Config_IncentivoAsesor[AnioMes], Config_IncentivoAsesor[AliadoKey]), NOT ISBLANK(Config_IncentivoAsesor[GanadorPotencial]), Config_IncentivoAsesor[Pagado] = FALSE())
+		formatString: $#,0
+
+	/// Niveles de premio configurados en los contextos visibles.
+	measure Incentivos_Configurados = CALCULATE(COUNTROWS(Config_IncentivoAsesor), REMOVEFILTERS(Config_IncentivoAsesor), TREATAS(SUMMARIZE(Fact_MetasComerciales, Fact_MetasComerciales[AnioMes], Fact_MetasComerciales[AliadoKey]), Config_IncentivoAsesor[AnioMes], Config_IncentivoAsesor[AliadoKey]))
+		formatString: #,0
+
+	/// Niveles con ganador potencial.
+	measure Incentivos_Asignados = CALCULATE(COUNTROWS(Config_IncentivoAsesor), REMOVEFILTERS(Config_IncentivoAsesor), TREATAS(SUMMARIZE(Fact_MetasComerciales, Fact_MetasComerciales[AnioMes], Fact_MetasComerciales[AliadoKey]), Config_IncentivoAsesor[AnioMes], Config_IncentivoAsesor[AliadoKey]), NOT ISBLANK(Config_IncentivoAsesor[GanadorPotencial]))
+		formatString: #,0
+
+	/// Niveles sin asesor que alcance su meta.
+	measure Incentivos_Desiertos = CALCULATE(COUNTROWS(Config_IncentivoAsesor), REMOVEFILTERS(Config_IncentivoAsesor), TREATAS(SUMMARIZE(Fact_MetasComerciales, Fact_MetasComerciales[AnioMes], Fact_MetasComerciales[AliadoKey]), Config_IncentivoAsesor[AnioMes], Config_IncentivoAsesor[AliadoKey]), Config_IncentivoAsesor[EstadoAsignacion] = "Desierto")
+		formatString: #,0
+
+	/// Niveles sin ganador por empate exacto en altas (QA).
+	measure Incentivos_Empate_QA = CALCULATE(COUNTROWS(Config_IncentivoAsesor), REMOVEFILTERS(Config_IncentivoAsesor), TREATAS(SUMMARIZE(Fact_MetasComerciales, Fact_MetasComerciales[AnioMes], Fact_MetasComerciales[AliadoKey]), Config_IncentivoAsesor[AnioMes], Config_IncentivoAsesor[AliadoKey]), Config_IncentivoAsesor[EstadoAsignacion] = "Empate (QA)")
+		formatString: #,0
+
+	/// Niveles pagados sin ganador potencial por ventas (QA).
+	measure Incentivos_Pagados_Sin_Potencial_QA = CALCULATE(COUNTROWS(Config_IncentivoAsesor), REMOVEFILTERS(Config_IncentivoAsesor), TREATAS(SUMMARIZE(Fact_MetasComerciales, Fact_MetasComerciales[AnioMes], Fact_MetasComerciales[AliadoKey]), Config_IncentivoAsesor[AnioMes], Config_IncentivoAsesor[AliadoKey]), Config_IncentivoAsesor[EstadoConciliacion] = "Pagado sin potencial (QA)")
+		formatString: #,0
+
+	measure Asesores_Con_Ventas = COUNTROWS(SUMMARIZE(Fact_AltasTeResuelve, Dim_Calendario[AnioMes], Dim_Aliado[AliadoKey], Fact_AltasTeResuelve[Asesor]))
+		formatString: #,0
+
+	measure Asesores_Con_Meta = COUNTROWS(FILTER(SUMMARIZE(Fact_AltasTeResuelve, Dim_Calendario[AnioMes], Dim_Aliado[AliadoKey], Fact_AltasTeResuelve[Asesor]), [Meta_Asesor] > 0))
+		formatString: #,0
+
+	measure Asesores_Sin_Meta = COUNTROWS(FILTER(SUMMARIZE(Fact_AltasTeResuelve, Dim_Calendario[AnioMes], Dim_Aliado[AliadoKey], Fact_AltasTeResuelve[Asesor]), ISBLANK([Meta_Asesor])))
+		formatString: #,0
+
+	measure Asesores_Cumplieron_Meta = COUNTROWS(FILTER(SUMMARIZE(Fact_AltasTeResuelve, Dim_Calendario[AnioMes], Dim_Aliado[AliadoKey], Fact_AltasTeResuelve[Asesor]), [Estado_Asesor] = "Cumplió"))
+		formatString: #,0
+
+	measure Asesores_Cerca_Cumplir = COUNTROWS(FILTER(SUMMARIZE(Fact_AltasTeResuelve, Dim_Calendario[AnioMes], Dim_Aliado[AliadoKey], Fact_AltasTeResuelve[Asesor]), [Estado_Asesor] = "Cerca de cumplir"))
+		formatString: #,0
+
+	measure Asesores_En_Progreso = COUNTROWS(FILTER(SUMMARIZE(Fact_AltasTeResuelve, Dim_Calendario[AnioMes], Dim_Aliado[AliadoKey], Fact_AltasTeResuelve[Asesor]), [Estado_Asesor] = "En progreso"))
+		formatString: #,0
+
+	measure Asesores_Rezago = COUNTROWS(FILTER(SUMMARIZE(Fact_AltasTeResuelve, Dim_Calendario[AnioMes], Dim_Aliado[AliadoKey], Fact_AltasTeResuelve[Asesor]), [Estado_Asesor] = "Rezago"))
+		formatString: #,0
+
+	measure Pct_Asesores_Cumplieron = DIVIDE([Asesores_Cumplieron_Meta], [Asesores_Con_Meta])
+		formatString: 0.0%
+
+	measure Pct_Asesores_Cerca_Cumplir = DIVIDE([Asesores_Cerca_Cumplir], [Asesores_Con_Meta])
+		formatString: 0.0%
+
+	/// Orden para "Asesores mas cerca de cumplir": solo con meta y avance < 100 %; menor faltante primero y, a igual faltante, mayor avance.
+	measure Cercania_Cumplir_Asesor =
+			VAR Meta = [Meta_Asesor]
+			VAR Altas = COALESCE([Altas_Total], 0)
+			RETURN IF(Meta > 0 && Altas < Meta, -[Faltante_Asesor] + [Avance_Asesor_Pct] / 1000)
+		isHidden
+
 	column Columna1
 		dataType: int64
 		isHidden

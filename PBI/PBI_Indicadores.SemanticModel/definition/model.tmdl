@@ -33,6 +33,7 @@ ref table _Medidas_Altas
 ref table Fact_MetasComerciales
 ref table Dim_AsignacionPusherPeriodo
 ref table Fact_LegalizacionBonos
+ref table Config_IncentivoAsesor
 
 ref cultureInfo es-ES
 

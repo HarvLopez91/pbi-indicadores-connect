@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "rc_tab_asesores_label",
+  "name": "as_kpi_cumplieron_pct_label",
   "position": {
-    "x": 480,
-    "y": 77,
-    "z": 1200,
-    "height": 24,
-    "width": 250,
-    "tabOrder": 1200
+    "x": 227,
+    "y": 251,
+    "z": 2500,
+    "height": 16,
+    "width": 130,
+    "tabOrder": 2500
   },
   "visual": {
     "visualType": "textbox",
@@ -19,16 +19,14 @@
               {
                 "textRuns": [
                   {
-                    "value": "Asesores",
+                    "value": "sobre asesores con meta",
                     "textStyle": {
-                      "fontFamily": "Segoe UI Semibold",
-                      "fontSize": "12px",
-                      "color": "#002733",
-                      "fontWeight": "bold"
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "8px",
+                      "color": "#6B6B6B"
                     }
                   }
-                ],
-                "horizontalTextAlignment": "center"
+                ]
               }
             ]
           }

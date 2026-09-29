@@ -31,6 +31,11 @@ table Fact_AltasTeResuelve
 		summarizeBy: none
 		sourceColumn: PeriodoAliadoKey
 
+	column Asesor
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Asesor
+
 	partition Fact_AltasTeResuelve = m
 		mode: import
 		source =
@@ -50,7 +55,7 @@ table Fact_AltasTeResuelve
 				    ),
 				    ColumnasFinales = Table.SelectColumns(
 				        ConPeriodoAliadoKey,
-				        {"FechaAlta", "AliadoKey", "Altas", "PeriodoAliadoKey"}
+				        {"FechaAlta", "AliadoKey", "Altas", "PeriodoAliadoKey", "Asesor"}
 				    ),
 				    TiposAplicados = Table.TransformColumnTypes(
 				        ColumnasFinales,
@@ -58,7 +63,8 @@ table Fact_AltasTeResuelve
 				            {"FechaAlta", type date},
 				            {"AliadoKey", type text},
 				            {"Altas", Int64.Type},
-				            {"PeriodoAliadoKey", type text}
+				            {"PeriodoAliadoKey", type text},
+				            {"Asesor", type text}
 				        }
 				    )
 				in

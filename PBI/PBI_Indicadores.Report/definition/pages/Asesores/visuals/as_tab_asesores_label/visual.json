@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "rc_tab_asesores_label",
+  "name": "as_tab_asesores_label",
   "position": {
     "x": 480,
     "y": 77,
-    "z": 1200,
+    "z": 1300,
     "height": 24,
     "width": 250,
-    "tabOrder": 1200
+    "tabOrder": 1300
   },
   "visual": {
     "visualType": "textbox",
@@ -23,7 +23,7 @@
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "12px",
-                      "color": "#002733",
+                      "color": "#FFFFFF",
                       "fontWeight": "bold"
                     }
                   }

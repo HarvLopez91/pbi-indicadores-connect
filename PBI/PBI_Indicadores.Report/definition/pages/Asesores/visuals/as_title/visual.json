@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "rc_tab_asesores_label",
+  "name": "as_title",
   "position": {
-    "x": 480,
-    "y": 77,
-    "z": 1200,
-    "height": 24,
-    "width": 250,
-    "tabOrder": 1200
+    "x": 222,
+    "y": 6,
+    "z": 300,
+    "height": 40,
+    "width": 600,
+    "tabOrder": 300
   },
   "visual": {
     "visualType": "textbox",
@@ -19,16 +19,24 @@
               {
                 "textRuns": [
                   {
-                    "value": "Asesores",
+                    "value": "Gestión Comercial ",
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
-                      "fontSize": "12px",
+                      "fontSize": "26px",
                       "color": "#002733",
                       "fontWeight": "bold"
                     }
+                  },
+                  {
+                    "value": "PUSHER",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI Semibold",
+                      "fontSize": "26px",
+                      "color": "#F15B2B",
+                      "fontWeight": "bold"
+                    }
                   }
-                ],
-                "horizontalTextAlignment": "center"
+                ]
               }
             ]
           }

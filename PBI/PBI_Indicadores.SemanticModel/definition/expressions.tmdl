@@ -176,7 +176,8 @@ expression Base_AltasTeResuelve =
 expression AltasTeResuelve_Limpio =
 		let
 			Origen = Base_AltasTeResuelve,
-			SinColumnasSensibles = Table.RemoveColumns(Origen, {"JEFE", "ESPECIALISTA", "ASESOR"}, MissingField.Ignore),
+			// JEFE y ESPECIALISTA no se cargan; ASESOR se conserva para la pagina Asesores (R8, exposicion nominal autorizada).
+			SinColumnasSensibles = Table.RemoveColumns(Origen, {"JEFE", "ESPECIALISTA"}, MissingField.Ignore),
 			ConvertirEntero = (Valor as any) as nullable number =>
 				if Valor = null then null
 				else
@@ -198,7 +199,8 @@ expression AltasTeResuelve_Limpio =
 			ConMesFuente = Table.AddColumn(ConFechaAlta, "MesFuente", each ConvertirEntero([MES]), Int64.Type),
 			ConDescripcion = Table.AddColumn(ConMesFuente, "Descripcion", each if [DESCRIPCION] = null then null else Text.Upper(Text.Trim(Text.Clean(Text.From([DESCRIPCION])))), type nullable text),
 			ConDescripcion2 = Table.AddColumn(ConDescripcion, "Descripcion2", each if [DESCRIPCION2] = null then null else Text.Upper(Text.Trim(Text.Clean(Text.From([DESCRIPCION2])))), type nullable text),
-			SinColumnasOrigenTipadas = Table.RemoveColumns(ConDescripcion2, {"ALTAS", "FECHA_ALTA", "MES", "DESCRIPCION", "DESCRIPCION2"}),
+			ConAsesor = Table.AddColumn(ConDescripcion2, "Asesor", each let Texto = if Record.FieldOrDefault(_, "ASESOR", null) = null then null else Text.Trim(Text.Clean(Text.From([ASESOR]))) in if Texto = "" then null else Texto, type nullable text),
+			SinColumnasOrigenTipadas = Table.RemoveColumns(ConAsesor, {"ALTAS", "FECHA_ALTA", "MES", "DESCRIPCION", "DESCRIPCION2", "ASESOR"}, MissingField.Ignore),
 			NombresTecnicos = Table.RenameColumns(SinColumnasOrigenTipadas, {
 				{"FECHA_ALTA - Copy.1", "FechaAltaCopia1"},
 				{"DIVISION", "Division"},
@@ -317,7 +319,7 @@ expression Config_MetasComerciales =
 				then Coincidencias{0}[Data]
 				else error "No se encontro una unica hoja Metas_Bonos.",
 			Encabezados = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
-			ColumnasRequeridas = {"Año", "Mes", "PUSHER", "Aliado_BI", "Asesor_Equipo", "Tipo_Meta", "Meta_Ventas"},
+			ColumnasRequeridas = {"Año", "Mes", "PUSHER", "Aliado_BI", "Asesor_Equipo", "Tipo_Meta", "Meta_Ventas", "Ranking_Valor_Incentivo"},
 			ColumnasFaltantes = List.Difference(ColumnasRequeridas, Table.ColumnNames(Encabezados)),
 			ConEsquemaValido =
 				if List.IsEmpty(ColumnasFaltantes)
@@ -334,7 +336,8 @@ expression Config_MetasComerciales =
 				{"Aliado_BI", "Aliado"},
 				{"Asesor_Equipo", "Nivel"},
 				{"Tipo_Meta", "TipoMeta"},
-				{"Meta_Ventas", "Meta"}
+				{"Meta_Ventas", "Meta"},
+				{"Ranking_Valor_Incentivo", "Ranking"}
 			}),
 			Normalizadas = Table.TransformColumns(Renombradas, {
 				{"Anio", each try Int64.From(_) otherwise null, Int64.Type},
@@ -343,15 +346,19 @@ expression Config_MetasComerciales =
 				{"Aliado", NormalizarTexto, type nullable text},
 				{"Nivel", NormalizarTexto, type nullable text},
 				{"TipoMeta", NormalizarTexto, type nullable text},
-				{"Meta", each try Int64.From(_) otherwise null, Int64.Type}
+				{"Meta", each try Int64.From(_) otherwise null, Int64.Type},
+				{"Ranking", each try Int64.From(_) otherwise null, Int64.Type}
 			}),
 			FilasMeta = Table.SelectRows(Normalizadas, each [Anio] <> null and [Mes] <> null and [Aliado] <> null and [TipoMeta] = "META PARA BONO" and List.Contains({"CALL", "ESPECIALISTA", "ASESOR"}, [Nivel])),
 			Meses = [ENERO = 1, FEBRERO = 2, MARZO = 3, ABRIL = 4, MAYO = 5, JUNIO = 6, JULIO = 7, AGOSTO = 8, SEPTIEMBRE = 9, OCTUBRE = 10, NOVIEMBRE = 11, DICIEMBRE = 12],
 			ConAnioMes = Table.AddColumn(FilasMeta, "AnioMes", each
 				let MesNumero = Record.FieldOrDefault(Meses, [Mes], null)
 				in if MesNumero = null then error "Mes no reconocido en Metas_Bonos: " & [Mes] else [Anio] * 100 + MesNumero, Int64.Type),
-			// Llave logica: Anio + Mes + PUSHER + Aliado + Asesor_Equipo + Tipo_Meta. Las filas ASESOR repetidas por incentivo colapsan aqui.
-			Llaves = Table.Group(ConAnioMes, {"AnioMes", "PusherOrigen", "Aliado", "Nivel", "TipoMeta"}, {{"Metas", each List.Distinct(List.RemoveNulls([Meta])), type list}}),
+			// Llave logica: Anio + Mes + PUSHER + Aliado + Asesor_Equipo + Tipo_Meta; en ASESOR tambien Ranking_Valor_Incentivo (cada nivel de premio tiene su propia meta). CALL y ESPECIALISTA conservan la llave historica.
+			ConRankingNivel = Table.AddColumn(ConAnioMes, "RankingNivel", each if [Nivel] = "ASESOR" then [Ranking] else null, Int64.Type),
+			RankingAsesorInvalido = Table.SelectRows(ConRankingNivel, each [Nivel] = "ASESOR" and ([RankingNivel] = null or [RankingNivel] <= 0)),
+			ConRankingValidado = if Table.IsEmpty(RankingAsesorInvalido) then ConRankingNivel else error "Metas_Bonos: filas ASESOR sin Ranking_Valor_Incentivo valido.",
+			Llaves = Table.Group(ConRankingValidado, {"AnioMes", "PusherOrigen", "Aliado", "Nivel", "TipoMeta", "RankingNivel"}, {{"Metas", each List.Distinct(List.RemoveNulls([Meta])), type list}}),
 			LlavesInvalidas = Table.SelectRows(Llaves, each List.Count([Metas]) <> 1),
 			LlavesUnicas =
 				if Table.IsEmpty(LlavesInvalidas)
@@ -361,7 +368,8 @@ expression Config_MetasComerciales =
 				{"CantidadPusher", each List.Count(List.Distinct([PusherOrigen])), Int64.Type},
 				{"MetaCall", each List.First(List.RemoveNulls(List.Transform(Table.ToRecords(_), (r) => if r[Nivel] = "CALL" then r[Meta] else null))), Int64.Type},
 				{"MetaEspecialista", each List.First(List.RemoveNulls(List.Transform(Table.ToRecords(_), (r) => if r[Nivel] = "ESPECIALISTA" then r[Meta] else null))), Int64.Type},
-				{"MetaAsesor", each List.First(List.RemoveNulls(List.Transform(Table.ToRecords(_), (r) => if r[Nivel] = "ASESOR" then r[Meta] else null))), Int64.Type}
+				// Meta minima del contexto: la menor Meta_Ventas entre los niveles de premio ASESOR (referencia de avance en la pagina Asesores).
+				{"MetaAsesor", each List.Min(List.RemoveNulls(List.Transform(Table.ToRecords(_), (r) => if r[Nivel] = "ASESOR" then r[Meta] else null))), Int64.Type}
 			}),
 			ContextosInvalidos = Table.SelectRows(Contextos, each [CantidadPusher] <> 1 or [MetaCall] = null or [MetaEspecialista] = null or [MetaCall] <> [MetaEspecialista]),
 			ContextosValidos =
