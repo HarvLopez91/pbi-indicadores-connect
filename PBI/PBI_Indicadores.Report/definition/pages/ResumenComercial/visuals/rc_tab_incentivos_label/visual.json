@@ -19,11 +19,12 @@
               {
                 "textRuns": [
                   {
-                    "value": "Incentivos y Legalización · próximamente",
+                    "value": "Incentivos y Legalización",
                     "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "11px",
-                      "color": "#9A9A9A"
+                      "fontFamily": "Segoe UI Semibold",
+                      "fontSize": "12px",
+                      "color": "#002733",
+                      "fontWeight": "bold"
                     }
                   }
                 ],

@@ -417,17 +417,17 @@ table _Medidas_Altas
 
 	/// Dinero entregado por Connect al PUSHER para incentivos.
 	measure Valor_Recibido = SUM(Fact_LegalizacionBonos[ValorRecibido])
-		formatString: #,0
+		formatString: $#,0
 
 	/// Valor registrado en Legalización_Bonos[Valor legalizado]; el estado de legalizacion no lo condiciona.
 	measure Valor_Legalizado = SUM(Fact_LegalizacionBonos[ValorLegalizado])
-		formatString: #,0
+		formatString: $#,0
 
 	/// Pendiente por legalizar/gastar = recibido - legalizado (legalizado vacio cuenta como 0). Negativos se muestran tal cual (QA de fuente).
 	measure Pendiente_Legalizar =
 			VAR Recibido = [Valor_Recibido]
 			RETURN IF(ISBLANK(Recibido), BLANK(), Recibido - COALESCE([Valor_Legalizado], 0))
-		formatString: #,0;-#,0;0
+		formatString: $#,0;-$#,0;$0
 
 	/// Valor legalizado para la pagina Resumen Comercial: aplica el PUSHER solo si PusherAsignacion o PusherNombre estan filtrados directamente (TREATAS sobre Fact_LegalizacionBonos[Pusher]). No responde a Aliado.
 	measure Valor_Legalizado_Filtro_Pusher =

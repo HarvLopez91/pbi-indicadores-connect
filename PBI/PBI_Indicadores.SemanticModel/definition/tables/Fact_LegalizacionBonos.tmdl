@@ -13,6 +13,13 @@ table Fact_LegalizacionBonos
 		summarizeBy: none
 		sourceColumn: Pusher
 
+	column PusherNombre
+		dataType: string
+		isNullable: false
+		summarizeBy: none
+		sourceColumn: PusherNombre
+		sortByColumn: Pusher
+
 	column Concepto
 		dataType: string
 		summarizeBy: none
@@ -49,7 +56,7 @@ table Fact_LegalizacionBonos
 						else
 							let Texto = Text.Upper(Text.Trim(Text.Clean(Text.From(Valor))))
 							in if Texto = "" then null else Texto,
-					// Etiqueta publica por grupo PUSHER con las mismas anclas de R3; el nombre nominal no sale de esta consulta.
+					// Etiqueta publica por grupo PUSHER con las mismas anclas de R3; el nombre visible se conserva aparte en PusherNombre.
 					Asignacion = HojaUnica("Asignacion_PUSHER"),
 					AnclasPublicas = [#"COS" = "PUSHER 1", #"ONE CONTACT" = "PUSHER 2", #"CONTACTMASTER BPO" = "PUSHER 3"],
 					Anclas = Table.SelectRows(
@@ -85,8 +92,10 @@ table Fact_LegalizacionBonos
 					ConPusher = Table.NestedJoin(ConMesValidado, {"PusherOrigen"}, MapaValidado, {"PusherOrigen"}, "Mapa", JoinKind.LeftOuter),
 					PusherExpandido = Table.ExpandTableColumn(ConPusher, "Mapa", {"Pusher"}, {"Pusher"}),
 					PusherValidado = if Table.IsEmpty(Table.SelectRows(PusherExpandido, each [Pusher] = null)) then PusherExpandido else error "Legalización_Bonos tiene PUSHER sin etiqueta publica.",
-					ColumnasFinales = Table.SelectColumns(PusherValidado, {"Fecha", "Pusher", "Concepto", "TipoIncentivo", "ValorRecibido", "ValorLegalizado"}),
-					TiposAplicados = Table.TransformColumnTypes(ColumnasFinales, {{"Fecha", type datetime}, {"Pusher", type text}, {"Concepto", type text}, {"TipoIncentivo", type text}, {"ValorRecibido", Int64.Type}, {"ValorLegalizado", Int64.Type}})
+					// Nombre visible: el PUSHER de la fuente ya normalizado y validado 1:1 contra el codigo tecnico.
+					ConPusherNombre = Table.RenameColumns(PusherValidado, {{"PusherOrigen", "PusherNombre"}}),
+					ColumnasFinales = Table.SelectColumns(ConPusherNombre, {"Fecha", "Pusher", "PusherNombre", "Concepto", "TipoIncentivo", "ValorRecibido", "ValorLegalizado"}),
+					TiposAplicados = Table.TransformColumnTypes(ColumnasFinales, {{"Fecha", type datetime}, {"Pusher", type text}, {"PusherNombre", type text}, {"Concepto", type text}, {"TipoIncentivo", type text}, {"ValorRecibido", Int64.Type}, {"ValorLegalizado", Int64.Type}})
 				in
 					TiposAplicados
 

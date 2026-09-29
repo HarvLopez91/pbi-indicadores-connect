@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "as_tab_incentivos_label",
+  "name": "il_tab_resumen_label",
   "position": {
-    "x": 738,
+    "x": 222,
     "y": 77,
-    "z": 1500,
+    "z": 900,
     "height": 24,
     "width": 250,
-    "tabOrder": 1500
+    "tabOrder": 900
   },
   "visual": {
     "visualType": "textbox",
@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Incentivos y Legalización",
+                    "value": "Resumen Comercial",
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "12px",
