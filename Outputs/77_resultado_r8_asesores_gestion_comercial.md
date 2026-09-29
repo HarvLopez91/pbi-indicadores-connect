@@ -92,6 +92,21 @@ Exposición nominal de asesores autorizada. Los nombres salen de la fuente al re
 - El nombre es la única identidad del asesor; homónimos en el mismo aliado y mes se sumarían.
 - Pagos no atribuibles por asesor mientras `Ganador_Bono` no coincida exactamente con `ASESOR`.
 
-## 11. Rollback
+## 11. Actualización posterior — UNO 27 y clasificación efectiva
+
+Tras homologar `ABAI` → `UNO 27` en `Metas_Bonos` (fuente privada) y aplicar la prioridad override temporal > `Asignacion_PUSHER` > `Sin asignar` a `PusherAsignacion`/`PusherNombre` (ver Output 76 §14), los niveles ASESOR de UNO 27 se cruzan con sus ventas reales (antes su clave `ABAI` no tenía ventas). Resultados recalculados con refresh completo:
+
+| Mes | Asesores con meta | Cumplieron | Cerca | Niveles asignados / configurados | Incentivo potencial | Bonos entregados | Potencial pendiente |
+|---|---|---|---|---|---|---|---|
+| 2026-07 | 524 (antes 457) | 2 | 1 | 2 / 42 | 600.000 | 600.000 | 0 |
+| 2026-08 | 563 (antes 473) | 6 | 4 | 6 / 51 | 1.700.000 | 1.200.000 | 500.000 |
+| 2026-09 | 673 (antes 574) | 9 (antes 5) | 7 (antes 1) | 8 / 54 (antes 5) | 2.000.000 (antes 1.400.000) | 0 | 2.000.000 |
+
+- Septiembre suma UNO 27 R1 / R2 / R3 (meta 30; 300.000 / 200.000 / 100.000), “Potencial no pagado”. Julio y agosto no tienen ganadores nuevos.
+- Septiembre por PUSHER (con meta / cumplieron / potencial): JEISY 387 / 3 / 800.000; LEONARDO 184 / 2 / 600.000; ERIKA 102 / 4 / 600.000.
+- La regla del asesor dedicado y su control fail-fast no cambian (INTELIGENCE R1 sigue asignado al mejor asesor restante con meta 120).
+- `Sin asignar` no tiene meta en ningún mes.
+
+## 12. Rollback
 
 Contra `1225199`: eliminar `pages/Asesores/`, su entrada en `pages.json` y `rc_tab_asesores_hitzone`; restaurar `rc_tab_asesores_label`; retirar `Config_IncentivoAsesor` y su `ref table`, las medidas R8, la columna `Asesor` y los cambios de `Config_MetasComerciales`. No revertir R2-R7.

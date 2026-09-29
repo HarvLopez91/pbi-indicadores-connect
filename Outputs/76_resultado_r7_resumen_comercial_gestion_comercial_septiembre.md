@@ -21,7 +21,7 @@ Cambios:
 - `pages/ResumenComercial/` (page.json y 32 visuales).
 - `pages/pages.json`: la página se inserta después de `GestionComercialAltas`; la página activa no cambia.
 - `expressions.tmdl`: `Map_AsignacionPusherFuente` conserva el nombre de `Asignacion_PUSHER` como `PusherNombre`.
-- `Dim_AsignacionPusherPeriodo.tmdl`: columna `PusherNombre`; `PusherAsignacion` sin el override temporal.
+- `Dim_AsignacionPusherPeriodo.tmdl`: columna `PusherNombre` (la prioridad de clasificación se actualizó después; ver §14).
 - `_Medidas_Altas.tmdl`: medida auxiliar `Valor_Legalizado_Filtro_Pusher`.
 
 Sin relaciones, dimensiones, facts ni many-to-many nuevos.
@@ -39,9 +39,9 @@ Sin relaciones, dimensiones, facts ni many-to-many nuevos.
 - `PusherAsignacion` sigue siendo la clave técnica de medidas y cálculos.
 - `ResumenComercial` muestra `PusherNombre` en el slicer PUSHER, en los gráficos de cumplimiento y crecimiento y en la matriz.
 
-**UNO 27:**
-- `PusherAsignacion`: UNO 27 pertenece a ERIKA / PUSHER 3 en todos los periodos, incluido julio de 2026, alineado con `Asignacion_PUSHER`.
-- `PusherPeriodo`: conserva el override histórico de julio en PUSHER 1 solo para no alterar `GestionComercialAltas` (julio: 1.582 / 2.429 / 508).
+**Prioridad de clasificación (vigente desde la corrección posterior, §14):** override temporal (`Map_AsignacionPusherPeriodo`, por `AnioMes + AliadoKey`) > `Asignacion_PUSHER` > `Sin asignar`. Se aplica por igual a `PusherPeriodo`, `PusherAsignacion`, `PusherNombre`, `TipoReglaAsignacion` y `EsGestionAtribuible`.
+
+**UNO 27:** julio de 2026 → PUSHER 1 (override temporal); desde agosto → PUSHER 3 (`Asignacion_PUSHER`). La versión inicial de R7 aplicaba el override solo a `PusherPeriodo` (ver §11); quedó sustituida en §14.
 
 ## 3. KPI
 
@@ -158,3 +158,29 @@ Los cambios automáticos que Desktop dejó tras publicar (fin de línea, `lineag
 ## 13. Rollback
 
 Contra `d926486`: eliminar `pages/ResumenComercial/` y su entrada en `pages.json`; retirar `Valor_Legalizado_Filtro_Pusher`; revertir `PusherNombre` en `Map_AsignacionPusherFuente` y `Dim_AsignacionPusherPeriodo`, y restaurar el override en `PusherAsignacion`. No revertir R2-R6.
+
+Solo la corrección de §14: restaurar en `Dim_AsignacionPusherPeriodo` las versiones anteriores de `PusherAsignacion`, `TipoReglaAsignacion` y `PusherNombre` y retirar el catálogo `CatalogoPusher`. Las correcciones de la fuente privada (§14) se revierten desde su respaldo local, fuera de Git.
+
+## 14. Corrección posterior — homologación de metas y prioridad del override
+
+**Fuente privada (fuera de Git):**
+- `Metas_Bonos`: `Aliado_BI` `ABAI` → `UNO 27` en julio, agosto y septiembre de 2026 (15 filas CALL/ESPECIALISTA/ASESOR; ningún otro campo cambia). La meta CALL de UNO 27 quedaba en `Sin asignar` porque su clave no coincidía con `Asignacion_PUSHER`.
+- `Asignacion_PUSHER`: regla general `LEONARDO | MILLENIUM` (activo hasta agosto; sin filas en septiembre).
+
+**Modelo:** `Dim_AsignacionPusherPeriodo` aplica override temporal > `Asignacion_PUSHER` > `Sin asignar` también a `PusherAsignacion`, `PusherNombre` (resuelto con un catálogo código → nombre derivado de `Asignacion_PUSHER`, que falla si un código tiene cero o varios nombres) y `TipoReglaAsignacion` (“Override temporal”). `EsGestionAtribuible` se calcula sobre la clasificación efectiva. Sin nombres en TMDL. `GestionComercialAltas` usa solo `PusherPeriodo`, cuya lógica no cambia.
+
+**Referencia de cumplimiento:** la meta de un PUSHER es la suma de la meta CALL de sus aliados. ESPECIALISTA es control y ASESOR es incentivo individual; no se suman.
+
+| PUSHER | Julio (meta / altas / %) | Agosto | Septiembre |
+|---|---|---|---|
+| LEONARDO | 2.959 / 1.582 / 53,46 % | 2.740 / 1.115 / 40,69 % | 4.200 / 1.641 / 39,07 % |
+| JEISY | 3.378 / 2.427 / 71,85 % | 3.475 / 3.641 / 104,78 % | 4.780 / 3.705 / 77,51 % |
+| ERIKA | — / 2 | 940 / 635 / 67,55 % | 2.100 / 766 / 36,48 % |
+| Sin asignar | meta 0 / 508 altas | meta 0 / 324 | meta 0 / 416 |
+
+- Julio LEONARDO incluye UNO 27 (225 / 224) y MILLENIUM (100 / 59). ERIKA septiembre: UNO 27 1.370 / 763, ATENTO TRASLADOS PEREIRA 550 / 3, INTERACTIVO MANIZALES 90 / 0, EMERGIA 90 / 0. El 104,93 % anterior (766 / 730) desaparece.
+- `Sin asignar` ya no tiene meta y no aparece en el gráfico de cumplimiento; conserva altas de CAV, tiendas y otros canales sin meta.
+- Totales sin cambios: altas 45.538 (julio 4.519, agosto 5.715, septiembre 6.528); meta CALL 6.337 / 7.155 / 11.080; crecimiento global septiembre +2.868 / +78,36 %; valor legalizado 3.300.000 / 2.668.800 / 1.603.570.
+- Crecimiento atribuible desde julio: agosto LEONARDO −467, JEISY +1.214, ERIKA +633; septiembre LEONARDO +349, JEISY +1.790, ERIKA +764. En la matriz, UNO 27 aparece bajo LEONARDO en agosto y septiembre solo con crecimiento negativo (−224 / −183): es su base de julio, que cambió de PUSHER. Top 10 de aliados sin cambios (ATENTO +1.007, UNO 27 +580, INTELIGENCE +469, GNP +463…).
+- Valor legalizado por PUSHER en julio: PUSHER 1 1.500.000, PUSHER 2 1.500.000, PUSHER 3 300.000 (total 3.300.000).
+- Gate: refresh completo PASS, 0 medidas con error, 18 relaciones, 0 many-to-many; código y nombre de PUSHER coherentes en todas las filas; `GestionComercialAltas` sin cambios (julio PUSHER 1 / 2 / Sin asignar: 1.582 / 2.429 / 508).
