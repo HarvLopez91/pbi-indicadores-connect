@@ -93,8 +93,8 @@ La clasificación histórica del portafolio se conserva separada de la atribuci�
 
 - Página 1: `CALL` es la meta canónica por periodo, PUSHER y aliado.
 - `ESPECIALISTA`: control de calidad; debe coincidir con `CALL`. No se suma ni se usa como fallback silencioso.
-- Página 2: `ASESOR` es una meta individual contextual. Cada asesor del aliado/PUSHER/mes recibe el mismo valor de meta del contexto; no se divide entre asesores.
-- Las tres filas `ASESOR` corresponden a diferentes valores de incentivo y no a tres metas.
+- Página 2 (actualizado en R8): cada fila `ASESOR` es un nivel de premio (`Ranking_Valor_Incentivo` + `Meta_Ventas` + `Valor_Incentivo`); la meta mínima del contexto es la referencia de avance y los premios se asignan por ranking entre quienes alcanzan la meta de cada nivel (Output 77).
+- Las filas `ASESOR` son niveles de premio; cada nivel puede tener su propia meta. Un nivel puede reservarse a un asesor dedicado mediante `Asesor_Dedicado` (Output 77).
 - Por clave lógica debe existir un único valor distinto de `Meta_Ventas`; más de uno es error de calidad.
 
 No se utilizarán como resultados oficiales `Ventas_Cumplimiento`, `Cumplimiento_Meta` ni `Ganador_Bono`. Ventas y cumplimiento se recalcularán desde las fuentes gobernadas.
@@ -228,7 +228,7 @@ La meta `ASESOR` se deduplicará por la clave lógica aprobada; no se sumarán s
 | Asignación PUSHER | Sí | `Dim_AsignacionPusherPeriodo` | Reutilizar dimensión y claves | Cambiar origen/reglas explícitas |
 | Metas Página 1 | Sí | `Fact_MetasComerciales` | Reutilizar fact | Alimentar `MetaAltas` desde `CALL` |
 | Meta individual | Sí | Mismo contexto periodo-aliado | Añadir columna `MetaAsesor` a la fact actual | No crear otra fact de metas |
-| Asesor | Sí para Página 2 | No existe en el modelo público | Dimensión mínima con relación 1:* | Clave y etiqueta indispensables |
+| Asesor | Sí para Página 2 | No existe en el modelo público | Implementado en R8 como columna `Fact_AltasTeResuelve[Asesor]`, sin `Dim_Asesor` (no hay identificador ni atributos adicionales) | Nombre desde la fuente |
 | Incentivos/legalización | Sí para Página 3 | No existe hecho equivalente | Nueva fact mínima | Solo columnas con contrato confirmado |
 | Bono objetivo | No por ahora | Semántica no confirmada | Omitir/BLANK | Cero lógica arbitraria |
 | Valor recibido/saldo/ejecución | No por ahora | Contrato no confirmado | Omitir/BLANK | Cero derivación |

@@ -355,45 +355,29 @@ Revertir únicamente la página nueva y su registro; `GestionComercialAltas` deb
 
 ### Objetivo
 
-Crear la página de cumplimiento individual de septiembre con metas contextuales y privacidad explícitamente validada.
+Página histórica de seguimiento por asesor (`Asesores`): ventas, meta, cumplimiento, estado, ranking e incentivo potencial según el mes seleccionado. Septiembre 2026 es solo la selección inicial nativa del slicer Mes; nada queda fijado a septiembre.
 
-### Archivos y objetos esperados
+### Contrato (actualizado en R8, Output 77)
 
-- `Dim_Asesor.tmdl` y relación 1:* con ventas, solo si se confirma como mínimo necesario.
-- Ajuste mínimo de `Fact_AltasTeResuelve` para `AsesorKey`.
-- Nueva carpeta de página PBIR y registro en `pages.json`.
-- Navegación mínima desde Home o la página comercial, sujeta a aprobación.
-- Output R8.
+- Asesor: `Insumo2[ASESOR]` (no `ESPECIALISTA`). Ventas por asesor desde enero de 2026. Línea base vigente: 45.538 altas; septiembre 6.528 (corte 27/09).
+- Niveles de premio ASESOR: `Ranking_Valor_Incentivo` + `Meta_Ventas` + `Valor_Incentivo` por periodo + aliado (metas desde julio de 2026).
+- Meta mínima (menor meta de los niveles del contexto) como referencia de faltante, avance y estado. Sin niveles: Sin meta.
+- Asesor dedicado: `Metas_Bonos[Asesor_Dedicado]` (Excel privado) reserva un nivel a un asesor por coincidencia exacta con `Insumo2[ASESOR]`; si no alcanza su meta queda excluido del mes y el nivel se compite con la meta general. Su meta de referencia es la de su nivel. Si el nombre no resuelve a exactamente una identidad de ventas en su periodo y aliado, el refresh falla (sin fallback).
+- Estados: Cumplió ≥ 100 %; Cerca de cumplir 75-100 %; En progreso 50-75 %; Rezago < 50 %.
+- Incentivo potencial (bono objetivo): asignación secuencial por ranking ascendente; gana el asesor con más altas que alcanza la meta del nivel y no ganó antes; máximo un incentivo por asesor; sin candidato = desierto; empate = QA.
+- Pago real: `Cumplimiento_Meta = SI`, solo agregado (Bonos entregados). `Ganador_Bono` no coincide exactamente con `ASESOR`: no se atribuye pago ni saldo a un asesor, sin fuzzy matching.
+- Potencial pendiente: niveles con ganador potencial sin pago en el mismo nivel; KPI agregado, no es deuda.
+- Privacidad: exposición nominal de asesores autorizada; los nombres salen de la fuente al refrescar y no se versionan.
 
-### Reutilización y cambio mínimo
+### Archivos y objetos
 
-- Ventas desde la fact existente; no segundo hecho.
-- Meta individual desde `Fact_MetasComerciales[MetaAsesor]` bajo periodo/aliado.
-- Tema, tarjetas, tablas y navegación existentes.
-- Omitir Bono objetivo y Valor entregado si no hay contrato inequívoco.
-- Usar un filtro predeterminado nativo estable para septiembre; evitar DAX hardcodeado.
-
-### Validaciones automáticas
-
-- cada asesor recibe una meta, no una fracción ni suma de incentivos;
-- estados y orden por faltante;
-- filtros PUSHER/Aliado;
-- ventas por asesor suman al total del contexto;
-- cero nombres en archivos versionados fuera de referencias de campo;
-- ningún valor nominal queda serializado en filtros, ejemplos o logs;
-- Publicar en la Web reconocido como exposición pública.
-
-### Gate manual
-
-Obligatorio: render, selección inicial, filtros, totales y aceptación explícita de privacidad nominal antes de publicar.
-
-### PASS
-
-Página conciliada y aprobada; exposición nominal aceptada conscientemente y limitada a la vista autorizada.
+- `Fact_AltasTeResuelve[Asesor]` (sin `Dim_Asesor`: no hay identificador ni atributos que la justifiquen).
+- `Config_IncentivoAsesor` oculta (periodo + aliado + ranking + meta + valor + ganador potencial + pago), sin relaciones; `Config_MetasComerciales` con llave por ranking en ASESOR y `MetaAsesor` = meta mínima.
+- Medidas R8 en `_Medidas_Altas`; página `Asesores`; navegación Resumen Comercial ↔ Asesores.
 
 ### Rollback
 
-Retirar página, navegación, relación y dimensión de asesor de R8 mediante su commit atómico; mantener R1-R7.
+Retirar la página, la navegación, `Config_IncentivoAsesor`, las medidas R8 y la columna `Asesor` mediante el commit atómico de R8; mantener R1-R7.
 
 ## 12. R9 — Página 3: incentivos y legalización
 
